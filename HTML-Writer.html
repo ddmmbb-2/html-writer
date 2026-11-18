@@ -1,14 +1,5 @@
 <!doctype html>
-<html lang="zh-Hant">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><!doctype html>
-<html lang="zh-Hant">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HTML 文件</title>
-<style id="writer-style">
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>院內課程公告</title><style id="writer-style">
 :root{
   color-scheme:light;
   --sans:Arial,"Helvetica Neue","Liberation Sans","Microsoft JhengHei","PingFang TC","Noto Sans CJK TC","Noto Sans TC","WenQuanYi Zen Hei",sans-serif;
@@ -114,6 +105,8 @@ button:disabled{cursor:default;opacity:.45}
 .doc table{width:100%;border-collapse:collapse;table-layout:fixed;margin:.8em 0;font-size:.93em}
 .doc td,.doc th{padding:6px 9px;text-align:left;vertical-align:top;border:1px solid #d5dfd5}
 .doc th{background:#e7efe7;color:#244f3e}
+[data-mode="edit"] #paper [data-cell-selected]{background:#d5e9f9;box-shadow:inset 0 0 0 2px #3b76a3}
+#table-tools [aria-pressed="true"]{background:#d5e9f9;border-color:#3b76a3}
 .doc .continued{margin-top:0}
 .doc .continuing{margin-bottom:0}
 .status{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;color:var(--muted);font-size:12px;padding:9px 1px}
@@ -138,7 +131,7 @@ dialog input{width:100%}
 .dialog-actions{display:flex;justify-content:flex-end;gap:6px;margin-top:12px}
 #error{color:#97332d;font-size:13px;min-height:1em}
 @media screen and (max-width:780px){.workspace{display:block;padding:13px 10px}.outline{display:none}.paper-frame{--image-inset:clamp(22px,8vw,68px)}}
-@media screen and (max-width:550px){.tools,.group{gap:4px}.tools .group{max-width:100%;flex-wrap:wrap;padding-right:4px}.tools button,.tools select{font-size:12px;max-width:100%}}
+@media screen and (max-width:550px){.tools,.group{gap:4px}.tools .group,#table-tools .group{max-width:100%;flex-wrap:wrap;padding-right:4px}.tools button,.tools select{font-size:12px;max-width:100%}}
 @page{size:A4 portrait;margin:0}
 @media print{
   html,body{margin:0!important;padding:0!important;background:white!important}
@@ -152,10 +145,7 @@ dialog input{width:100%}
   #sheets .sheet-area{bottom:17.7mm}
   #sheets .page-number{bottom:10.7mm}
 }
-</style>
-</head>
-<body>
-<main id="app" data-mode="edit">
+</style></head><body><main id="app" data-mode="read" data-language="zh-Hant">
   <header class="chrome">
     <div class="top">
       <div class="identity">
@@ -204,19 +194,29 @@ dialog input{width:100%}
       <div class="group">
         <button type="button" id="add-link" data-i18n="link">連結</button>
         <button type="button" id="add-image" data-i18n="image">圖片</button>
-        <select id="free-image-picker" aria-label="選取自由圖片" data-i18n-label="pickFreeImage" hidden></select>
+        <select id="free-image-picker" aria-label="選取自由圖片" data-i18n-label="pickFreeImage" hidden=""></select>
         <button type="button" id="add-table" data-i18n="table">表格</button>
-        <input type="file" id="image-file" accept="image/png,image/jpeg,image/gif,image/webp,image/bmp,image/avif" hidden>
+        <input type="file" id="image-file" accept="image/png,image/jpeg,image/gif,image/webp,image/bmp,image/avif" hidden="">
       </div>
     </div>
-    <div class="context" id="table-tools" hidden>
-      <button type="button" data-table="add-row" data-i18n="addRow">新增列</button><button type="button" data-table="remove-row" data-i18n="removeRow">刪除此列</button>
-      <button type="button" data-table="add-column" data-i18n="addColumn">新增欄</button><button type="button" data-table="remove-column" data-i18n="removeColumn">刪除此欄</button>
+    <div class="context" id="table-tools" hidden="">
+      <div class="group">
+        <button type="button" data-table="add-row" data-i18n="addRow" data-i18n-title="addRowHelp">新增列（橫向）</button>
+        <button type="button" data-table="remove-row" data-i18n="removeRow">刪除此列</button>
+        <button type="button" data-table="add-column" data-i18n="addColumn" data-i18n-title="addColumnHelp">新增欄（直向）</button>
+        <button type="button" data-table="remove-column" data-i18n="removeColumn">刪除此欄</button>
+      </div>
+      <div class="group">
+        <button type="button" data-table="select" aria-pressed="false" data-i18n="selectCells" data-i18n-title="selectCellsHelp">選取儲存格</button>
+        <button type="button" data-table="merge-horizontal" data-i18n="mergeHorizontal" disabled>橫向合併</button>
+        <button type="button" data-table="merge-vertical" data-i18n="mergeVertical" disabled>垂直合併</button>
+        <button type="button" data-table="merge-range" data-i18n="mergeRange" disabled>合併範圍</button>
+      </div>
     </div>
-    <div class="context" id="image-tools" hidden>
+    <div class="context" id="image-tools" hidden="">
       <label><span data-i18n="imageMode">圖片模式</span> <select id="image-mode"><option value="inline" data-i18n="inlineImage">隨文字排列</option><option value="free" data-i18n="freeImage">自由模式</option></select></label>
       <label id="inline-width"><span data-i18n="imageWidth">圖片寬度</span> <select id="image-width"><option value="25">25%</option><option value="50">50%</option><option value="75">75%</option><option value="100">100%</option></select></label>
-      <div id="image-free-tools" hidden>
+      <div id="image-free-tools" hidden="">
         <label><span data-i18n="imageLayer">圖層</span> <select id="image-layer"><option value="front" data-i18n="imageFront">文字上層</option><option value="behind" data-i18n="imageBehind">文字下層</option></select></label>
         <label><span data-i18n="imageWidthPercent">寬度 %</span> <input id="free-image-width" type="number" min="1" max="100" step="any"></label>
         <label><span data-i18n="imageAngle">旋轉 °</span> <input id="image-angle" type="number" min="-360" max="360" step="1"></label>
@@ -229,7 +229,7 @@ dialog input{width:100%}
     <aside class="outline"><h2 data-i18n="outline">文件大綱</h2><nav id="outline" aria-label="文件大綱" data-i18n-label="outline"></nav></aside>
     <section class="document-area" aria-label="文件" data-i18n-label="document">
       <div class="paper-frame">
-      <article class="doc" id="paper" lang="zh-Hant" contenteditable="true" spellcheck="false" aria-label="文件內容" data-i18n-label="content">
+      <article class="doc" id="paper" lang="zh-Hant" contenteditable="false" spellcheck="false" aria-label="文件內容" data-i18n-label="content">
         <p class="meta">教育訓練　／　十一月線上課程</p>
         <h1>一點點，就很不一樣</h1>
         <p class="lead">有時候，只是一個小巧思，就能讓對方感受到不同。</p>
@@ -243,7 +243,7 @@ dialog input{width:100%}
           <tbody><tr><td>適用對象</td><td>全院同仁</td></tr><tr><td>完成期限</td><td>11 月 30 日</td></tr></tbody>
         </table>
       </article>
-      <div id="image-controls" data-image-control="move" hidden>
+      <div id="image-controls" data-image-control="move" hidden="">
         <button type="button" id="move-image" data-image-control="move" aria-label="拖曳圖片，或用方向鍵移動" title="拖曳圖片，或用方向鍵移動" data-i18n-label="moveImage" data-i18n-title="moveImage">↔</button>
         <button type="button" id="resize-image" data-image-control="resize" aria-label="拖曳等比例縮放圖片" title="拖曳等比例縮放圖片" data-i18n-label="resizeImage" data-i18n-title="resizeImage">↘</button>
         <button type="button" id="rotate-image" data-image-control="rotate" aria-label="拖曳旋轉圖片" title="拖曳旋轉圖片" data-i18n-label="rotateImage" data-i18n-title="rotateImage">⟳</button>
@@ -261,17 +261,16 @@ dialog input{width:100%}
     <div id="sheets"></div>
   </section>
   <dialog id="dialog">
-    <form id="form" novalidate>
+    <form id="form" novalidate="">
       <h2 id="dialog-title"></h2>
-      <p id="new-message" data-i18n="newWarning" hidden>目前的文件有未另存的變更。要開一份空白文件嗎？</p>
-      <div id="link-fields" hidden><label><span data-i18n="linkText">顯示文字</span><input id="link-text"></label><label><span data-i18n="url">網址</span><input id="link-url" type="url" placeholder="https://example.com"></label></div>
-      <div id="table-fields" hidden><label><span data-i18n="rows">列數（含表頭）</span><input id="rows" type="number" min="1" max="30" value="3"></label><label><span data-i18n="columns">欄數</span><input id="columns" type="number" min="1" max="8" value="2"></label></div>
+      <p id="new-message" data-i18n="newWarning" hidden="">目前的文件有未另存的變更。要開一份空白文件嗎？</p>
+      <div id="link-fields" hidden=""><label><span data-i18n="linkText">顯示文字</span><input id="link-text"></label><label><span data-i18n="url">網址</span><input id="link-url" type="url" placeholder="https://example.com"></label></div>
+      <div id="table-fields" hidden=""><label><span data-i18n="rows">列數（含表頭）</span><input id="rows" type="number" min="1" max="30" value="3"></label><label><span data-i18n="columns">欄數</span><input id="columns" type="number" min="1" max="8" value="2"></label></div>
       <p id="error" role="alert"></p>
       <div class="dialog-actions"><button type="button" id="cancel" data-i18n="cancel">取消</button><button type="submit" class="primary" id="submit">插入</button></div>
     </form>
   </dialog>
-</main>
-<script id="writer-script">
+</main><script id="writer-script">
 (() => {
 "use strict";
 /*
@@ -332,10 +331,17 @@ const locale = (() => {
     link:["連結","Link","リンク"],
     image:["圖片","Image","画像"],
     table:["表格","Table","表"],
-    addRow:["新增列","Add row","行を追加"],
+    addRow:["新增列（橫向）","Add row (horizontal)","行を追加（横方向）"],
+    addRowHelp:["在目前儲存格下方插入一橫列","Insert a row below the current cell","現在のセルの下に行を挿入"],
     removeRow:["刪除此列","Delete row","行を削除"],
-    addColumn:["新增欄","Add column","列を追加"],
+    addColumn:["新增欄（直向）","Add column (vertical)","列を追加（縦方向）"],
+    addColumnHelp:["在目前儲存格右側插入一直欄","Insert a column to the right of the current cell","現在のセルの右に列を挿入"],
     removeColumn:["刪除此欄","Delete column","列を削除"],
+    selectCells:["選取儲存格","Select cells","セルを選択"],
+    selectCellsHelp:["拖曳選取，或按此按鈕後點選範圍另一端","Drag across cells, or press this button and then select the opposite corner","セル間をドラッグするか、このボタンを押して範囲の反対側を選択"],
+    mergeHorizontal:["橫向合併","Merge horizontally","横方向に結合"],
+    mergeVertical:["垂直合併","Merge vertically","縦方向に結合"],
+    mergeRange:["合併範圍","Merge range","範囲を結合"],
     imageWidth:["圖片寬度","Image width","画像の幅"],
     imageMode:["圖片模式","Image layout","画像の配置"],
     inlineImage:["隨文字排列","In line with text","行内"],
@@ -436,9 +442,10 @@ let outlineKey = "", notice = "";
 
 function copyBody() {
   const copy = paper.cloneNode(true);
-  for (const item of copy.querySelectorAll("[data-selected],[data-list-selection]")) {
+  for (const item of copy.querySelectorAll("[data-selected],[data-list-selection],[data-cell-selected]")) {
     item.removeAttribute("data-selected");
     item.removeAttribute("data-list-selection");
+    item.removeAttribute("data-cell-selected");
   }
   return copy;
 }
@@ -573,6 +580,7 @@ const editHistory = (() => {
     const next = entries[index + direction];
     if (!next) return;
     index += direction;
+    tableEditing.clear();
     chooseImage(null);
     selection = null;
     paper.innerHTML = next.html;
@@ -746,12 +754,13 @@ const listLevels = (() => {
 
 function syncContext() {
   $("image-tools").hidden = !editing || !selectedImage;
-  $("table-tools").hidden = !editing || !!selectedImage || !activeCell();
+  tableEditing.syncTools();
   const levels = editing && !selectedImage ? listLevels.actions(selection) : {};
   $("list-up").disabled = !levels.up;
   $("list-down").disabled = !levels.down;
 }
 function chooseImage(image) {
+  if (image) tableEditing.clear();
   if (image !== selectedImage) freeImages.cancelDrag();
   selectedImage?.removeAttribute("data-selected");
   selectedImage = image;
@@ -776,6 +785,7 @@ function issue(command,value = null) {
     editHistory.step(command === "undo" ? -1 : 1);
     return;
   }
+  tableEditing.clear();
   restore();
   editHistory.perform(() => document.execCommand(command,false,value));
   if (selectedImage && !paper.contains(selectedImage)) chooseImage(null);
@@ -789,15 +799,15 @@ function mode(next) {
   fileName.readOnly = !next;
   $("tools").hidden = !next;
   $("mode").textContent = t(next ? "readMode" : "editMode");
-  if (!next) chooseImage(null);
+  if (!next) { tableEditing.clear(); chooseImage(null); }
   syncContext();
 }
 function objectKey() { return "object-" + Date.now().toString(36) + "-" + (++keyIndex); }
 function findObject(tag,key) { return Array.from(paper.querySelectorAll(tag)).find(node => node.dataset.object === key); }
-function blankCell(row,tag = "td") {
+function blankCell(row,tag = "td",before = null) {
   const cell = make(tag);
   cell.append(make("br"));
-  row.append(cell);
+  row.insertBefore(cell,before);
   return cell;
 }
 function insertTable(rows,columns) {
@@ -812,37 +822,252 @@ function insertTable(rows,columns) {
   }
   issue("insertHTML",table.outerHTML + "<p><br></p>");
   const first = findObject("table",table.dataset.object)?.rows[0]?.cells[0];
-  if (first) pointAt(first);
+  if (first) { pointAt(first); syncContext(); }
 }
-function changeTable(action) {
-  const cell = activeCell();
-  if (!cell) return;
-  const table = cell.closest("table"), copy = table.cloneNode(true);
-  const rowIndex = cell.parentElement.rowIndex, column = cell.cellIndex;
-  const row = copy.rows[rowIndex];
-  if (action === "add-row") {
-    const body = copy.tBodies[0] || copy.createTBody();
-    const added = body.insertRow(row.parentElement === body ? row.sectionRowIndex + 1 : 0);
-    for (let index = 0; index < row.cells.length; index++) blankCell(added);
-  } else if (action === "remove-row" && copy.rows.length > 1) {
-    copy.deleteRow(rowIndex);
-  } else if (action === "add-column") {
-    for (const item of copy.rows) {
-      const original = item.cells[column];
-      if (original) original.after(blankCell(item,original.localName));
+
+/* Use logical coordinates so covered positions still belong to their original cell. */
+function tableGrid(table) {
+  const rows = Array.from(table.rows), slots = rows.map(() => []), cells = new Map();
+  let sectionEnd = 0, width = 0;
+  for (const [top,row] of rows.entries()) {
+    if (top === sectionEnd) {
+      sectionEnd++;
+      while (rows[sectionEnd]?.parentElement === row.parentElement) sectionEnd++;
     }
-  } else if (action === "remove-column" && row.cells.length > 1) {
-    for (const item of copy.rows) if (item.cells[column]) item.deleteCell(column);
+    let left = 0;
+    for (const cell of row.cells) {
+      while (slots[top][left]) left++;
+      const bottom = Math.min(top + (cell.rowSpan || sectionEnd - top),sectionEnd);
+      const right = left + cell.colSpan;
+      const area = {cell,top,bottom,left,right};
+      cells.set(cell,area);
+      for (let y = top; y < bottom; y++) {
+        for (let x = left; x < right; x++) slots[y][x] = area;
+      }
+      left = right;
+      width = Math.max(width,right);
+    }
   }
-  if (table.outerHTML === copy.outerHTML) return;
-  pointAt(table,true);
-  issue("insertHTML",copy.outerHTML);
-  const updated = findObject("table",copy.dataset.object);
-  const next = updated?.rows[Math.min(rowIndex,updated.rows.length - 1)];
-  const target = next?.cells[Math.min(column,next.cells.length - 1)];
-  if (target) pointAt(target);
-  syncContext();
+  return {table,rows,slots,cells,width};
 }
+
+const tableEditing = (() => {
+  const tools = $("table-tools");
+  const button = action => tools.querySelector(`[data-table="${action}"]`);
+  let marked = [], mergeAction = "", pointer, pickStart;
+  function cellAt(node) {
+    const cell = elementAt(node)?.closest("td,th");
+    return paper.contains(cell) ? cell : null;
+  }
+  function unmark() {
+    for (const {cell} of marked) cell.removeAttribute("data-cell-selected");
+    marked = [];
+    mergeAction = "";
+  }
+  function clear() {
+    unmark();
+    pointer = pickStart = null;
+  }
+  function syncTools() {
+    tools.hidden = !editing || !!selectedImage || !!pointer?.keepToolsHidden || !(marked.length || activeCell());
+    button("select").setAttribute("aria-pressed",String(!!pickStart));
+    for (const action of ["merge-horizontal","merge-vertical","merge-range"]) {
+      button(action).disabled = action !== mergeAction;
+    }
+  }
+  function bounds(areas) {
+    return areas.reduce((box,{top,bottom,left,right}) => ({
+      top:Math.min(box.top,top), bottom:Math.max(box.bottom,bottom),
+      left:Math.min(box.left,left), right:Math.max(box.right,right),
+    }),areas[0]);
+  }
+  function select(start,end) {
+    unmark();
+    const grid = tableGrid(start.closest("table"));
+    let box = bounds([grid.cells.get(start),grid.cells.get(end)]);
+    let expanded;
+    // Include every merged cell intersected by the rectangle in its entirety.
+    do {
+      const inside = new Set();
+      for (let y = box.top; y < box.bottom; y++) {
+        for (let x = box.left; x < box.right; x++) inside.add(grid.slots[y][x]);
+      }
+      const complete = !inside.delete(undefined);
+      marked = Array.from(inside).sort((a,b) => a.top - b.top || a.left - b.left);
+      const next = bounds(marked);
+      expanded = box.top !== next.top || box.bottom !== next.bottom || box.left !== next.left || box.right !== next.right;
+      box = next;
+      if (!expanded && complete && marked.length > 1) {
+        if (marked.every(area => area.top === box.top && area.bottom === box.bottom)) mergeAction = "merge-horizontal";
+        else if (marked.every(area => area.left === box.left && area.right === box.right)) mergeAction = "merge-vertical";
+        else mergeAction = "merge-range";
+      }
+    } while (expanded);
+    for (const {cell} of marked) cell.setAttribute("data-cell-selected","");
+    syncContext();
+  }
+  function setSpan(cell,attribute,count) {
+    if (count > 1) cell.setAttribute(attribute,count);
+    else cell.removeAttribute(attribute);
+  }
+  function merge(grid,areas) {
+    const {top,bottom,left,right} = bounds(areas), target = areas[0].cell;
+    const groups = Array.from(new Set(grid.rows.slice(top,bottom).map(row => row.parentElement)));
+    if (groups.length > 1) {
+      // HTML rowspans stay within a row group. Keep TH cells and join the affected sections.
+      const body = groups.find(group => group.localName === "tbody") || make("tbody");
+      if (!body.parentElement) groups[0].before(body);
+      for (const area of grid.cells.values()) {
+        if (groups.includes(area.cell.parentElement.parentElement) && area.cell.rowSpan !== area.bottom - area.top) {
+          setSpan(area.cell,"rowspan",area.bottom - area.top);
+        }
+      }
+      body.append(...grid.rows.filter(row => groups.includes(row.parentElement)));
+      for (const group of groups) if (group !== body) group.remove();
+    }
+    const hasContent = cell => cell.textContent.replace(/[\s\u200B\uFEFF]/gu,"") || cell.querySelector("img,hr,table,svg,video,audio");
+    if (!hasContent(target)) target.replaceChildren();
+    for (const {cell} of areas.slice(1)) {
+      if (hasContent(cell)) {
+        const blocks = "p,div,h1,h2,h3,h4,h5,h6,ol,ul,table,hr,pre,blockquote,figure,section";
+        if (target.lastChild && !target.lastChild.matches?.(blocks) && !cell.firstChild?.matches?.(blocks)) target.append(make("br"));
+        target.append(...cell.childNodes);
+      }
+      cell.remove();
+    }
+    if (!target.firstChild) target.append(make("br"));
+    setSpan(target,"rowspan",bottom - top);
+    setSpan(target,"colspan",right - left);
+    return target;
+  }
+  function addRow(grid,area) {
+    const last = grid.rows[area.bottom - 1], next = grid.rows[area.bottom];
+    const section = last.parentElement;
+    if (section === grid.table.tHead) {
+      const body = grid.table.tBodies[0] || grid.table.createTBody();
+      const row = body.insertRow(0);
+      for (let x = 0; x < grid.width; x++) blankCell(row);
+      return;
+    }
+    const before = next?.parentElement === section ? next : null;
+    const row = section.insertBefore(make("tr"),before), covered = new Set();
+    for (const entry of grid.cells.values()) {
+      if (entry.cell.parentElement.parentElement !== section) continue;
+      const crosses = entry.top < area.bottom && entry.bottom > area.bottom;
+      if (crosses || entry.cell.rowSpan !== entry.bottom - entry.top) {
+        setSpan(entry.cell,"rowspan",entry.bottom - entry.top + Number(crosses));
+      }
+      if (crosses) for (let x = entry.left; x < entry.right; x++) covered.add(x);
+    }
+    for (let x = 0; x < grid.width; x++) if (!covered.has(x)) blankCell(row);
+  }
+  function removeRow(grid,index) {
+    if (grid.rows.length < 2) return false;
+    const row = grid.rows[index], next = grid.rows[index + 1];
+    const nextCells = Array.from(next?.cells || [],cell => grid.cells.get(cell));
+    for (const {cell,top,bottom,left} of grid.cells.values()) {
+      if (top > index || bottom <= index || bottom - top < 2) continue;
+      setSpan(cell,"rowspan",bottom - top - 1);
+      if (top === index) next.insertBefore(cell,nextCells.find(item => item.left > left)?.cell || null);
+    }
+    row.remove();
+    return true;
+  }
+  function addColumn(grid,index) {
+    const widened = new Set();
+    for (const [y,row] of grid.rows.entries()) {
+      const previous = grid.slots[y][index - 1];
+      if (previous?.right > index) {
+        if (!widened.has(previous)) setSpan(previous.cell,"colspan",previous.right - previous.left + 1);
+        widened.add(previous);
+      } else {
+        const before = Array.from(row.cells).find(cell => grid.cells.get(cell).left >= index);
+        const tag = previous?.cell.localName || before?.localName || (row.parentElement === grid.table.tHead ? "th" : "td");
+        blankCell(row,tag,before || null);
+      }
+    }
+  }
+  function removeColumn(grid,index) {
+    if (grid.width < 2) return false;
+    for (const {cell,left,right} of grid.cells.values()) {
+      if (left > index || right <= index) continue;
+      if (right - left > 1) setSpan(cell,"colspan",right - left - 1);
+      else cell.remove();
+    }
+    return true;
+  }
+  function change(action) {
+    const cell = activeCell();
+    if (!editing || !cell) return;
+    if (action === "select") {
+      if (pickStart) clear();
+      else { pickStart = cell; select(cell,cell); }
+      syncContext();
+      return;
+    }
+    const table = cell.closest("table"), grid = tableGrid(table), area = grid.cells.get(cell);
+    const merging = action.startsWith("merge-");
+    if (merging && mergeAction !== action) return;
+    const areas = marked;
+    clear();
+    editHistory.perform(() => {
+      if (merging) { pointAt(merge(grid,areas)); return; }
+      if (action === "add-row") addRow(grid,area);
+      if (action === "remove-row" && !removeRow(grid,area.top)) return;
+      if (action === "add-column") addColumn(grid,area.right);
+      if (action === "remove-column" && !removeColumn(grid,area.left)) return;
+      if (paper.contains(cell)) { pointAt(cell); return; }
+      const updated = tableGrid(table);
+      const row = updated.slots[Math.min(area.top,updated.rows.length - 1)];
+      const next = row?.[Math.min(area.left,updated.width - 1)] || row?.find(Boolean);
+      pointAt(next?.cell || table);
+    });
+    changed();
+    syncContext();
+  }
+  document.addEventListener("pointerdown",event => {
+    if (!editing || event.button !== 0 || event.target.closest(".chrome")) return;
+    const end = cellAt(event.target), start = pickStart || (event.shiftKey && activeCell());
+    clear();
+    if (end && start && end.closest("table") === start.closest("table")) {
+      event.preventDefault();
+      chooseImage(null);
+      pointAt(start);
+      select(start,end);
+    } else {
+      if (end && event.pointerType !== "touch") {
+        // Opening the toolbar shifts the table, so wait for the pointer to be released.
+        pointer = {id:event.pointerId,start:end,end,keepToolsHidden:tools.hidden};
+      }
+      syncContext();
+    }
+  });
+  document.addEventListener("pointermove",event => {
+    if (!pointer || pointer.id !== event.pointerId || event.buttons !== 1) return;
+    const end = cellAt(document.elementFromPoint(event.clientX,event.clientY));
+    if (!end || pointer.end === end || end.closest("table") !== pointer.start.closest("table")) return;
+    if (!pointer.dragging) {
+      chooseImage(null);
+      pointAt(pointer.start);
+      pointer.dragging = true;
+    }
+    pointer.end = end;
+    select(pointer.start,end);
+  });
+  for (const type of ["mousemove","selectstart"]) {
+    document.addEventListener(type,event => { if (pointer?.dragging) event.preventDefault(); });
+  }
+  for (const type of ["pointerup","pointercancel"]) {
+    document.addEventListener(type,event => {
+      if (pointer?.id !== event.pointerId) return;
+      if (pointer.dragging) pointAt(pointer.start);
+      pointer = null;
+      syncContext();
+    });
+  }
+  return {clear,syncTools,change,hasSelection:() => marked.length > 0};
+})();
+
 function insertImage(file) {
   if (!imageMime.test(file.type)) { notice = "supportedImage"; status(); return; }
   const pending = selection?.cloneRange();
@@ -1120,6 +1345,7 @@ function openDialog(type) {
   dialog.showModal();
 }
 function blankDocument() {
+  tableEditing.clear();
   chooseImage(null);
   fileName.value = t("untitled");
   paper.lang = locale.active;
@@ -1291,13 +1517,31 @@ const paginator = (() => {
       }
     }
     function placeTable(table) {
-      const rows = Array.from(table.tBodies).flatMap(body => Array.from(body.rows));
-      if (!rows.length) { placeAtomic(table); return; }
-      placeSeries(rows.length,(start,end) => {
+      const {rows,cells} = tableGrid(table), groups = [];
+      for (const body of table.tBodies) {
+        let start = body.rows[0]?.rowIndex;
+        if (start === undefined) continue;
+        const limit = start + body.rows.length;
+        while (start < limit) {
+          let end = start + 1;
+          for (let y = start; y < end; y++) {
+            for (const cell of rows[y].cells) end = Math.max(end,cells.get(cell).bottom);
+          }
+          groups.push({body,start,end});
+          start = end;
+        }
+      }
+      if (!groups.length) { placeAtomic(table); return; }
+      placeSeries(groups.length,(start,end) => {
         const part = table.cloneNode(false);
+        for (const child of table.children) if (child.matches("caption,colgroup")) part.append(child.cloneNode(true));
         if (table.tHead) part.append(table.tHead.cloneNode(true));
-        part.createTBody().append(...rows.slice(start,end).map(row => row.cloneNode(true)));
-        if (end === rows.length && table.tFoot) part.append(table.tFoot.cloneNode(true));
+        let section;
+        for (const group of groups.slice(start,end)) {
+          if (section !== group.body) { section = group.body; part.append(section.cloneNode(false)); }
+          part.tBodies[part.tBodies.length - 1].append(...rows.slice(group.start,group.end).map(row => row.cloneNode(true)));
+        }
+        if (end === groups.length && table.tFoot) part.append(table.tFoot.cloneNode(true));
         return part;
       });
     }
@@ -1419,6 +1663,11 @@ document.addEventListener("selectionchange",() => { if (editing) { remember(); s
 document.addEventListener("keydown",event => {
   if (dialog.open) return;
   if (event.key === "Escape" && app.dataset.preview === "true") leavePreview();
+  if (tableEditing.hasSelection() && (event.key === "Escape" || (paper.contains(event.target)
+    && !event.ctrlKey && !event.metaKey && (event.key.length === 1 || /^(Arrow|Backspace|Delete|Enter|Home|End)/.test(event.key))))) {
+    tableEditing.clear();
+    syncContext();
+  }
   if (!(event.ctrlKey || event.metaKey)) return;
   const key = event.key.toLowerCase();
   if (editing && (paper.contains(event.target) || $("image-controls").contains(event.target)) && (key === "z" || key === "y")) {
@@ -1459,20 +1708,21 @@ for (const [name,command] of [["format","formatBlock"],["font","fontName"],["ali
 $("color").addEventListener("change",event => issue("foreColor",event.target.value));
 $("table-tools").addEventListener("click",event => {
   const action = event.target.closest("[data-table]")?.dataset.table;
-  if (action) changeTable(action);
+  if (action) tableEditing.change(action);
 });
 $("image-width").addEventListener("change",event => changeImage(event.target.value));
 $("remove-image").addEventListener("click",() => changeImage());
 paper.addEventListener("beforeinput",editHistory.beforeInput);
 paper.addEventListener("input",event => {
   if (!editHistory.input(event)) return;
+  tableEditing.clear();
   if (selectedImage && !paper.contains(selectedImage)) chooseImage(null);
   remember(); changed(); syncContext();
 });
 paper.addEventListener("click",event => {
   if (!editing) return;
   if (event.target.closest("a")) event.preventDefault();
-  chooseImage(event.target.closest("img"));
+  if (!tableEditing.hasSelection()) chooseImage(event.target.closest("img"));
 });
 paper.addEventListener("paste",event => {
   if (!editing || !event.clipboardData) return;
@@ -1549,1210 +1799,4 @@ mode(app.dataset.mode !== "read");
 editHistory.reset();
 changed();
 })();
-</script>
-</body>
-</html>
-
-<title>HTML 文件</title>
-<style id="writer-style">
-:root{
-  color-scheme:light;
-  --sans:Arial,"Helvetica Neue","Liberation Sans","Microsoft JhengHei","PingFang TC","Noto Sans CJK TC","Noto Sans TC","WenQuanYi Zen Hei",sans-serif;
-  --serif:"Times New Roman","Liberation Serif","Songti TC",PMingLiU,"Noto Serif CJK TC","Noto Serif TC",serif;
-  --mono:"Courier New","Liberation Mono",Menlo,"DejaVu Sans Mono","Noto Sans Mono CJK TC","PingFang TC","Microsoft JhengHei",monospace;
-  --ink:#23312b;--muted:#56645b;--edge:#dce2da;--green:#235943;--wash:#e8efe8;
-  --page-width:210mm;--page-height:297mm;--page-margin:18mm;
-  font:14px "Inter","Microsoft JhengHei","PingFang TC",system-ui,sans-serif;
-  color:var(--ink);background:#eaede7
-}
-*{box-sizing:border-box}
-body{margin:0}
-[hidden]{display:none!important}
-button,input,select{font:inherit;color:inherit}
-button,select{cursor:pointer}
-button,input,select{min-height:34px;padding:5px 9px;border:1px solid var(--edge);border-radius:7px;background:white}
-button:hover,select:hover{background:var(--wash)}
-button:disabled{cursor:default;opacity:.45}
-:focus-visible{outline:2px solid #387254;outline-offset:2px}
-.primary,.primary:hover{background:var(--green);border-color:var(--green);color:white}
-.chrome,.preview-bar{position:sticky;top:0;z-index:5;background:#fbfcf9;box-shadow:0 1px 0 #ccd7cc}
-.top,.tools,.group,.identity,.actions,.context,.preview-bar{display:flex;align-items:center;gap:6px}
-.top,.tools,.context,.preview-bar{padding:9px clamp(10px,3vw,28px)}
-.top,.preview-bar{justify-content:space-between}
-.top,.actions,.tools,.context,.preview-bar{flex-wrap:wrap}
-.identity{gap:9px}
-.mark{display:grid;place-items:center;width:33px;height:37px;border-radius:7px;background:var(--green);color:white;font-weight:700}
-.identity label{display:block;color:var(--muted);font-size:11px}
-#file-name{background:none;border-color:transparent;min-height:24px;width:clamp(130px,28vw,270px);padding:2px;font-weight:700}
-.tools,.context{border-top:1px solid var(--edge)}
-.group{padding-right:6px;border-right:1px solid var(--edge)}
-.group:last-child{border:0;padding-right:0}
-.context{background:#edf2eb}
-#color{width:32px;min-height:33px;padding:3px}
-.workspace{max-width:1160px;margin:auto;padding:24px 16px;display:grid;grid-template-columns:160px minmax(0,var(--page-width));gap:22px;justify-content:center}
-.outline{position:sticky;top:180px;align-self:start}
-.outline h2{margin:6px 0 8px;font-size:13px}
-.outline nav{display:grid}
-.outline button{background:transparent;border-color:transparent;text-align:left;overflow-wrap:anywhere}
-.outline button:hover{background:#dbe7db}
-.outline button[data-level="3"]{padding-left:19px}
-.document-area{min-width:0}
-#paper{min-height:var(--page-height);background:white;border-radius:3px;padding:var(--page-margin);box-shadow:0 7px 28px #25392614}
-#paper:focus{outline:none;box-shadow:0 0 0 1px #a8bda9,0 7px 28px #25392614}
-.doc{display:flow-root;min-width:0;color:#26312b;font:12pt/1.65 var(--sans);overflow-wrap:anywhere}
-.doc [face="WriterSans"],.doc [style*="WriterSans"]{font-family:var(--sans)!important}
-.doc [face="WriterSerif"],.doc [style*="WriterSerif"]{font-family:var(--serif)!important}
-.doc [face="WriterMono"],.doc [style*="WriterMono"]{font-family:var(--mono)!important}
-.doc h1,.doc h2,.doc h3{line-height:1.28;scroll-margin-top:180px}
-.doc h1{font-size:28pt;margin:.25em 0 .46em;letter-spacing:-.022em}
-.doc h2{font-size:16pt;margin:1.2em 0 .38em;color:#244f3e}
-.doc h3{font-size:13pt;margin:1em 0 .35em}
-.doc p,.doc ul,.doc ol{margin:.5em 0 .85em}
-.doc ul,.doc ol{padding-inline-start:1.6em}
-.doc ol{list-style-type:decimal!important}
-.doc ol ol{list-style-type:lower-alpha!important}
-.doc ol ol ol{list-style-type:lower-roman!important}
-.doc ol>li{list-style-type:inherit!important}
-.doc li>ol,.doc li>ul{margin-block:.15em .2em}
-.doc .meta{color:#42634f;font-size:10pt;font-weight:700;letter-spacing:.08em}
-.doc .lead{color:#546259}
-.doc hr{margin:6mm 0;border:none;border-top:1px solid var(--edge)}
-.doc a{color:#185d49;text-underline-offset:3px}
-.doc img{max-width:100%;max-height:230mm;height:auto;object-fit:contain;vertical-align:middle}
-.doc img[data-selected]{outline:2px solid #47896b;outline-offset:3px}
-.doc table{width:100%;border-collapse:collapse;table-layout:fixed;margin:.8em 0;font-size:.93em}
-.doc td,.doc th{padding:6px 9px;text-align:left;vertical-align:top;border:1px solid #d5dfd5}
-.doc th{background:#e7efe7;color:#244f3e}
-.doc .continued{margin-top:0}
-.doc .continuing{margin-bottom:0}
-.status{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;color:var(--muted);font-size:12px;padding:9px 1px}
-#preview{display:none}
-[data-preview="true"] #preview{display:block}
-[data-preview="true"] .chrome,[data-preview="true"] .workspace{display:none}
-.preview-bar{padding-block:11px}
-.preview-bar strong{font-size:15px}
-#preview-note{margin:0;padding:10px 15px;text-align:center;color:var(--muted);font-size:13px}
-#sheets{padding:8px 10px 26px}
-.sheet{width:var(--page-width);height:var(--page-height);position:relative;overflow:hidden;margin:0 auto 18px;background:white;box-shadow:0 6px 28px #25392626;zoom:var(--preview-zoom,1)}
-#sheets.measuring .sheet{zoom:1}
-.sheet-area{position:absolute;top:var(--page-margin);left:var(--page-margin);right:var(--page-margin);bottom:var(--page-margin);overflow:hidden}
-.page-number{position:absolute;bottom:11mm;left:var(--page-margin);right:var(--page-margin);text-align:right;color:#57655b;font:9pt var(--sans)}
-.scaled-slot{position:relative;overflow:hidden}
-.scaled-content{position:absolute;inset:0 0 auto;transform-origin:top left;display:flow-root}
-dialog{width:min(400px,calc(100% - 24px));padding:18px;border:1px solid var(--edge);border-radius:12px;color:var(--ink)}
-dialog::backdrop{background:#18292266}
-dialog h2{margin:0 0 12px;font-size:18px}
-dialog label{display:grid;gap:4px;margin:8px 0}
-dialog input{width:100%}
-.dialog-actions{display:flex;justify-content:flex-end;gap:6px;margin-top:12px}
-#error{color:#97332d;font-size:13px;min-height:1em}
-@media screen and (max-width:780px){.workspace{display:block;padding:13px 10px}.outline{display:none}#paper{padding:clamp(22px,8vw,68px)}}
-@media screen and (max-width:550px){.tools,.group{gap:4px}.tools .group{max-width:100%;flex-wrap:wrap;padding-right:4px}.tools button,.tools select{font-size:12px;max-width:100%}}
-@page{size:A4 portrait;margin:0}
-@media print{
-  html,body{margin:0!important;padding:0!important;background:white!important}
-  body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .chrome,.workspace,.preview-bar,#preview-note,dialog{display:none!important}
-  #preview{display:block!important}
-  #sheets{margin:0;padding:0}
-  /* Only the outer sheet allows rounding tolerance. Inner width, height and typography match preview. */
-  #sheets .sheet{margin:0;box-shadow:none;zoom:1;height:296.7mm;break-inside:avoid;break-after:page}
-  #sheets .sheet:last-child{break-after:auto}
-  #sheets .sheet-area{bottom:17.7mm}
-  #sheets .page-number{bottom:10.7mm}
-}
-</style>
-</head>
-<body>
-<main id="app" data-mode="edit">
-  <header class="chrome">
-    <div class="top">
-      <div class="identity">
-        <span class="mark" aria-hidden="true">文</span>
-        <div><label for="file-name" data-i18n="fileName">文件名稱</label><input id="file-name" maxlength="100" value="院內課程公告"></div>
-      </div>
-      <div class="actions">
-        <select id="language" aria-label="介面語言" data-i18n-label="language">
-          <option value="auto" data-i18n="auto">自動</option>
-          <option value="zh-Hant" lang="zh-Hant">繁體中文</option>
-          <option value="en" lang="en">English</option>
-          <option value="ja" lang="ja">日本語</option>
-        </select>
-        <button type="button" id="new-file" data-i18n="newFile">新文件</button>
-        <button type="button" id="mode">閱讀模式</button>
-        <button type="button" id="open-preview" data-i18n="printPreview">列印預覽</button>
-        <button type="button" class="primary" id="save-html" data-i18n="saveHtml">另存 HTML</button>
-      </div>
-    </div>
-    <div class="tools" id="tools" role="toolbar" aria-label="文件編輯" data-i18n-label="editTools">
-      <div class="group">
-        <button type="button" data-command="undo" title="復原" aria-label="復原" data-i18n-title="undo" data-i18n-label="undo">↶</button>
-        <button type="button" data-command="redo" title="重做" aria-label="重做" data-i18n-title="redo" data-i18n-label="redo">↷</button>
-      </div>
-      <div class="group">
-        <select id="format" aria-label="段落樣式" data-i18n-label="paragraphStyle">
-          <option value="" data-i18n="paragraphStyle">段落樣式</option><option value="p" data-i18n="bodyText">內文</option><option value="h1" data-i18n="heading1">標題 1</option><option value="h2" data-i18n="heading2">標題 2</option><option value="h3" data-i18n="heading3">標題 3</option>
-        </select>
-        <select id="font" aria-label="選取文字的字型" title="套用於選取的文字或接著輸入的文字" data-i18n-label="font" data-i18n-title="fontHelp">
-          <option value="" data-i18n="font">字型</option><option value="WriterSans" data-i18n="fontSans">無襯線／黑體</option><option value="WriterSerif" data-i18n="fontSerif">襯線／明體</option><option value="WriterMono" data-i18n="fontMono">等寬</option>
-        </select>
-        <button type="button" data-command="bold" aria-label="粗體" title="粗體" data-i18n-label="bold" data-i18n-title="bold"><b>B</b></button>
-        <button type="button" data-command="italic" aria-label="斜體" title="斜體" data-i18n-label="italic" data-i18n-title="italic"><i>I</i></button>
-        <button type="button" data-command="underline" aria-label="底線" title="底線" data-i18n-label="underline" data-i18n-title="underline"><u>U</u></button>
-        <input id="color" type="color" value="#235943" aria-label="文字顏色" title="文字顏色" data-i18n-label="color" data-i18n-title="color">
-      </div>
-      <div class="group">
-        <select id="alignment" aria-label="段落對齊" data-i18n-label="alignment"><option value="" data-i18n="alignment">對齊</option><option value="justifyLeft" data-i18n="left">靠左</option><option value="justifyCenter" data-i18n="center">置中</option><option value="justifyRight" data-i18n="right">靠右</option></select>
-        <button type="button" data-command="insertUnorderedList" data-i18n="bullets">清單</button>
-      </div>
-      <div class="group" role="group" aria-label="編號" data-i18n-label="numbering">
-        <button type="button" data-command="insertOrderedList" data-i18n="numbering">編號</button>
-        <button type="button" id="list-up" data-list-level="up" title="將選取的編號項目移到上一層" data-i18n="listUp" data-i18n-title="listUpHelp">上一層</button>
-        <button type="button" id="list-down" data-list-level="down" title="將選取的編號項目移到前一項底下" data-i18n="listDown" data-i18n-title="listDownHelp">下一層</button>
-      </div>
-      <div class="group">
-        <button type="button" id="add-link" data-i18n="link">連結</button>
-        <button type="button" id="add-image" data-i18n="image">圖片</button>
-        <button type="button" id="add-table" data-i18n="table">表格</button>
-        <input type="file" id="image-file" accept="image/png,image/jpeg,image/gif,image/webp,image/bmp,image/avif" hidden>
-      </div>
-    </div>
-    <div class="context" id="table-tools" hidden>
-      <button type="button" data-table="add-row" data-i18n="addRow">新增列</button><button type="button" data-table="remove-row" data-i18n="removeRow">刪除此列</button>
-      <button type="button" data-table="add-column" data-i18n="addColumn">新增欄</button><button type="button" data-table="remove-column" data-i18n="removeColumn">刪除此欄</button>
-    </div>
-    <div class="context" id="image-tools" hidden>
-      <label><span data-i18n="imageWidth">圖片寬度</span> <select id="image-width"><option value="25">25%</option><option value="50">50%</option><option value="75">75%</option><option value="100">100%</option></select></label>
-      <button type="button" id="remove-image" data-i18n="removeImage">移除圖片</button>
-    </div>
-  </header>
-  <div class="workspace">
-    <aside class="outline"><h2 data-i18n="outline">文件大綱</h2><nav id="outline" aria-label="文件大綱" data-i18n-label="outline"></nav></aside>
-    <section class="document-area" aria-label="文件" data-i18n-label="document">
-      <article class="doc" id="paper" lang="zh-Hant" contenteditable="true" spellcheck="false" aria-label="文件內容" data-i18n-label="content">
-        <p class="meta">教育訓練　／　十一月線上課程</p>
-        <h1>一點點，就很不一樣</h1>
-        <p class="lead">有時候，只是一個小巧思，就能讓對方感受到不同。</p>
-        <hr>
-        <h2>本月課程</h2>
-        <p>這次從一段餐廳故事出發，看看哪些小細節能改善一次互動。觀看後，請選一個你覺得能用在院內的做法，寫下你會在哪個情境試試看。</p>
-        <h2>參與方式</h2>
-        <ol><li>登入院內訓練平台，開啟本月課程影片。</li><li>看完後，在課程頁面提交簡短心得。</li></ol>
-        <table data-object="sample-table">
-          <thead><tr><th>項目</th><th>說明</th></tr></thead>
-          <tbody><tr><td>適用對象</td><td>全院同仁</td></tr><tr><td>完成期限</td><td>11 月 30 日</td></tr></tbody>
-        </table>
-      </article>
-      <footer class="status"><span data-i18n="continuousLayout">A4 寬度 · 連續編輯</span><span id="status" role="status"></span></footer>
-    </section>
-  </div>
-  <section id="preview" aria-label="列印預覽" data-i18n-label="printPreview">
-    <div class="preview-bar">
-      <div class="actions"><button type="button" id="back" data-i18n="back">返回文件</button><strong data-i18n="a4Preview">A4 列印預覽</strong><span id="page-count" role="status"></span></div>
-      <div class="actions"><button type="button" id="print" data-i18n="print">列印</button><button type="button" id="pdf" class="primary" data-i18n="pdf">儲存 PDF</button></div>
-    </div>
-    <p id="preview-note" role="status" data-i18n="printSettings">列印視窗請選 A4、實際大小（100%），並關閉頁首及頁尾。</p>
-    <div id="sheets"></div>
-  </section>
-  <dialog id="dialog">
-    <form id="form" novalidate>
-      <h2 id="dialog-title"></h2>
-      <p id="new-message" data-i18n="newWarning" hidden>目前的文件有未另存的變更。要開一份空白文件嗎？</p>
-      <div id="link-fields" hidden><label><span data-i18n="linkText">顯示文字</span><input id="link-text"></label><label><span data-i18n="url">網址</span><input id="link-url" type="url" placeholder="https://example.com"></label></div>
-      <div id="table-fields" hidden><label><span data-i18n="rows">列數（含表頭）</span><input id="rows" type="number" min="1" max="30" value="3"></label><label><span data-i18n="columns">欄數</span><input id="columns" type="number" min="1" max="8" value="2"></label></div>
-      <p id="error" role="alert"></p>
-      <div class="dialog-actions"><button type="button" id="cancel" data-i18n="cancel">取消</button><button type="submit" class="primary" id="submit">插入</button></div>
-    </form>
-  </dialog>
-</main>
-<script id="writer-script">
-(() => {
-"use strict";
-/*
-HTML 文件維護契約
-- #paper 與 #file-name 是唯一文件資料。工具列、大綱與 #sheets 在執行期重建。
-- 編號資料採原生 ol > li。子清單放入上層 li。清單層級樣式共用 .doc。
-- 調整層級直接搬移選中的 li。不可用 insertHTML 重建清單，避免瀏覽器補入空白或重寫標記。
-- 正文復原由 editHistory 統一處理原生輸入、格式工具及清單層級。歷程內的內嵌圖片按識別碼共用。
-- 多語字串集中在 locale。介面使用 data-i18n 或 t()，正文與列印排版共用獨立的正文語言。
-- 分頁只讀正文副本。列印與 PDF 共用預覽建立的 #sheets 及同一套正文樣式。
-- 另存的 HTML 內嵌程式與圖片。字體用 WriterSans、WriterSerif、WriterMono 對應離線備援字體。
-*/
-const $ = id => document.getElementById(id);
-const app = $("app"), paper = $("paper"), fileName = $("file-name"), sheets = $("sheets"), dialog = $("dialog");
-const shell = app.cloneNode(true);
-const styleSource = $("writer-style").outerHTML, scriptSource = $("writer-script").outerHTML;
-const headings = "h1,h2,h3", imageMime = /^image\/(png|jpeg|gif|webp|bmp|avif)$/i;
-const locale = (() => {
-  // Every message row uses this order. Placeholders are named and replaced as plain text.
-  const languages = ["zh-Hant","en","ja"];
-  const messages = {
-    language:["介面語言","Interface language","表示言語"],
-    auto:["自動","Auto","自動"],
-    fileName:["文件名稱","Document name","文書名"],
-    newFile:["新文件","New document","新規文書"],
-    readMode:["閱讀模式","Reading mode","閲覧モード"],
-    editMode:["編輯","Edit","編集"],
-    printPreview:["列印預覽","Print preview","印刷プレビュー"],
-    saveHtml:["另存 HTML","Save HTML","HTML を保存"],
-    editTools:["文件編輯","Document editing","文書編集"],
-    undo:["復原","Undo","元に戻す"],
-    redo:["重做","Redo","やり直す"],
-    paragraphStyle:["段落樣式","Paragraph style","段落スタイル"],
-    bodyText:["內文","Body text","本文"],
-    heading1:["標題 1","Heading 1","見出し 1"],
-    heading2:["標題 2","Heading 2","見出し 2"],
-    heading3:["標題 3","Heading 3","見出し 3"],
-    font:["字型","Font","フォント"],
-    fontHelp:["套用於選取的文字或接著輸入的文字","Applies to the selection or the text you type next","選択した文字、または次に入力する文字に適用します"],
-    fontSans:["無襯線／黑體","Sans serif","サンセリフ／ゴシック体"],
-    fontSerif:["襯線／明體","Serif","セリフ／明朝体"],
-    fontMono:["等寬","Monospace","等幅"],
-    bold:["粗體","Bold","太字"],
-    italic:["斜體","Italic","斜体"],
-    underline:["底線","Underline","下線"],
-    color:["文字顏色","Text color","文字色"],
-    alignment:["對齊","Alignment","文字揃え"],
-    left:["靠左","Align left","左揃え"],
-    center:["置中","Center","中央揃え"],
-    right:["靠右","Align right","右揃え"],
-    bullets:["清單","Bullets","箇条書き"],
-    numbering:["編號","Numbering","番号付きリスト"],
-    listUp:["上一層","Promote","上の階層へ"],
-    listDown:["下一層","Demote","下の階層へ"],
-    listUpHelp:["將選取的編號項目移到上一層","Move the selected items up one list level","選択した項目を上の階層に移動します"],
-    listDownHelp:["將選取的編號項目移到前一項底下","Nest the selected items under the preceding item","選択した項目を直前の項目の下に移動します"],
-    link:["連結","Link","リンク"],
-    image:["圖片","Image","画像"],
-    table:["表格","Table","表"],
-    addRow:["新增列","Add row","行を追加"],
-    removeRow:["刪除此列","Delete row","行を削除"],
-    addColumn:["新增欄","Add column","列を追加"],
-    removeColumn:["刪除此欄","Delete column","列を削除"],
-    imageWidth:["圖片寬度","Image width","画像の幅"],
-    removeImage:["移除圖片","Remove image","画像を削除"],
-    outline:["文件大綱","Document outline","文書のアウトライン"],
-    document:["文件","Document","文書"],
-    content:["文件內容","Document content","文書の内容"],
-    continuousLayout:["A4 寬度 · 連續編輯","A4 width · Continuous editing","A4 幅 · 連続編集"],
-    back:["返回文件","Back to document","文書に戻る"],
-    a4Preview:["A4 列印預覽","A4 print preview","A4 印刷プレビュー"],
-    print:["列印","Print","印刷"],
-    pdf:["儲存 PDF","Save PDF","PDF を保存"],
-    printSettings:["列印視窗請選 A4、實際大小（100%），並關閉頁首及頁尾。","In the print dialog, choose A4 and actual size (100%), and turn off headers and footers.","印刷画面で A4 と実際のサイズ（100%）を選び、ヘッダーとフッターをオフにしてください。"],
-    newWarning:["目前的文件有未另存的變更。要開一份空白文件嗎？","This document has unsaved changes. Start a blank document?","保存されていない変更があります。空白の文書を開きますか？"],
-    linkText:["顯示文字","Display text","表示する文字列"],
-    url:["網址","URL","URL"],
-    rows:["列數（含表頭）","Rows (including header)","行数（見出し行を含む）"],
-    columns:["欄數","Columns","列数"],
-    cancel:["取消","Cancel","キャンセル"],
-    insert:["插入","Insert","挿入"],
-    untitled:["未命名文件","Untitled document","無題の文書"],
-    dirty:["有未另存的變更","Unsaved changes","保存されていない変更"],
-    characters:["{count} 字元","Characters: {count}","{count} 文字"],
-    unnamedHeading:["未命名標題","Untitled heading","無題の見出し"],
-    columnName:["欄位 {n}","Column {n}","列 {n}"],
-    supportedImage:["請選擇支援的圖片格式","Choose a supported image format","対応する画像形式を選んでください"],
-    insertedImage:["插入的圖片","Inserted image","挿入した画像"],
-    imageError:["圖片讀取失敗","Could not read the image","画像を読み込めませんでした"],
-    openBlank:["開啟空白文件","Open a blank document","空白の文書を開く"],
-    insertLink:["插入連結","Insert link","リンクを挿入"],
-    insertTable:["插入表格","Insert table","表を挿入"],
-    downloadStarted:["已開始下載","Download started","ダウンロードを開始しました"],
-    pageNumber:["第 {n} / {total} 頁","Page {n} of {total}","{n} / {total} ページ"],
-    pageCount:["{count} 頁","Pages: {count}","{count} ページ"],
-    scaledItems:["部分超高項目已等比例縮小。","Very tall items have been scaled to fit.","高さが大きい項目はページに収まるように縮小しました。"],
-    paginating:["正在排版…","Laying out pages…","ページをレイアウトしています…"],
-    choosePdf:["請在列印視窗的目的地選「儲存為 PDF」。","Choose “Save as PDF” as the destination in the print dialog.","印刷画面の送信先で「PDF に保存」を選んでください。"],
-    invalidTable:["列數請輸入 1 到 30，欄數請輸入 1 到 8。","Enter 1–30 rows and 1–8 columns.","行数は 1～30、列数は 1～8 の範囲で入力してください。"],
-    invalidUrl:["請輸入以 http:// 或 https:// 開頭的網址。","Enter a URL starting with http:// or https://.","http:// または https:// で始まる URL を入力してください。"],
-  };
-  const storageKey = "html-writer.language";
-  const valid = value => value === "auto" || languages.includes(value);
-  let preference = app.dataset.language || "auto", active = "zh-Hant";
-  try { preference = localStorage.getItem(storageKey) || preference; } catch {}
-  function detect() {
-    for (const code of navigator.languages?.length ? navigator.languages : [navigator.language || ""]) {
-      const base = code.toLowerCase().split("-")[0];
-      if (base === "zh") return "zh-Hant";
-      if (base === "ja" || base === "en") return base;
-    }
-    return "en";
-  }
-  function t(key,values = {}) {
-    const row = messages[key];
-    return (row?.[languages.indexOf(active)] ?? row?.[0] ?? key).replace(/\{(\w+)\}/g,(match,name) => Object.hasOwn(values,name) ? String(values[name]) : match);
-  }
-  function apply(value) {
-    preference = valid(value) ? value : "auto";
-    active = preference === "auto" ? detect() : preference;
-    document.documentElement.lang = active;
-    $("language").value = preference;
-    for (const element of app.querySelectorAll("[data-i18n],[data-i18n-title],[data-i18n-label]")) {
-      if (element !== paper && paper.contains(element)) continue;
-      const {i18n,i18nTitle,i18nLabel} = element.dataset;
-      if (i18n) element.textContent = t(i18n);
-      if (i18nTitle) element.title = t(i18nTitle);
-      if (i18nLabel) element.setAttribute("aria-label",t(i18nLabel));
-    }
-  }
-  return {
-    t, apply, get preference() { return preference; }, get active() { return active; },
-    change(value) {
-      apply(value);
-      try { localStorage.setItem(storageKey,preference); } catch {}
-    },
-  };
-})();
-const {t} = locale;
-const make = (tag,className) => {
-  const element = document.createElement(tag);
-  if (className) element.className = className;
-  return element;
-};
-let editing, selection, selectedImage, dialogType, saved, keyIndex = 0;
-let previewTicket = 0, nativePreview = false, printReady = false;
-let outlineKey = "", notice = "";
-
-function copyBody() {
-  const copy = paper.cloneNode(true);
-  for (const item of copy.querySelectorAll("[data-selected],[data-list-selection]")) {
-    item.removeAttribute("data-selected");
-    item.removeAttribute("data-list-selection");
-  }
-  return copy;
-}
-function cleanBody() { return copyBody().innerHTML; }
-function snapshot() { return fileName.value + "\n" + cleanBody(); }
-function actualName() { return fileName.value.trim() || t("untitled"); }
-function status() {
-  const label = notice || (snapshot() !== saved ? "dirty" : "");
-  const count = [...paper.textContent.replace(/\s/g,"")].length;
-  $("status").textContent = t("characters",{count}) + (label ? " · " + t(label) : "");
-}
-function updateOutline() {
-  const items = Array.from(paper.querySelectorAll(headings));
-  const key = locale.active + JSON.stringify(items.map(item => [item.tagName,item.textContent]));
-  if (key !== outlineKey) {
-    outlineKey = key;
-    $("outline").replaceChildren(...items.map((item,index) => {
-      const button = make("button");
-      button.type = "button";
-      button.dataset.index = index;
-      button.dataset.level = item.tagName.slice(1);
-      button.textContent = item.textContent.trim() || t("unnamedHeading");
-      return button;
-    }));
-  }
-}
-function changed() {
-  notice = "";
-  printReady = false;
-  document.title = actualName();
-  updateOutline();
-  status();
-}
-function remember() {
-  const current = window.getSelection();
-  if (!current.rangeCount) return;
-  const range = current.getRangeAt(0);
-  if (paper.contains(range.commonAncestorContainer)) selection = range.cloneRange();
-}
-function focusRange(range) {
-  paper.focus({preventScroll:true});
-  const current = window.getSelection();
-  current.removeAllRanges();
-  current.addRange(range);
-  selection = range.cloneRange();
-}
-function restore() {
-  const range = selection && paper.contains(selection.commonAncestorContainer) ? selection.cloneRange() : document.createRange();
-  if (!paper.contains(range.commonAncestorContainer)) {
-    range.selectNodeContents(paper);
-    range.collapse(false);
-  }
-  focusRange(range);
-}
-function pointAt(node,whole = false) {
-  const range = document.createRange();
-  if (whole) range.selectNode(node);
-  else { range.selectNodeContents(node); range.collapse(true); }
-  focusRange(range);
-}
-function elementAt(node) { return node?.nodeType === Node.ELEMENT_NODE ? node : node?.parentElement; }
-function activeCell() {
-  const cell = elementAt(selection?.startContainer)?.closest("td,th");
-  return cell && paper.contains(cell) ? cell : null;
-}
-
-/* Native typing and explicit edits share an ordered history so list moves never need to reinsert HTML. */
-const editHistory = (() => {
-  const entries = [], images = new Map();
-  const groupedTypes = new Set(["insertText","insertCompositionText","deleteContentBackward","deleteContentForward"]);
-  let index = -1, commandActive = false, pending = null, sequence = null;
-  function bookmark() {
-    if (!selection || !paper.contains(selection.commonAncestorContainer)) return null;
-    function path(node) {
-      const indexes = [];
-      for (; node !== paper; node = node.parentNode) indexes.unshift(Array.from(node.parentNode.childNodes).indexOf(node));
-      return indexes;
-    }
-    return [path(selection.startContainer),selection.startOffset,path(selection.endContainer),selection.endOffset];
-  }
-  function restoreBookmark(savedRange) {
-    if (!savedRange) return;
-    const [startPath,startOffset,endPath,endOffset] = savedRange;
-    const find = path => path.reduce((node,index) => node?.childNodes[index],paper);
-    const start = find(startPath), end = find(endPath);
-    if (!start || !end) return;
-    const size = node => node.nodeType === Node.TEXT_NODE ? node.length : node.childNodes.length;
-    const range = document.createRange();
-    range.setStart(start,Math.min(startOffset,size(start)));
-    range.setEnd(end,Math.min(endOffset,size(end)));
-    focusRange(range);
-  }
-  function capture() {
-    const body = copyBody(), keys = new Set();
-    for (const image of body.querySelectorAll("img[data-object][src]")) {
-      const key = image.dataset.object;
-      if (!images.has(key)) images.set(key,image.getAttribute("src"));
-      image.removeAttribute("src");
-      keys.add(key);
-    }
-    return {html:body.innerHTML,range:bookmark(),keys};
-  }
-  function pruneImages() {
-    const keys = new Set(entries.flatMap(entry => Array.from(entry.keys)));
-    for (const key of images.keys()) if (!keys.has(key)) images.delete(key);
-  }
-  function record(type = null, start = null) {
-    const next = capture(), previous = entries[index];
-    if (next.html === previous.html) { previous.range = next.range; return; }
-    const now = performance.now();
-    const merge = type && sequence?.type === type && now - sequence.at < 900
-      && JSON.stringify(start) === JSON.stringify(sequence.end) && index === entries.length - 1;
-    entries.splice(merge ? index : ++index,entries.length,next);
-    if (entries.length > 60) { entries.shift(); index--; }
-    sequence = type ? {type,at:now,end:next.range} : null;
-    pruneImages();
-  }
-  function perform(action) {
-    entries[index].range = bookmark();
-    sequence = pending = null;
-    commandActive = true;
-    try { return action(); }
-    finally {
-      commandActive = false;
-      remember();
-      record();
-    }
-  }
-  function step(direction) {
-    pending = sequence = null;
-    const next = entries[index + direction];
-    if (!next) return;
-    index += direction;
-    chooseImage(null);
-    selection = null;
-    paper.innerHTML = next.html;
-    for (const image of paper.querySelectorAll("img[data-object]:not([src])")) {
-      if (images.has(image.dataset.object)) image.setAttribute("src",images.get(image.dataset.object));
-    }
-    restoreBookmark(next.range);
-    if (!selection) restore();
-    changed();
-    syncContext();
-  }
-  function beforeInput(event) {
-    if (commandActive) return;
-    if (event.cancelable && (event.inputType === "historyUndo" || event.inputType === "historyRedo")) {
-      event.preventDefault();
-      step(event.inputType === "historyUndo" ? -1 : 1);
-      return;
-    }
-    remember();
-    pending = bookmark();
-    entries[index].range = pending;
-  }
-  function input(event) {
-    if (commandActive) return false;
-    remember();
-    record(groupedTypes.has(event.inputType) ? event.inputType : null,pending);
-    pending = null;
-    return true;
-  }
-  function reset() {
-    entries.length = 0;
-    images.clear();
-    index = 0;
-    pending = sequence = null;
-    entries.push(capture());
-  }
-  return {beforeInput,input,perform,reset,step};
-})();
-
-/* List moves accept a caret or a range spanning multiple rows. Selected parents carry their existing children. */
-const listLevels = (() => {
-  function point(rangeNode,offset) {
-    const range = document.createRange();
-    range.setStart(rangeNode,offset);
-    range.collapse(true);
-    return range;
-  }
-  function hitOwnContent(item,rangeStart,rangeEnd) {
-    let hasContent = false;
-    function hits(node) {
-      const bounds = document.createRange();
-      if (node.nodeType === Node.TEXT_NODE) {
-        const first = node.data.search(/[^\s\u200B\uFEFF]/u);
-        if (first < 0) return false;
-        const end = node.data.replace(/[\s\u200B\uFEFF]+$/u,"").length;
-        bounds.setStart(node,first);
-        bounds.setEnd(node,end);
-      } else if (node.nodeType === Node.ELEMENT_NODE && node.matches("img,hr")) {
-        bounds.selectNode(node);
-      } else if (node.nodeType === Node.ELEMENT_NODE && !node.matches("ol,ul")) {
-        return Array.from(node.childNodes).some(hits);
-      } else return false;
-      hasContent = true;
-      return bounds.compareBoundaryPoints(Range.START_TO_START,rangeEnd) < 0
-        && bounds.compareBoundaryPoints(Range.END_TO_END,rangeStart) > 0;
-    }
-    // A selection touching only adjacent whitespace or a trailing line break excludes that row.
-    if (Array.from(item.childNodes).some(hits)) return true;
-    if (hasContent) return false;
-    const before = document.createRange(), after = document.createRange();
-    before.setStartBefore(item);
-    before.collapse(true);
-    after.setStartAfter(item);
-    after.collapse(true);
-    return rangeStart.compareBoundaryPoints(Range.START_TO_START,before) <= 0
-      && rangeEnd.compareBoundaryPoints(Range.START_TO_START,after) >= 0;
-  }
-  function selectedItems(range) {
-    if (!range || !paper.contains(range.commonAncestorContainer)) return [];
-    if (range.collapsed) {
-      const item = elementAt(range.startContainer)?.closest("li");
-      return item?.parentElement?.localName === "ol" ? [item] : [];
-    }
-    const start = point(range.startContainer,range.startOffset);
-    const end = point(range.endContainer,range.endOffset);
-    const picked = Array.from(paper.querySelectorAll("ol > li")).filter(item =>
-      range.intersectsNode(item) && hitOwnContent(item,start,end));
-    const selected = new Set(picked);
-    return picked.filter(item => {
-      for (let ancestor = item.parentElement.closest("li"); ancestor; ancestor = ancestor.parentElement.closest("li")) {
-        if (selected.has(ancestor)) return false;
-      }
-      return true;
-    });
-  }
-  function runs(items) {
-    const result = [], lastByList = new Map();
-    for (const item of items) {
-      const list = item.parentElement;
-      const previous = lastByList.get(list);
-      if (previous && previous.at(-1) === item.previousElementSibling) previous.push(item);
-      else {
-        const next = [item];
-        result.push(next);
-        lastByList.set(list,next);
-      }
-    }
-    return result;
-  }
-  function eligible(group,direction) {
-    const first = group[0];
-    if (direction === "down") return first.previousElementSibling?.localName === "li";
-    const owner = first.parentElement.parentElement;
-    return owner?.localName === "li" && owner.parentElement?.localName === "ol";
-  }
-  function actions(range) {
-    const groups = runs(selectedItems(range));
-    return {up:groups.some(group => eligible(group,"up")),down:groups.some(group => eligible(group,"down"))};
-  }
-  function childList(item) {
-    const existing = item.lastElementChild;
-    if (existing?.localName === "ol") return existing;
-    const list = make("ol");
-    item.append(list);
-    return list;
-  }
-  function syncTypes(list) {
-    let depth = 0;
-    for (let outer = list.parentElement.closest("ol"); outer; outer = outer.parentElement.closest("ol")) depth++;
-    list.type = ["1","a","i"][Math.min(depth,2)];
-    for (const child of list.querySelectorAll(":scope > li > ol")) syncTypes(child);
-  }
-  function moveGroup(group,direction) {
-    const first = group[0];
-    if (direction === "down") {
-      const target = childList(first.previousElementSibling);
-      target.append(...group);
-      syncTypes(target);
-      return;
-    }
-    const inner = first.parentElement, owner = inner.parentElement, last = group.at(-1);
-    const trailing = [];
-    for (let row = last.nextElementSibling; row; row = row.nextElementSibling) trailing.push(row);
-    // The rows following a promoted run travel under its last item to preserve reading order.
-    if (trailing.length) childList(last).append(...trailing);
-    owner.after(...group);
-    if (!inner.querySelector(":scope > li")) inner.remove();
-    for (const item of group) {
-      for (const child of item.querySelectorAll(":scope > ol")) syncTypes(child);
-    }
-  }
-  function move(range,direction) {
-    const groups = runs(selectedItems(range)).filter(group => eligible(group,direction));
-    if (!groups.length) return false;
-    const moved = [];
-    for (const group of groups.slice().reverse()) {
-      if (!eligible(group,direction)) continue;
-      moveGroup(group,direction);
-      moved.push(...group);
-    }
-    if (!moved.length) return false;
-    moved.sort((a,b) => a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1);
-    const next = document.createRange();
-    next.setStartBefore(moved[0]);
-    next.setEndAfter(moved.at(-1));
-    focusRange(next);
-    return true;
-  }
-  return {actions,move};
-})();
-
-function syncContext() {
-  $("image-tools").hidden = !editing || !selectedImage;
-  $("table-tools").hidden = !editing || !!selectedImage || !activeCell();
-  const levels = editing && !selectedImage ? listLevels.actions(selection) : {};
-  $("list-up").disabled = !levels.up;
-  $("list-down").disabled = !levels.down;
-}
-function chooseImage(image) {
-  selectedImage?.removeAttribute("data-selected");
-  selectedImage = image;
-  if (image) {
-    image.setAttribute("data-selected","");
-    $("image-width").value = String(parseInt(image.style.width,10) || 100);
-  }
-  syncContext();
-}
-function issue(command,value = null) {
-  if (!editing) return;
-  if (command === "undo" || command === "redo") {
-    editHistory.step(command === "undo" ? -1 : 1);
-    return;
-  }
-  restore();
-  editHistory.perform(() => document.execCommand(command,false,value));
-  if (selectedImage && !paper.contains(selectedImage)) chooseImage(null);
-  changed();
-  syncContext();
-}
-function mode(next) {
-  editing = next;
-  app.dataset.mode = next ? "edit" : "read";
-  paper.contentEditable = String(next);
-  fileName.readOnly = !next;
-  $("tools").hidden = !next;
-  $("mode").textContent = t(next ? "readMode" : "editMode");
-  if (!next) chooseImage(null);
-  syncContext();
-}
-function objectKey() { return "object-" + Date.now().toString(36) + "-" + (++keyIndex); }
-function findObject(tag,key) { return Array.from(paper.querySelectorAll(tag)).find(node => node.dataset.object === key); }
-function blankCell(row,tag = "td") {
-  const cell = make(tag);
-  cell.append(make("br"));
-  row.append(cell);
-  return cell;
-}
-function insertTable(rows,columns) {
-  const table = make("table");
-  table.dataset.object = objectKey();
-  const head = table.createTHead().insertRow();
-  for (let index = 0; index < columns; index++) blankCell(head,"th").textContent = t("columnName",{n:index + 1});
-  const body = table.createTBody();
-  for (let index = 1; index < rows; index++) {
-    const row = body.insertRow();
-    for (let column = 0; column < columns; column++) blankCell(row);
-  }
-  issue("insertHTML",table.outerHTML + "<p><br></p>");
-  const first = findObject("table",table.dataset.object)?.rows[0]?.cells[0];
-  if (first) pointAt(first);
-}
-function changeTable(action) {
-  const cell = activeCell();
-  if (!cell) return;
-  const table = cell.closest("table"), copy = table.cloneNode(true);
-  const rowIndex = cell.parentElement.rowIndex, column = cell.cellIndex;
-  const row = copy.rows[rowIndex];
-  if (action === "add-row") {
-    const body = copy.tBodies[0] || copy.createTBody();
-    const added = body.insertRow(row.parentElement === body ? row.sectionRowIndex + 1 : 0);
-    for (let index = 0; index < row.cells.length; index++) blankCell(added);
-  } else if (action === "remove-row" && copy.rows.length > 1) {
-    copy.deleteRow(rowIndex);
-  } else if (action === "add-column") {
-    for (const item of copy.rows) {
-      const original = item.cells[column];
-      if (original) original.after(blankCell(item,original.localName));
-    }
-  } else if (action === "remove-column" && row.cells.length > 1) {
-    for (const item of copy.rows) if (item.cells[column]) item.deleteCell(column);
-  }
-  if (table.outerHTML === copy.outerHTML) return;
-  pointAt(table,true);
-  issue("insertHTML",copy.outerHTML);
-  const updated = findObject("table",copy.dataset.object);
-  const next = updated?.rows[Math.min(rowIndex,updated.rows.length - 1)];
-  const target = next?.cells[Math.min(column,next.cells.length - 1)];
-  if (target) pointAt(target);
-  syncContext();
-}
-function insertImage(file) {
-  if (!imageMime.test(file.type)) { notice = "supportedImage"; status(); return; }
-  const pending = selection?.cloneRange();
-  const reader = new FileReader();
-  reader.onload = () => {
-    if (!editing || app.dataset.preview === "true") return;
-    if (pending && paper.contains(pending.commonAncestorContainer)) selection = pending;
-    const image = make("img");
-    image.src = reader.result;
-    image.alt = file.name || t("insertedImage");
-    image.dataset.object = objectKey();
-    image.style.width = "75%";
-    issue("insertHTML",image.outerHTML);
-    chooseImage(findObject("img",image.dataset.object) || null);
-  };
-  reader.onerror = () => { notice = "imageError"; status(); };
-  reader.readAsDataURL(file);
-}
-function changeImage(width) {
-  const image = selectedImage;
-  if (!image || !paper.contains(image)) return;
-  chooseImage(null);
-  pointAt(image,true);
-  if (!width) { issue("delete"); return; }
-  const copy = image.cloneNode();
-  copy.style.width = width + "%";
-  issue("insertHTML",copy.outerHTML);
-  chooseImage(findObject("img",copy.dataset.object) || null);
-}
-function openDialog(type) {
-  remember();
-  dialogType = type;
-  $("dialog-title").textContent = t({new:"openBlank",link:"insertLink",table:"insertTable"}[type]);
-  $("new-message").hidden = type !== "new";
-  $("link-fields").hidden = type !== "link";
-  $("table-fields").hidden = type !== "table";
-  $("submit").textContent = t(type === "new" ? "newFile" : "insert");
-  $("error").textContent = "";
-  if (type === "link") { $("link-text").value = selection?.toString() || ""; $("link-url").value = ""; }
-  dialog.showModal();
-}
-function blankDocument() {
-  chooseImage(null);
-  fileName.value = t("untitled");
-  paper.lang = locale.active;
-  paper.innerHTML = "<p><br></p>";
-  selection = null;
-  saved = snapshot();
-  mode(true);
-  restore();
-  editHistory.reset();
-  changed();
-}
-function saveHTML() {
-  const output = shell.cloneNode(true);
-  output.dataset.mode = "read";
-  output.dataset.language = locale.preference;
-  delete output.dataset.preview;
-  output.querySelector("#file-name").setAttribute("value",actualName());
-  const content = output.querySelector("#paper");
-  content.innerHTML = cleanBody();
-  content.lang = paper.lang;
-  content.contentEditable = "false";
-  const title = make("title");
-  title.textContent = actualName();
-  const html = '<!doctype html>\n<html lang="' + locale.active + '"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
-    + title.outerHTML + styleSource + "</head><body>" + output.outerHTML + scriptSource + "</body></html>";
-  const url = URL.createObjectURL(new Blob([html],{type:"text/html;charset=utf-8"}));
-  const link = make("a");
-  link.href = url;
-  link.download = (actualName().replace(/[\\/:*?"<>|]/g,"_").replace(/\.html?$/i,"") || t("untitled")) + ".html";
-  document.body.append(link);
-  link.click();
-  link.remove();
-  setTimeout(() => URL.revokeObjectURL(url),60000);
-  saved = snapshot();
-  notice = "downloadStarted";
-  status();
-}
-
-/* The shared A4 layout consumes structural copies of the same HTML as the editor. */
-const paginator = (() => {
-  const graphemes = typeof Intl.Segmenter === "function" ? new Intl.Segmenter("zh-Hant",{granularity:"grapheme"}) : null;
-  function largestFit(max,fits) {
-    let lo = 0, hi = max;
-    while (lo < hi) {
-      const middle = Math.ceil((lo + hi) / 2);
-      if (fits(middle)) lo = middle;
-      else hi = middle - 1;
-    }
-    return lo;
-  }
-  function splitPoints(block) {
-    const points = [];
-    const visit = (node,parent,index) => {
-      if (node.nodeType === Node.TEXT_NODE) {
-        if (graphemes) {
-          for (const part of graphemes.segment(node.data)) points.push([node,part.index + part.segment.length]);
-        } else {
-          let offset = 0;
-          for (const char of node.data) { offset += char.length; points.push([node,offset]); }
-        }
-      } else if (node.nodeType === Node.ELEMENT_NODE) {
-        if (node.matches("img,br,hr")) points.push([parent,index + 1]);
-        else Array.from(node.childNodes).forEach((child,i) => visit(child,node,i));
-      }
-    };
-    Array.from(block.childNodes).forEach((child,i) => visit(child,block,i));
-    return points;
-  }
-  function portion(block,boundary,head) {
-    const result = block.cloneNode(false), range = document.createRange();
-    range.selectNodeContents(block);
-    if (head) { range.setEnd(...boundary); result.classList.add("continuing"); }
-    else { range.setStart(...boundary); result.classList.add("continued"); }
-    result.append(range.cloneContents());
-    return result;
-  }
-  function blocks() {
-    const result = [];
-    let inline = null;
-    for (const child of paper.childNodes) {
-      if (child.nodeType === Node.ELEMENT_NODE && child.matches("p,div,h1,h2,h3,h4,h5,h6,ol,ul,table,hr,pre,blockquote,figure,section")) {
-        inline = null;
-        result.push(child.cloneNode(true));
-      } else if ((child.nodeType === Node.TEXT_NODE && child.textContent.trim()) || child.nodeType === Node.ELEMENT_NODE) {
-        if (!inline) { inline = make("p"); result.push(inline); }
-        inline.append(child.cloneNode(true));
-      } else if (inline && child.nodeType === Node.TEXT_NODE) inline.append(child.cloneNode(true));
-    }
-    const originalImages = Array.from(paper.querySelectorAll("img"));
-    const prep = make("div");
-    prep.append(...result);
-    prep.querySelectorAll("img").forEach((image,index) => {
-      const original = originalImages[index];
-      if (original?.naturalWidth && original.naturalHeight) image.style.aspectRatio = original.naturalWidth + " / " + original.naturalHeight;
-      image.removeAttribute("data-selected");
-    });
-    return result;
-  }
-  function render() {
-    sheets.classList.add("measuring");
-    sheets.replaceChildren();
-    let area, flow;
-    const pages = [];
-    let scaledCount = 0;
-    function newPage() {
-      const sheet = make("section","sheet");
-      area = make("div","sheet-area");
-      flow = make("div","doc");
-      flow.lang = paper.lang;
-      const footer = make("div","page-number");
-      area.append(flow);
-      sheet.append(area,footer);
-      sheets.append(sheet);
-      pages.push(footer);
-    }
-    function used() { return flow.getBoundingClientRect().height; }
-    function limit() { return area.clientHeight - 1; }
-    function tryPlace(block,keep = false) {
-      flow.append(block);
-      const fits = used() <= limit();
-      if (!fits || !keep) block.remove();
-      return fits;
-    }
-    function placeAtomic(block) {
-      if (tryPlace(block,true)) return;
-      if (flow.childElementCount) newPage();
-      if (tryPlace(block,true)) return;
-      const slot = make("div","scaled-slot"), content = make("div","scaled-content");
-      content.append(block);
-      slot.append(content);
-      flow.append(slot);
-      const height = content.getBoundingClientRect().height;
-      const scale = Math.min(1,limit() / Math.max(1,height));
-      slot.style.height = Math.floor(height * scale) + "px";
-      content.style.transform = "scale(" + scale + ")";
-      scaledCount++;
-    }
-    function placeText(block) {
-      while (!tryPlace(block,true)) {
-        const points = splitPoints(block);
-        const split = largestFit(Math.max(0,points.length - 1),count => tryPlace(portion(block,points[count - 1],true)));
-        if (!split) {
-          if (flow.childElementCount) { newPage(); continue; }
-          placeAtomic(block);
-          break;
-        }
-        if (flow.childElementCount && split < 7) { newPage(); continue; }
-        flow.append(portion(block,points[split - 1],true));
-        block = portion(block,points[split - 1],false);
-        newPage();
-      }
-    }
-    function placeSeries(total,build) {
-      let start = 0;
-      while (start < total) {
-        const count = largestFit(total - start,n => tryPlace(build(start,start + n)));
-        if (count) {
-          flow.append(build(start,start + count));
-          start += count;
-          if (start < total) newPage();
-        } else if (flow.childElementCount) {
-          newPage();
-        } else {
-          placeAtomic(build(start,start + 1));
-          start++;
-          if (start < total) newPage();
-        }
-      }
-    }
-    function placeTable(table) {
-      const rows = Array.from(table.tBodies).flatMap(body => Array.from(body.rows));
-      if (!rows.length) { placeAtomic(table); return; }
-      placeSeries(rows.length,(start,end) => {
-        const part = table.cloneNode(false);
-        if (table.tHead) part.append(table.tHead.cloneNode(true));
-        part.createTBody().append(...rows.slice(start,end).map(row => row.cloneNode(true)));
-        if (end === rows.length && table.tFoot) part.append(table.tFoot.cloneNode(true));
-        return part;
-      });
-    }
-    function placeList(list) {
-      const items = Array.from(list.children);
-      if (!items.length) { placeAtomic(list); return; }
-      placeSeries(items.length,(start,end) => {
-        const part = list.cloneNode(false);
-        if (list.localName === "ol") part.start = (list.hasAttribute("start") ? list.start : 1) + start;
-        part.append(...items.slice(start,end).map(item => item.cloneNode(true)));
-        return part;
-      });
-    }
-    try {
-      newPage();
-      for (const block of blocks()) {
-        if (block.matches("table")) placeTable(block);
-        else if (block.matches("ol,ul")) placeList(block);
-        else if (block.matches("h1,h2,h3,h4,h5,h6,hr")) {
-          if (flow.childElementCount && limit() - used() < 76) newPage();
-          placeAtomic(block);
-        } else placeText(block);
-      }
-      pages.forEach((footer,index) => { footer.textContent = t("pageNumber",{n:index + 1,total:pages.length}); });
-      return {count:pages.length,scaledCount};
-    } finally {
-      sheets.classList.remove("measuring");
-    }
-  }
-  return {render};
-})();
-
-function fitPreview() {
-  if (!sheets.clientWidth) return;
-  const a4Pixels = 210 * 96 / 25.4;
-  sheets.style.setProperty("--preview-zoom",Math.min(1,Math.max(.2,(sheets.clientWidth - 20) / a4Pixels)));
-}
-function buildPreview() {
-  const result = paginator.render();
-  $("page-count").textContent = t("pageCount",{count:result.count});
-  $("preview-note").textContent = t("printSettings") + (result.scaledCount ? " " + t("scaledItems") : "");
-  fitPreview();
-  printReady = true;
-}
-async function preview() {
-  remember();
-  chooseImage(null);
-  const ticket = ++previewTicket;
-  app.dataset.preview = "true";
-  $("preview-note").textContent = t("paginating");
-  $("page-count").textContent = "";
-  $("print").disabled = $("pdf").disabled = true;
-  let timer;
-  try {
-    const images = Array.from(paper.querySelectorAll("img"),image => image.decode().catch(() => {}));
-    await Promise.race([Promise.all([document.fonts?.ready,...images]),new Promise(resolve => { timer = setTimeout(resolve,2200); })]);
-    if (ticket !== previewTicket) return false;
-    buildPreview();
-    window.scrollTo(0,0);
-    $("back").focus({preventScroll:true});
-    return true;
-  } finally {
-    clearTimeout(timer);
-    if (ticket === previewTicket) $("print").disabled = $("pdf").disabled = false;
-  }
-}
-function leavePreview() {
-  previewTicket++;
-  delete app.dataset.preview;
-  $("open-preview").focus();
-}
-function output(kind) {
-  if (!printReady) buildPreview();
-  $("preview-note").textContent = (kind === "pdf" ? t("choosePdf") + " " : "") + t("printSettings");
-  window.print();
-}
-window.addEventListener("beforeprint",() => {
-  if (app.dataset.preview !== "true") {
-    app.dataset.preview = "true";
-    nativePreview = true;
-  }
-  if (!printReady) buildPreview();
-});
-window.addEventListener("afterprint",() => {
-  if (nativePreview) delete app.dataset.preview;
-  nativePreview = false;
-});
-window.addEventListener("resize",fitPreview);
-
-document.addEventListener("selectionchange",() => { if (editing) { remember(); syncContext(); } });
-document.addEventListener("keydown",event => {
-  if (dialog.open) return;
-  if (event.key === "Escape" && app.dataset.preview === "true") leavePreview();
-  if (!(event.ctrlKey || event.metaKey)) return;
-  const key = event.key.toLowerCase();
-  if (editing && paper.contains(event.target) && (key === "z" || key === "y")) {
-    event.preventDefault();
-    editHistory.step(key === "y" || event.shiftKey ? 1 : -1);
-    return;
-  }
-  if (key === "s") { event.preventDefault(); saveHTML(); }
-  if (key === "p") {
-    event.preventDefault();
-    if (app.dataset.preview !== "true") preview().then(ready => { if (ready) output("print"); });
-    else if (!$("print").disabled) output("print");
-  }
-});
-for (const name of ["tools","table-tools"]) {
-  $(name).addEventListener("pointerdown",event => {
-    remember();
-    if (event.target.closest("button")) event.preventDefault();
-  });
-}
-$("tools").addEventListener("click",event => {
-  const button = event.target.closest("button");
-  if (!button || button.disabled) return;
-  const {command,listLevel} = button.dataset;
-  if (command) issue(command);
-  if (listLevel && editing && selection && editHistory.perform(() => listLevels.move(selection,listLevel))) {
-    changed();
-    syncContext();
-  }
-});
-for (const [name,command] of [["format","formatBlock"],["font","fontName"],["alignment",null]]) {
-  $(name).addEventListener("change",event => {
-    const value = event.target.value;
-    if (value) issue(command || value,command ? value : null);
-    event.target.selectedIndex = 0;
-  });
-}
-$("color").addEventListener("change",event => issue("foreColor",event.target.value));
-$("table-tools").addEventListener("click",event => {
-  const action = event.target.closest("[data-table]")?.dataset.table;
-  if (action) changeTable(action);
-});
-$("image-width").addEventListener("change",event => changeImage(event.target.value));
-$("remove-image").addEventListener("click",() => changeImage());
-paper.addEventListener("beforeinput",editHistory.beforeInput);
-paper.addEventListener("input",event => {
-  if (!editHistory.input(event)) return;
-  if (selectedImage && !paper.contains(selectedImage)) chooseImage(null);
-  remember(); changed(); syncContext();
-});
-paper.addEventListener("click",event => {
-  if (!editing) return;
-  if (event.target.closest("a")) event.preventDefault();
-  chooseImage(event.target.closest("img"));
-});
-paper.addEventListener("paste",event => {
-  if (!editing || !event.clipboardData) return;
-  event.preventDefault();
-  remember();
-  const image = Array.from(event.clipboardData.files).find(file => imageMime.test(file.type));
-  if (image) insertImage(image);
-  else issue("insertText",event.clipboardData.getData("text/plain"));
-});
-paper.addEventListener("drop",event => {
-  if (!editing) return;
-  event.preventDefault();
-  const file = Array.from(event.dataTransfer.files).find(item => imageMime.test(item.type));
-  if (file) insertImage(file);
-});
-$("outline").addEventListener("click",event => {
-  const target = event.target.closest("button");
-  if (target) paper.querySelectorAll(headings)[Number(target.dataset.index)]?.scrollIntoView({block:"start"});
-});
-$("form").addEventListener("submit",event => {
-  event.preventDefault();
-  if (dialogType === "new") { dialog.close(); blankDocument(); return; }
-  if (dialogType === "table") {
-    const rows = Number($("rows").value), columns = Number($("columns").value);
-    if (!Number.isInteger(rows) || !Number.isInteger(columns) || rows < 1 || rows > 30 || columns < 1 || columns > 8) {
-      $("error").textContent = t("invalidTable");
-      return;
-    }
-    dialog.close(); insertTable(rows,columns); return;
-  }
-  let url;
-  try { url = new URL($("link-url").value.trim()); } catch {}
-  if (!url || !["http:","https:"].includes(url.protocol)) {
-    $("error").textContent = t("invalidUrl");
-    return;
-  }
-  const link = make("a");
-  link.href = url.href;
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
-  link.textContent = $("link-text").value.trim() || url.href;
-  dialog.close();
-  issue("insertHTML",link.outerHTML);
-});
-$("cancel").addEventListener("click",() => dialog.close());
-$("add-link").addEventListener("click",() => openDialog("link"));
-$("add-table").addEventListener("click",() => openDialog("table"));
-$("add-image").addEventListener("click",() => { remember(); $("image-file").click(); });
-$("image-file").addEventListener("change",event => {
-  const file = event.target.files[0];
-  event.target.value = "";
-  if (file) insertImage(file);
-});
-fileName.addEventListener("input",changed);
-$("language").addEventListener("change",event => {
-  locale.change(event.target.value);
-  document.title = actualName();
-  printReady = false;
-  $("mode").textContent = t(editing ? "readMode" : "editMode");
-  updateOutline();
-  status();
-});
-$("mode").addEventListener("click",() => mode(!editing));
-$("new-file").addEventListener("click",() => snapshot() === saved ? blankDocument() : openDialog("new"));
-$("save-html").addEventListener("click",saveHTML);
-$("open-preview").addEventListener("click",preview);
-$("back").addEventListener("click",leavePreview);
-$("print").addEventListener("click",() => output("print"));
-$("pdf").addEventListener("click",() => output("pdf"));
-locale.apply(locale.preference);
-saved = snapshot();
-mode(app.dataset.mode !== "read");
-editHistory.reset();
-changed();
-})();
-</script>
-</body>
-</html>
+</script></body></html>
