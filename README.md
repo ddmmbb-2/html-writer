@@ -4,7 +4,15 @@
 
 HTML Writer 適合撰寫公告、操作手冊與課程講義。存檔後可把同一個 HTML 傳給其他人，對方開啟即可閱讀，需要修改時再切換到編輯模式。
 
+👉 **線上體驗與完整包下載**：[https://office.ddmmbb.org/](https://office.ddmmbb.org/)
+
 ## 開始使用
+
+### 方式一：線上直接體驗（或下載完整套件）
+
+前往 **[HTML Office 網站](https://office.ddmmbb.org/)**，可以直接在瀏覽器中線上試用 HTML Writer，或一次下載包含五款工具的完整離線包（`html-office.zip`）。
+
+### 方式二：從本專案單檔下載
 
 1. 開啟 [HTML-Writer.html](HTML-Writer.html) 的檔案頁，點右上角的 **Download raw file**。
 2. 用瀏覽器開啟下載的檔案。先試用範例，或點「新文件」開始撰寫。
@@ -35,5 +43,17 @@ HTML Writer 適合撰寫公告、操作手冊與課程講義。存檔後可把�
 | 另存可編輯的單檔 | `saveHTML()` |
 
 例如可請 LLM「修改編號工具列的提示，並驗證選取多個子項後升層、降層、復原與列印預覽的結果」。
+
+## HTML Office 系列專案
+
+HTML Office 將以下五個開源專案集結成單一資料夾，可於 [https://office.ddmmbb.org/](https://office.ddmmbb.org/) 線上體驗或一次下載離線使用：
+
+- **[html-writer](https://github.com/ddmmbb-2/html-writer)**（本專案）— 文件編輯器
+- **[html-slidebook](https://github.com/ddmmbb-2/html-slidebook)** — 簡報編輯器
+- **[html-image](https://github.com/ddmmbb-2/html-image)** — 圖片編輯器
+- **[html-excel](https://github.com/ddmmbb-2/html-excel)** — 試算表編輯器
+- **[html-keep](https://github.com/ddmmbb-2/html-keep)** — 口袋筆記 / 備忘錄
+
+---
 
 本專案由作者提出需求，由 AI 協助實作與測試。
