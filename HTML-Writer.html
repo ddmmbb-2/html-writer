@@ -46,8 +46,24 @@ button:disabled{cursor:default;opacity:.45}
 .outline button:hover{background:#dbe7db}
 .outline button[data-level="3"]{padding-left:19px}
 .document-area{min-width:0}
+.paper-scroll{padding:2px 8px 10px;margin:-2px -8px -10px}
+.paper-scroll[data-magnified]{overflow-x:auto}
+.workspace:has(.paper-scroll[data-magnified]){max-width:none;grid-template-columns:160px minmax(0,1fr)}
+.paper-space{position:relative;margin-inline:auto}
+.paper-space[data-scaled]{
+  width:calc(var(--document-width) * var(--document-zoom));
+  height:calc(var(--document-height) * var(--document-zoom))
+}
+.paper-space[data-reduced]{overflow:clip;overflow-clip-margin:12px}
 .paper-frame,.sheet-area{--image-inset:0px}
-.paper-frame{--image-inset:var(--page-margin);position:relative}
+.paper-frame{--image-inset:var(--page-margin);position:relative;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.paper-space[data-scaled]>.paper-frame{
+  position:absolute;top:0;left:0;width:var(--document-width);
+  transform:scale(var(--document-zoom));transform-origin:top left
+}
+.zoom-controls{display:inline-flex;align-items:center;gap:3px}
+.zoom-controls button{min-width:32px;padding-inline:6px}
+.zoom-controls [data-zoom="reset"]{min-width:54px;font-variant-numeric:tabular-nums}
 #paper{position:relative;isolation:isolate;overflow:clip;min-height:var(--page-height);background:white;border-radius:3px;padding:var(--image-inset);box-shadow:0 7px 28px #25392614}
 #paper:focus{outline:none;box-shadow:0 0 0 1px #a8bda9,0 7px 28px #25392614}
 .doc{display:flow-root;min-width:0;color:#26312b;font:12pt/1.65 var(--sans);overflow-wrap:anywhere}
@@ -128,7 +144,7 @@ button:disabled{cursor:default;opacity:.45}
 .preview-bar{padding-block:11px}
 .preview-bar strong{font-size:15px}
 #preview-note{margin:0;padding:10px 15px;text-align:center;color:var(--muted);font-size:13px}
-#sheets{padding:8px 10px 26px}
+#sheets{padding:8px 10px 26px;overflow-x:auto}
 .sheet{width:var(--page-width);height:var(--page-height);position:relative;overflow:hidden;margin:0 auto 18px;background:white;box-shadow:0 6px 28px #25392626;zoom:var(--preview-zoom,1)}
 #sheets.measuring .sheet{zoom:1}
 .sheet-area{position:absolute;isolation:isolate;top:var(--page-margin);left:var(--page-margin);right:var(--page-margin);bottom:var(--page-margin);overflow:hidden}
@@ -183,7 +199,7 @@ dialog input{width:100%}
   body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .chrome,.workspace,.preview-bar,#preview-note,#writer-ai,dialog{display:none!important}
   #preview{display:block!important}
-  #sheets{margin:0;padding:0}
+  #sheets{margin:0;padding:0;overflow:visible}
   /* Only the outer sheet allows rounding tolerance. Inner width, height and typography match preview. */
   #sheets .sheet{margin:0;box-shadow:none;zoom:1;height:296.7mm;break-inside:avoid;break-after:page}
   #sheets .sheet:last-child{break-after:auto}
@@ -206,6 +222,7 @@ dialog input{width:100%}
         </select>
         <button type="button" id="new-file" data-i18n="newFile">新文件</button>
         <button type="button" id="mode">閱讀模式</button>
+        <span id="document-zoom"></span>
         <button type="button" id="open-preview" data-i18n="printPreview">列印預覽</button>
         <button type="button" class="ai-toggle" data-ai-toggle aria-controls="writer-ai" aria-expanded="false" data-i18n="aiTitle">AI 問文件</button>
         <button type="button" class="primary" id="save-html" data-i18n="saveHtml">另存 HTML</button>
@@ -279,6 +296,8 @@ dialog input{width:100%}
   <div class="workspace">
     <aside class="outline"><h2 data-i18n="outline">文件大綱</h2><nav id="outline" aria-label="文件大綱" data-i18n-label="outline"></nav></aside>
     <section class="document-area" aria-label="文件" data-i18n-label="document">
+      <div class="paper-scroll">
+      <div class="paper-space">
       <div class="paper-frame">
       <article class="doc" id="paper" lang="zh-Hant" contenteditable="false" spellcheck="false" aria-label="文件內容" data-i18n-label="content">
         <p class="meta">教育訓練　／　十一月線上課程</p>
@@ -301,17 +320,26 @@ dialog input{width:100%}
         <button type="button" id="rotate-image" data-image-control="rotate" aria-label="拖曳旋轉圖片" title="拖曳旋轉圖片" data-i18n-label="rotateImage" data-i18n-title="rotateImage">⟳</button>
       </div>
       </div>
+      </div>
+      </div>
       <footer class="status"><span data-i18n="continuousLayout">A4 寬度 · 連續編輯</span><span id="status" role="status"></span></footer>
     </section>
   </div>
   <section id="preview" aria-label="列印預覽" data-i18n-label="printPreview">
     <div class="preview-bar">
       <div class="actions"><button type="button" id="back" data-i18n="back">返回文件</button><strong data-i18n="a4Preview">A4 列印預覽</strong><span id="page-count" role="status"></span></div>
-      <div class="actions"><button type="button" class="ai-toggle" data-ai-toggle aria-controls="writer-ai" aria-expanded="false" data-i18n="aiTitle">AI 問文件</button><button type="button" id="print" data-i18n="print">列印</button><button type="button" id="pdf" class="primary" data-i18n="pdf">儲存 PDF</button></div>
+      <div class="actions"><span id="preview-zoom"></span><button type="button" class="ai-toggle" data-ai-toggle aria-controls="writer-ai" aria-expanded="false" data-i18n="aiTitle">AI 問文件</button><button type="button" id="print" data-i18n="print">列印</button><button type="button" id="pdf" class="primary" data-i18n="pdf">儲存 PDF</button></div>
     </div>
     <p id="preview-note" role="status" data-i18n="printSettings">列印視窗請選 A4、實際大小（100%），並關閉頁首及頁尾。</p>
     <div id="sheets"></div>
   </section>
+  <template id="zoom-template">
+    <span class="zoom-controls" role="group" aria-label="頁面縮放" data-i18n-label="pageZoom">
+      <button type="button" data-zoom="out" aria-label="縮小" title="縮小" data-i18n-label="zoomOut" data-i18n-title="zoomOut">−</button>
+      <button type="button" data-zoom="reset">100%</button>
+      <button type="button" data-zoom="in" aria-label="放大" title="放大" data-i18n-label="zoomIn" data-i18n-title="zoomIn">+</button>
+    </span>
+  </template>
   <aside id="writer-ai" aria-labelledby="ai-title" inert>
     <header class="ai-head">
       <h2 id="ai-title" data-i18n="aiTitle">AI 問文件</h2>
@@ -387,6 +415,11 @@ const locale = (() => {
     newFile:["新文件","New document","新規文書"],
     readMode:["閱讀模式","Reading mode","閲覧モード"],
     editMode:["編輯","Edit","編集"],
+    pageZoom:["頁面縮放","Page zoom","ページの拡大縮小"],
+    zoomOut:["縮小","Zoom out","縮小"],
+    zoomIn:["放大","Zoom in","拡大"],
+    zoomActual:["還原 100%","Reset to 100%","100% に戻す"],
+    zoomFit:["符合頁面寬度","Fit page width","ページ幅に合わせる"],
     printPreview:["列印預覽","Print preview","印刷プレビュー"],
     saveHtml:["另存 HTML","Save HTML","HTML を保存"],
     editTools:["文件編輯","Document editing","文書編集"],
@@ -561,6 +594,7 @@ const make = (tag,className) => {
 let editing, selection, selectedImage, dialogType, saved, keyIndex = 0;
 let previewTicket = 0, nativePreview = false, printReady = false;
 let outlineKey = "", notice = "";
+let documentScale = 1;
 
 function copyBody() {
   const copy = paper.cloneNode(true);
@@ -1329,7 +1363,12 @@ const columnSizing = (() => {
     const edges = new Map();
     for (const {cell,right} of grid.cells.values()) {
       if (right >= grid.width) continue;
-      const rect = cell.getBoundingClientRect();
+      const bounds = cell.getBoundingClientRect();
+      const rect = {
+        right:(bounds.right - origin.left) / documentScale,
+        top:(bounds.top - origin.top) / documentScale,
+        bottom:(bounds.bottom - origin.top) / documentScale,
+      };
       const segments = edges.get(right) || [];
       const last = segments.at(-1);
       if (last && rect.top <= last.bottom + 1) last.bottom = Math.max(last.bottom,rect.bottom);
@@ -1353,7 +1392,7 @@ const columnSizing = (() => {
         const label = t("columnGrip",{n:boundary,next:boundary + 1});
         handle.setAttribute("aria-label",label);
         handle.title = label;
-        position(handle,x - origin.left,top - origin.top,bottom - top);
+        position(handle,x,top,bottom - top);
       }
     }
     for (const [key,handle] of handles) {
@@ -1369,7 +1408,7 @@ const columnSizing = (() => {
   function meter(handle) {
     if (!table || !paper.contains(table)) return null;
     const boundary = Number(handle.dataset.boundary);
-    const grid = tableGrid(table), tableWidth = table.getBoundingClientRect().width;
+    const grid = tableGrid(table), tableWidth = table.getBoundingClientRect().width / documentScale;
     if (!boundary || boundary >= grid.width || !tableWidth) return null;
     return {table,boundary,tableWidth,widths:readColumnWidths(grid)};
   }
@@ -1388,13 +1427,13 @@ const columnSizing = (() => {
     return true;
   }
   function dragResult(event) {
-    const delta = (event.clientX - drag.clientX) * 100 / drag.tableWidth;
+    const delta = (event.clientX - drag.clientX) * 100 / (drag.tableWidth * documentScale);
     return resizeColumnPair(drag.widths,drag.boundary,delta,drag.tableWidth);
   }
   function showGuide(change) {
     const origin = paper.parentElement.getBoundingClientRect(), rect = table.getBoundingClientRect();
     const x = parseFloat(drag.handle.style.left) + change * drag.tableWidth / 100;
-    position(guide,x,rect.top - origin.top,rect.height);
+    position(guide,x,(rect.top - origin.top) / documentScale,rect.height / documentScale);
   }
   controls.addEventListener("pointerdown",event => {
     const handle = event.target.closest(".column-grip");
@@ -1505,7 +1544,11 @@ const freeImages = (() => {
   function metrics() {
     const rect = paper.getBoundingClientRect();
     const inset = parseFloat(getComputedStyle(paper).paddingLeft);
-    return {left:rect.left + inset,top:rect.top + inset,width:Math.max(1,rect.width - 2 * inset),height:Math.max(0,rect.height - 2 * inset),inset};
+    return {
+      left:rect.left + inset * documentScale,top:rect.top + inset * documentScale,
+      width:Math.max(1,rect.width / documentScale - 2 * inset),
+      height:Math.max(0,rect.height / documentScale - 2 * inset),inset,
+    };
   }
   function bounded({x,y},{width,height,inset},{right,bottom}) {
     // Coordinates start at the content margin. Leave part of the image inside the paper when moving past its start edges.
@@ -1559,8 +1602,8 @@ const freeImages = (() => {
       const image = selectedImage;
       const layout = metrics(), rect = image.getBoundingClientRect();
       const start = bounded(
-        {x:(rect.left - layout.left) / layout.width,y:rect.top - layout.top},
-        layout,{right:rect.width,bottom:rect.height}
+        {x:(rect.left - layout.left) / (layout.width * documentScale),y:(rect.top - layout.top) / documentScale},
+        layout,{right:rect.width / documentScale,bottom:rect.height / documentScale}
       );
       const width = parseFloat(image.style.width) || 100;
       modify(() => {
@@ -1622,7 +1665,8 @@ const freeImages = (() => {
     const target = handle || image, kind = handle?.dataset.imageControl || "move";
     const layout = metrics();
     const start = readTransform(image), geometry = imageGeometry(image,start,layout);
-    const left = event.clientX - layout.left, top = event.clientY - layout.top;
+    const left = (event.clientX - layout.left) / documentScale;
+    const top = (event.clientY - layout.top) / documentScale;
     const bearing = Math.atan2(top - geometry.centerY,left - geometry.centerX);
     drag = {target,kind,pointer:event.pointerId,start,next:start,geometry,left,top,bearing,turn:0};
     target.setPointerCapture(event.pointerId);
@@ -1630,7 +1674,8 @@ const freeImages = (() => {
   function moveDrag(event) {
     if (drag?.pointer !== event.pointerId) return;
     const layout = metrics(), {start,geometry} = drag;
-    const left = event.clientX - layout.left, top = event.clientY - layout.top;
+    const left = (event.clientX - layout.left) / documentScale;
+    const top = (event.clientY - layout.top) / documentScale;
     const dx = left - drag.left, dy = top - drag.top;
     if (drag.kind === "resize") {
       const diagonalX = geometry.rotatedX * 2, diagonalY = geometry.rotatedY * 2;
@@ -1977,11 +2022,76 @@ const paginator = (() => {
   return {render};
 })();
 
-function fitPreview() {
-  if (!sheets.clientWidth) return;
-  const a4Pixels = 210 * 96 / 25.4;
-  sheets.style.setProperty("--preview-zoom",Math.min(1,Math.max(.2,(sheets.clientWidth - 20) / a4Pixels)));
-}
+const pageZoom = (() => {
+  const min = 20, max = 300, step = 10, a4Pixels = 210 * 96 / 25.4;
+  const frame = paper.parentElement, space = frame.parentElement, viewport = space.parentElement;
+  const clamp = percent => Math.min(max,Math.max(min,percent));
+  let previewPercent = null;
+  function previewScale() {
+    const {paddingLeft,paddingRight} = getComputedStyle(sheets);
+    const available = sheets.clientWidth - parseFloat(paddingLeft) - parseFloat(paddingRight);
+    return previewPercent !== null ? previewPercent / 100 : Math.min(1,Math.max(min / 100,available / a4Pixels));
+  }
+  function controls(id,resetLabel,scale,update) {
+    const host = $(id);
+    host.append($("zoom-template").content.cloneNode(true));
+    const out = host.querySelector('[data-zoom="out"]');
+    const reset = host.querySelector('[data-zoom="reset"]');
+    const zoomIn = host.querySelector('[data-zoom="in"]');
+    const percent = () => Math.round(scale() * 100);
+    function refresh() {
+      const value = percent();
+      reset.textContent = value + "%";
+      reset.title = t(resetLabel);
+      reset.setAttribute("aria-label",reset.textContent + " · " + reset.title);
+      out.disabled = value <= min;
+      zoomIn.disabled = value >= max;
+    }
+    host.addEventListener("pointerdown",event => {
+      if (editing && paper.contains(document.activeElement)) event.preventDefault();
+    });
+    out.addEventListener("click",() => update(clamp(percent() - step)));
+    reset.addEventListener("click",() => update(null));
+    zoomIn.addEventListener("click",() => update(clamp(percent() + step)));
+    return refresh;
+  }
+  const documentControls = controls("document-zoom","zoomActual",() => documentScale,percent => {
+    columnSizing.cancel();
+    freeImages.cancelDrag();
+    const {width,height} = getComputedStyle(frame);
+    space.style.setProperty("--document-width",width);
+    space.style.setProperty("--document-height",height);
+    documentScale = (percent ?? 100) / 100;
+    space.style.setProperty("--document-zoom",documentScale);
+    space.toggleAttribute("data-scaled",documentScale !== 1);
+    space.toggleAttribute("data-reduced",documentScale < 1);
+    viewport.toggleAttribute("data-magnified",documentScale > 1);
+    columnSizing.refresh();
+    documentControls();
+  });
+  const previewControls = controls("preview-zoom","zoomFit",previewScale,percent => {
+    previewPercent = percent;
+    fitPreview();
+  });
+  function fitPreview() {
+    if (!sheets.clientWidth) return;
+    sheets.style.setProperty("--preview-zoom",previewScale());
+    previewControls();
+  }
+  // Reserve the scaled footprint while the frame keeps its original layout measurements.
+  new ResizeObserver(([entry]) => {
+    if (entry.contentRect.width > 0) space.style.setProperty("--document-width",Math.min(entry.contentRect.width,a4Pixels) + "px");
+  }).observe(viewport);
+  new ResizeObserver(([entry]) => {
+    if (entry.contentRect.height > 0) space.style.setProperty("--document-height",entry.contentRect.height + "px");
+  }).observe(frame);
+  new ResizeObserver(fitPreview).observe(sheets);
+  function localize() {
+    documentControls();
+    previewControls();
+  }
+  return {fitPreview,localize};
+})();
 
 const writerKnowledge = (() => {
   const headingSelector = "h1,h2,h3,h4,h5,h6";
@@ -2279,7 +2389,7 @@ const writerAI = (() => {
     app.dataset.askOpen = String(open);
     drawer.inert = !open;
     for (const button of toggles) button.setAttribute("aria-expanded",String(open));
-    fitPreview();
+    pageZoom.fitPreview();
     if (!open) return;
     $("ai-close").focus({preventScroll:true});
     chunks ??= writerKnowledge.read();
@@ -2374,7 +2484,7 @@ function buildPreview() {
   const result = paginator.render();
   $("page-count").textContent = t("pageCount",{count:result.count});
   $("preview-note").textContent = t("printSettings") + (result.scaledCount ? " " + t("scaledItems") : "");
-  fitPreview();
+  pageZoom.fitPreview();
   printReady = true;
 }
 async function preview() {
@@ -2423,7 +2533,6 @@ window.addEventListener("afterprint",() => {
   if (nativePreview) { delete app.dataset.preview; syncContext(); }
   nativePreview = false;
 });
-window.addEventListener("resize",fitPreview);
 
 document.addEventListener("selectionchange",() => { if (editing) { remember(); syncContext(); } });
 document.addEventListener("keydown",event => {
@@ -2548,6 +2657,7 @@ $("image-file").addEventListener("change",event => {
 fileName.addEventListener("input",changed);
 $("language").addEventListener("change",event => {
   locale.change(event.target.value);
+  pageZoom.localize();
   writerAI.localize();
   document.title = actualName();
   printReady = false;
@@ -2565,6 +2675,7 @@ $("back").addEventListener("click",leavePreview);
 $("print").addEventListener("click",() => output("print"));
 $("pdf").addEventListener("click",() => output("pdf"));
 locale.apply(locale.preference);
+pageZoom.localize();
 saved = snapshot();
 mode(app.dataset.mode !== "read");
 editHistory.reset();
