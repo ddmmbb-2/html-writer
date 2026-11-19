@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>院內課程公告</title><style id="writer-style">
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>word文件</title><style id="writer-style">
 :root{
   color-scheme:light;
   --sans:Arial,"Helvetica Neue","Liberation Sans","Microsoft JhengHei","PingFang TC","Noto Sans CJK TC","Noto Sans TC","WenQuanYi Zen Hei",sans-serif;
@@ -39,7 +39,7 @@ button:disabled{cursor:default;opacity:.45}
 #free-image-picker{max-width:13em;text-overflow:ellipsis}
 #color{width:32px;min-height:33px;padding:3px}
 .workspace{max-width:1160px;margin:auto;padding:24px 16px;display:grid;grid-template-columns:160px minmax(0,var(--page-width));gap:22px;justify-content:center}
-.outline{position:sticky;top:180px;align-self:start}
+.outline{position:sticky;top:calc(var(--chrome-height,168px) + 12px);align-self:start}
 .outline h2{margin:6px 0 8px;font-size:13px}
 .outline nav{display:grid}
 .outline button{background:transparent;border-color:transparent;text-align:left;overflow-wrap:anywhere}
@@ -206,12 +206,12 @@ dialog input{width:100%}
   #sheets .sheet-area{bottom:17.7mm}
   #sheets .page-number{bottom:10.7mm}
 }
-</style></head><body><main id="app" data-mode="read" data-language="zh-Hant">
+</style></head><body><main id="app" data-mode="read" data-language="auto">
   <header class="chrome">
     <div class="top">
       <div class="identity">
         <span class="mark" aria-hidden="true">文</span>
-        <div><label for="file-name" data-i18n="fileName">文件名稱</label><input id="file-name" maxlength="100" value="院內課程公告"></div>
+        <div><label for="file-name" data-i18n="fileName">文件名稱</label><input id="file-name" maxlength="100" value="word文件"></div>
       </div>
       <div class="actions">
         <select id="language" aria-label="介面語言" data-i18n-label="language">
@@ -221,10 +221,11 @@ dialog input{width:100%}
           <option value="ja" lang="ja">日本語</option>
         </select>
         <button type="button" id="new-file" data-i18n="newFile">新文件</button>
+        <button type="button" id="copy-document" data-i18n="copyDocument">複製全文</button>
         <button type="button" id="mode">閱讀模式</button>
         <span id="document-zoom"></span>
         <button type="button" id="open-preview" data-i18n="printPreview">列印預覽</button>
-        <button type="button" class="ai-toggle" data-ai-toggle aria-controls="writer-ai" aria-expanded="false" data-i18n="aiTitle">AI 問文件</button>
+        <button type="button" class="ai-toggle" data-ai-toggle="" aria-controls="writer-ai" aria-expanded="false" data-i18n="aiTitle">AI 問文件</button>
         <button type="button" class="primary" id="save-html" data-i18n="saveHtml">另存 HTML</button>
       </div>
     </div>
@@ -271,9 +272,9 @@ dialog input{width:100%}
       </div>
       <div class="group">
         <button type="button" data-table="select" aria-pressed="false" data-i18n="selectCells" data-i18n-title="selectCellsHelp">選取儲存格</button>
-        <button type="button" data-table="merge-horizontal" data-i18n="mergeHorizontal" disabled>橫向合併</button>
-        <button type="button" data-table="merge-vertical" data-i18n="mergeVertical" disabled>垂直合併</button>
-        <button type="button" data-table="merge-range" data-i18n="mergeRange" disabled>合併範圍</button>
+        <button type="button" data-table="merge-horizontal" data-i18n="mergeHorizontal" disabled="">橫向合併</button>
+        <button type="button" data-table="merge-vertical" data-i18n="mergeVertical" disabled="">垂直合併</button>
+        <button type="button" data-table="merge-range" data-i18n="mergeRange" disabled="">合併範圍</button>
       </div>
       <div class="group">
         <button type="button" data-table="split-columns" data-i18n="splitColumns">直切（左右兩格）</button>
@@ -328,7 +329,7 @@ dialog input{width:100%}
   <section id="preview" aria-label="列印預覽" data-i18n-label="printPreview">
     <div class="preview-bar">
       <div class="actions"><button type="button" id="back" data-i18n="back">返回文件</button><strong data-i18n="a4Preview">A4 列印預覽</strong><span id="page-count" role="status"></span></div>
-      <div class="actions"><span id="preview-zoom"></span><button type="button" class="ai-toggle" data-ai-toggle aria-controls="writer-ai" aria-expanded="false" data-i18n="aiTitle">AI 問文件</button><button type="button" id="print" data-i18n="print">列印</button><button type="button" id="pdf" class="primary" data-i18n="pdf">儲存 PDF</button></div>
+      <div class="actions"><span id="preview-zoom"></span><button type="button" class="ai-toggle" data-ai-toggle="" aria-controls="writer-ai" aria-expanded="false" data-i18n="aiTitle">AI 問文件</button><button type="button" id="print" data-i18n="print">列印</button><button type="button" id="pdf" class="primary" data-i18n="pdf">儲存 PDF</button></div>
     </div>
     <p id="preview-note" role="status" data-i18n="printSettings">列印視窗請選 A4、實際大小（100%），並關閉頁首及頁尾。</p>
     <div id="sheets"></div>
@@ -340,11 +341,11 @@ dialog input{width:100%}
       <button type="button" data-zoom="in" aria-label="放大" title="放大" data-i18n-label="zoomIn" data-i18n-title="zoomIn">+</button>
     </span>
   </template>
-  <aside id="writer-ai" aria-labelledby="ai-title" inert>
+  <aside id="writer-ai" aria-labelledby="ai-title" inert="">
     <header class="ai-head">
       <h2 id="ai-title" data-i18n="aiTitle">AI 問文件</h2>
       <div class="actions">
-        <button type="button" id="ai-reset" data-i18n="aiReset" disabled>新對話</button>
+        <button type="button" id="ai-reset" data-i18n="aiReset" disabled="">新對話</button>
         <button type="button" id="ai-close" data-i18n-label="aiClose" aria-label="關閉 AI 問答">✕</button>
       </div>
     </header>
@@ -358,19 +359,19 @@ dialog input{width:100%}
     </details>
     <div class="ai-controls">
       <label for="ai-model" data-i18n="aiModel">模型</label>
-      <select id="ai-model" disabled><option value="" data-i18n="aiPick">選擇聊天模型</option></select>
+      <select id="ai-model" disabled=""><option value="" data-i18n="aiPick">選擇聊天模型</option></select>
     </div>
-    <p id="ai-destination" class="ai-destination" hidden></p>
+    <p id="ai-destination" class="ai-destination" hidden=""></p>
     <div id="ai-chat" class="ai-chat" role="log" data-i18n-label="aiChat" aria-label="問答紀錄">
       <p id="ai-empty" class="ai-empty" data-i18n="aiEmpty">可以查操作步驟，也可以一起討論怎麼修改這份文件。</p>
     </div>
-    <p id="ai-status" class="ai-status" role="status" hidden></p>
+    <p id="ai-status" class="ai-status" role="status" hidden=""></p>
     <form id="ai-form" class="ai-compose">
       <label for="ai-question" data-i18n="aiQuestion">問題</label>
-      <textarea id="ai-question" maxlength="2000" required></textarea>
+      <textarea id="ai-question" maxlength="2000" required=""></textarea>
       <div class="ai-compose-actions">
-        <button type="button" id="ai-stop" data-i18n="aiStop" hidden>停止</button>
-        <button type="submit" id="ai-send" class="primary" data-i18n="aiSend" disabled>送出</button>
+        <button type="button" id="ai-stop" data-i18n="aiStop" hidden="">停止</button>
+        <button type="submit" id="ai-send" class="primary" data-i18n="aiSend" disabled="">送出</button>
       </div>
     </form>
   </aside>
@@ -402,6 +403,7 @@ HTML 文件維護契約
 */
 const $ = id => document.getElementById(id);
 const app = $("app"), paper = $("paper"), fileName = $("file-name"), sheets = $("sheets"), dialog = $("dialog");
+const chrome = app.querySelector(".chrome");
 const shell = app.cloneNode(true);
 const styleSource = $("writer-style").outerHTML, scriptSource = $("writer-script").outerHTML;
 const headings = "h1,h2,h3", imageMime = /^image\/(png|jpeg|gif|webp|bmp|avif)$/i;
@@ -413,6 +415,9 @@ const locale = (() => {
     auto:["自動","Auto","自動"],
     fileName:["文件名稱","Document name","文書名"],
     newFile:["新文件","New document","新規文書"],
+    copyDocument:["複製全文","Copy document","全文をコピー"],
+    copyDone:["已複製全文","Document copied","全文をコピーしました"],
+    copyFailed:["無法複製全文，請選取正文後再複製。","Could not copy the document. Select the document text and copy it.","全文をコピーできませんでした。本文を選択してコピーしてください。"],
     readMode:["閱讀模式","Reading mode","閲覧モード"],
     editMode:["編輯","Edit","編集"],
     pageZoom:["頁面縮放","Page zoom","ページの拡大縮小"],
@@ -627,6 +632,12 @@ function updateOutline() {
       return button;
     }));
   }
+}
+function revealHeading(heading) {
+  // The magnified page scrolls horizontally, while the document scrolls vertically.
+  paper.closest(".paper-scroll").scrollLeft = 0;
+  const top = window.scrollY + heading.getBoundingClientRect().top - chrome.offsetHeight - 12;
+  window.scrollTo({top:Math.max(0,top)});
 }
 function changed() {
   notice = "";
@@ -939,6 +950,23 @@ function chooseImage(image) {
   freeImages.syncTools();
   syncContext();
 }
+function formatParagraph(tag) {
+  const {startContainer,startOffset,endContainer,endOffset} = selection;
+  const block = elementAt(startContainer)?.closest("p,h1,h2,h3,h4,h5,h6");
+  if (!block || !paper.contains(block) || !block.contains(endContainer)) {
+    return document.execCommand("formatBlock",false,"<" + tag + ">");
+  }
+  if (block.localName === tag) return;
+  // Preserve formatted text and the exact selection when changing a paragraph's heading level.
+  const replacement = make(tag);
+  for (const {name,value} of block.attributes) replacement.setAttribute(name,value);
+  replacement.append(...block.childNodes);
+  block.replaceWith(replacement);
+  const range = document.createRange();
+  range.setStart(startContainer === block ? replacement : startContainer,startOffset);
+  range.setEnd(endContainer === block ? replacement : endContainer,endOffset);
+  focusRange(range);
+}
 function issue(command,value = null) {
   if (!editing) return;
   if (command === "undo" || command === "redo") {
@@ -948,7 +976,10 @@ function issue(command,value = null) {
   columnSizing.cancel();
   tableEditing.clear();
   restore();
-  editHistory.perform(() => document.execCommand(command,false,value));
+  editHistory.perform(() => {
+    if (command === "formatBlock") formatParagraph(value);
+    else document.execCommand(command,false,value);
+  });
   if (selectedImage && !paper.contains(selectedImage)) chooseImage(null);
   changed();
   syncContext();
@@ -960,7 +991,8 @@ function mode(next) {
   fileName.readOnly = !next;
   $("tools").hidden = !next;
   $("mode").textContent = t(next ? "readMode" : "editMode");
-  if (!next) { tableEditing.clear(); chooseImage(null); }
+  if (next) restore();
+  else { tableEditing.clear(); chooseImage(null); }
   syncContext();
 }
 function objectKey() { return "object-" + Date.now().toString(36) + "-" + (++keyIndex); }
@@ -1766,10 +1798,143 @@ function blankDocument() {
   selection = null;
   saved = snapshot();
   mode(true);
-  restore();
+  pointAt(paper.firstElementChild);
   editHistory.reset();
   changed();
 }
+
+const documentClipboard = (() => {
+  const supported = new Set(("p div span h1 h2 h3 h4 h5 h6 br hr b strong i em u s strike mark sub sup small font " +
+    "a img ul ol li dl dt dd table caption colgroup col thead tbody tfoot tr th td blockquote pre code figure figcaption").split(" "));
+  const skip = "head,title,script,style,template,noscript,object,iframe,embed,svg,math,textarea,select,button";
+  const attributes = {
+    ol:["start","reversed"], li:["value"], th:["colspan","rowspan","scope"], td:["colspan","rowspan"],
+    col:["span"], colgroup:["span"], font:["face","color","size"], img:["alt"],
+  };
+  const styles = ("color background-color font-family font-size font-weight font-style text-decoration " +
+    "text-decoration-line text-decoration-color text-align text-indent vertical-align white-space line-height width").split(" ");
+  const imagePosition = {
+    "--image-x":"", "--image-y":"px", "--image-angle":"deg", "--image-width":"", "--image-opacity":"",
+  };
+  const embeddedImage = /^data:image\/(?:png|jpeg|gif|webp|bmp|avif);base64,[a-z\d+/=\s]+$/i;
+  function cleanNode(source,parent) {
+    if (source.nodeType === Node.TEXT_NODE) { parent.append(source.data); return; }
+    if (source.nodeType !== Node.ELEMENT_NODE || source.matches(skip) || source.hasAttribute("hidden")) return;
+    if (source.namespaceURI !== "http://www.w3.org/1999/xhtml") return;
+    let tag = source.localName;
+    if (!supported.has(tag) || (tag === "b" && source.id.startsWith("docs-internal-guid-"))) {
+      for (const child of source.childNodes) cleanNode(child,parent);
+      return;
+    }
+    if (tag === "p") {
+      const wordHeading = source.className.match(/(?:^|\s)MsoHeading([1-6])(?:\s|$)/i);
+      if (wordHeading) tag = "h" + wordHeading[1];
+    }
+    const output = make(tag);
+    for (const name of attributes[tag] || []) {
+      if (source.hasAttribute(name)) output.setAttribute(name,source.getAttribute(name));
+    }
+    for (const name of ["meta","lead"]) {
+      if (source.classList.contains(name)) output.classList.add(name);
+    }
+    for (const property of styles) {
+      if (property === "width" && !["img","col","td","th"].includes(tag)) continue;
+      const value = source.style.getPropertyValue(property);
+      if (value) output.style.setProperty(property,value);
+    }
+    if (tag === "a") {
+      const href = source.getAttribute("href")?.trim();
+      if (/^https?:\/\//i.test(href || "")) {
+        output.href = href;
+        output.target = "_blank";
+        output.rel = "noopener noreferrer";
+      }
+    } else if (tag === "img") {
+      const src = source.getAttribute("src") || "";
+      if (!embeddedImage.test(src)) { if (output.alt) parent.append(output.alt); return; }
+      output.src = src;
+      output.dataset.object = objectKey();
+      if (!output.style.width && /^\d+$/.test(source.getAttribute("width") || "")) {
+        output.style.width = source.getAttribute("width") + "px";
+      }
+      const layer = source.dataset.imageLayer;
+      const position = Object.entries(imagePosition).map(([name,unit]) => [name,source.style.getPropertyValue(name).trim(),unit]);
+      if (["front","behind"].includes(layer) && position.every(([,value,unit]) =>
+        value.endsWith(unit) && /^-?(?:\d+\.?\d*|\.\d+)$/.test(unit ? value.slice(0,-unit.length) : value))) {
+        output.dataset.imageLayer = layer;
+        output.draggable = false;
+        for (const [name,value] of position) output.style.setProperty(name,value);
+      }
+    } else if (tag === "table") output.dataset.object = objectKey();
+    for (const child of source.childNodes) cleanNode(child,output);
+    parent.append(output);
+  }
+  function cleanHTML(html) {
+    const template = make("template"), output = make("div");
+    template.innerHTML = html;
+    const source = template.content.querySelector("#app #paper.doc") || template.content;
+    for (const child of source.childNodes) cleanNode(child,output);
+    return output;
+  }
+  function paste(event) {
+    if (!editing || !event.clipboardData) return;
+    const clipboard = event.clipboardData;
+    event.preventDefault();
+    remember();
+    const html = clipboard.getData("text/html");
+    if (html) {
+      const content = cleanHTML(html);
+      if (content.textContent.trim() || content.querySelector("img,table,hr")) {
+        if (paper.innerHTML === "<p><br></p>") {
+          // Keep top-level headings and tables intact when replacing the blank document.
+          editHistory.perform(() => {
+            paper.replaceChildren(...content.childNodes);
+            const range = document.createRange();
+            range.selectNodeContents(paper);
+            range.collapse(false);
+            focusRange(range);
+          });
+          changed();
+          syncContext();
+        } else issue("insertHTML",content.innerHTML);
+        return;
+      }
+    }
+    const image = Array.from(clipboard.files).find(file => imageMime.test(file.type));
+    if (image) { insertImage(image); return; }
+    const text = clipboard.getData("text/plain");
+    if (text) issue("insertText",text);
+  }
+  function copy() {
+    const current = window.getSelection();
+    const previous = current.rangeCount ? current.getRangeAt(0).cloneRange() : null;
+    const range = document.createRange();
+    range.selectNodeContents(paper);
+    const transfer = event => {
+      if (!event.clipboardData) return;
+      event.clipboardData.setData("text/html",cleanBody());
+      event.clipboardData.setData("text/plain",paper.innerText);
+      event.preventDefault();
+    };
+    let copied = false;
+    document.addEventListener("copy",transfer);
+    try {
+      current.removeAllRanges();
+      current.addRange(range);
+      copied = document.execCommand("copy");
+    } catch {
+      copied = false;
+    } finally {
+      document.removeEventListener("copy",transfer);
+      current.removeAllRanges();
+      if (previous) current.addRange(previous);
+    }
+    notice = copied ? "copyDone" : "copyFailed";
+    status();
+  }
+  return {copy,paste};
+})();
+
 function saveHTML() {
   const output = shell.cloneNode(true);
   output.dataset.mode = "read";
@@ -2579,7 +2744,10 @@ $("tools").addEventListener("click",event => {
 for (const [name,command] of [["format","formatBlock"],["font","fontName"],["alignment",null]]) {
   $(name).addEventListener("change",event => {
     const value = event.target.value;
-    if (value) issue(command || value,command ? value : null);
+    if (value) {
+      if (command === "formatBlock") remember();
+      issue(command || value,command ? value : null);
+    }
     event.target.selectedIndex = 0;
   });
 }
@@ -2602,14 +2770,7 @@ paper.addEventListener("click",event => {
   if (event.target.closest("a")) event.preventDefault();
   if (!tableEditing.hasSelection()) chooseImage(event.target.closest("img"));
 });
-paper.addEventListener("paste",event => {
-  if (!editing || !event.clipboardData) return;
-  event.preventDefault();
-  remember();
-  const image = Array.from(event.clipboardData.files).find(file => imageMime.test(file.type));
-  if (image) insertImage(image);
-  else issue("insertText",event.clipboardData.getData("text/plain"));
-});
+paper.addEventListener("paste",documentClipboard.paste);
 paper.addEventListener("drop",event => {
   if (!editing) return;
   event.preventDefault();
@@ -2618,8 +2779,13 @@ paper.addEventListener("drop",event => {
 });
 $("outline").addEventListener("click",event => {
   const target = event.target.closest("button");
-  if (target) paper.querySelectorAll(headings)[Number(target.dataset.index)]?.scrollIntoView({block:"start"});
+  if (!target) return;
+  const heading = paper.querySelectorAll(headings)[Number(target.dataset.index)];
+  if (heading) revealHeading(heading);
 });
+new ResizeObserver(([entry]) => {
+  app.style.setProperty("--chrome-height",entry.contentRect.height + "px");
+}).observe(chrome);
 $("form").addEventListener("submit",event => {
   event.preventDefault();
   if (dialogType === "new") { dialog.close(); blankDocument(); return; }
@@ -2669,6 +2835,7 @@ $("language").addEventListener("change",event => {
 });
 $("mode").addEventListener("click",() => mode(!editing));
 $("new-file").addEventListener("click",() => snapshot() === saved ? blankDocument() : openDialog("new"));
+$("copy-document").addEventListener("click",documentClipboard.copy);
 $("save-html").addEventListener("click",saveHTML);
 $("open-preview").addEventListener("click",preview);
 $("back").addEventListener("click",leavePreview);
