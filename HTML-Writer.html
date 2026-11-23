@@ -265,6 +265,38 @@ dialog input{width:100%}
 @media screen and (min-width:1120px){#app[data-web-ai-open="true"]{margin-right:var(--writer-ai-width)}}
 @media (prefers-reduced-motion:reduce){#writer-web-ai{transition:none}}
 @media print{#writer-web-ai{display:none!important}}
+
+/* 編輯模式分頁參考虛線（不影響正文與列印） */
+#page-break-guides{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+  overflow:hidden;
+}
+.page-break-line{
+  position:absolute;
+  left:0;
+  right:0;
+  border-top:1.5px dashed #8aa495;
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+}
+.page-break-line span{
+  transform:translateY(-50%);
+  margin-right:10px;
+  padding:1px 7px;
+  border-radius:999px;
+  background:#f4f7f4;
+  border:1px solid #cdd9d1;
+  color:#4c6356;
+  font:11px/1.4 var(--sans);
+}
+@media print{
+  #page-break-guides{display:none!important}
+}
+
 </style></head><body><main id="app" data-mode="read" data-language="zh-Hant">
   <header class="chrome">
     <div class="top">
@@ -363,6 +395,7 @@ dialog input{width:100%}
       <div class="paper-space">
       <div class="paper-frame">
       <article class="doc" id="paper" lang="zh-Hant" contenteditable="false" spellcheck="false" aria-label="文件內容" data-i18n-label="content"><p><br></p></article>
+      <div id="page-break-guides" aria-hidden="true"></div>
       <div id="ai-insert-markers" hidden="" aria-label="AI 內容插入位置"></div>
       <div id="column-controls" hidden=""><span id="column-guide" hidden=""></span></div>
       <div id="image-controls" data-image-control="move" hidden="">
@@ -3510,6 +3543,103 @@ $("open-preview").addEventListener("click",preview);
 $("back").addEventListener("click",leavePreview);
 $("print").addEventListener("click",() => output("print"));
 $("pdf").addEventListener("click",() => output("pdf"));
+
+
+/* 編輯畫面 A4 分頁參考虛線（依實際元素高度推算，減少累積誤差） */
+const pageBreakGuides = (() => {
+  const host = $("page-break-guides");
+  const pxPerMm = 96 / 25.4;
+
+  // 【微調區】若覺得虛線整體偏低就填負數（例如 -2），偏高就填正數（例如 2），單位為 mm
+  const adjustMm = 0;
+  const pageContentHeight = (297 - 18 * 2 + adjustMm) * pxPerMm - 1;
+
+  let timer = null;
+  function schedule() {
+    if (timer) cancelAnimationFrame(timer);
+    timer = requestAnimationFrame(render);
+  }
+
+  function render() {
+    timer = null;
+    if (!host || app.dataset.preview === "true") return;
+
+    const style = getComputedStyle(paper);
+    const padTop = parseFloat(style.paddingTop) || 0;
+    const breaks = [];
+    let pageStart = padTop;
+
+    const addBreak = (y) => {
+      breaks.push(y);
+      pageStart = y;
+    };
+
+    for (const el of paper.children) {
+      if (el.matches("img[data-image-layer]")) continue;
+      const top = el.offsetTop;
+      const bottom = top + el.offsetHeight;
+
+      // 1. 標題防孤行（對應列印預覽：剩餘高度小於 76px 就換頁）
+      if (el.matches("h1,h2,h3,h4,h5,h6,hr")) {
+        if (top > pageStart && (pageStart + pageContentHeight) - top < 76) {
+          addBreak(top);
+        } else if (bottom > pageStart + pageContentHeight && top > pageStart) {
+          addBreak(top);
+        }
+        continue;
+      }
+
+      // 2. 表格：逐列檢查，整列放不下就從該列上方換頁
+      if (el.matches("table")) {
+        const theadHeight = el.tHead ? el.tHead.offsetHeight : 0;
+        const rows = Array.from(el.tBodies).flatMap(tb => Array.from(tb.rows));
+        for (const row of rows) {
+          const rTop = el.offsetTop + row.offsetTop;
+          const rBottom = rTop + row.offsetHeight;
+          if (rBottom > pageStart + pageContentHeight && rTop > pageStart) {
+            addBreak(rTop);
+            // 換頁後表頭會重複出現，扣除表頭高度讓後續計算更準
+            pageStart -= theadHeight;
+          }
+        }
+        continue;
+      }
+
+      // 3. 清單：逐項檢查
+      if (el.matches("ul,ol")) {
+        for (const li of el.children) {
+          const lTop = li.offsetTop;
+          const lBottom = lTop + li.offsetHeight;
+          if (lBottom > pageStart + pageContentHeight && lTop > pageStart) {
+            addBreak(lTop);
+          }
+        }
+        continue;
+      }
+
+      // 4. 一般段落：可跨頁切分
+      while (bottom > pageStart + pageContentHeight) {
+        addBreak(pageStart + pageContentHeight);
+      }
+    }
+
+    host.replaceChildren();
+    breaks.forEach((y, index) => {
+      const line = make("div", "page-break-line");
+      line.style.top = y + "px";
+      const label = make("span");
+      label.textContent = `第 ${index + 1} 頁結束 ／ 第 ${index + 2} 頁開始`;
+      line.append(label);
+      host.append(line);
+    });
+  }
+
+  new ResizeObserver(schedule).observe(paper);
+  new MutationObserver(schedule).observe(paper, { childList: true, subtree: true, characterData: true });
+  render();
+  return { render: schedule };
+})();
+
 locale.apply(locale.preference);
 pageZoom.localize();
 saved = snapshot();
@@ -3517,4 +3647,5 @@ mode(app.dataset.mode !== "read");
 editHistory.reset();
 changed();
 })();
+
 </script></body></html>
