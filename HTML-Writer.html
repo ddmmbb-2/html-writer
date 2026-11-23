@@ -122,6 +122,8 @@ button:disabled{cursor:default;opacity:.45}
 .doc table{width:100%;border-collapse:collapse;table-layout:fixed;margin:.8em 0;font-size:.93em}
 .doc td,.doc th{padding:6px 9px;text-align:left;vertical-align:top;border:1px solid #d5dfd5}
 .doc th{background:#e7efe7;color:#244f3e}
+.doc table[data-borderless] td,.doc table[data-borderless] th{border-color:transparent}
+[data-mode="edit"] #paper table[data-borderless] td,[data-mode="edit"] #paper table[data-borderless] th{border:1px dashed #ccd6cc}
 [data-mode="edit"] #paper [data-cell-selected]{background:#d5e9f9;box-shadow:inset 0 0 0 2px #3b76a3}
 #table-tools [aria-pressed="true"]{background:#d5e9f9;border-color:#3b76a3}
 .table-hint{color:var(--muted);font-size:12px}
@@ -156,6 +158,8 @@ dialog::backdrop{background:#18292266}
 dialog h2{margin:0 0 12px;font-size:18px}
 dialog label{display:grid;gap:4px;margin:8px 0}
 dialog input{width:100%}
+dialog label.dialog-check{display:flex;align-items:center;gap:8px;cursor:pointer}
+dialog label.dialog-check input{width:auto;min-height:0;margin:0}
 .dialog-actions{display:flex;justify-content:flex-end;gap:6px;margin-top:12px}
 #error{color:#97332d;font-size:13px;min-height:1em}
 .ai-toggle[aria-expanded="true"]{background:var(--wash);border-color:#9fbaac;color:var(--green)}
@@ -373,6 +377,9 @@ dialog input{width:100%}
         <button type="button" data-table="split-columns" data-i18n="splitColumns">直切（左右兩格）</button>
         <button type="button" data-table="split-rows" data-i18n="splitRows">橫切（上下兩格）</button>
       </div>
+      <div class="group">
+        <button type="button" data-table="toggle-borders" aria-pressed="false" data-i18n="hideBorders" data-i18n-title="hideBordersHelp">不顯示格線</button>
+      </div>
       <span id="column-hint" class="table-hint" data-i18n="resizeColumns" hidden="">拖曳欄線可調整欄寬</span>
     </div>
     <div class="context" id="image-tools" hidden="">
@@ -520,7 +527,7 @@ dialog input{width:100%}
       <h2 id="dialog-title"></h2>
       <p id="new-message" data-i18n="newWarning" hidden="">目前的文件有未另存的變更。要開一份空白文件嗎？</p>
       <div id="link-fields" hidden=""><label><span data-i18n="linkText">顯示文字</span><input id="link-text"></label><label><span data-i18n="url">網址</span><input id="link-url" type="url" placeholder="https://example.com"></label></div>
-      <div id="table-fields" hidden=""><label><span data-i18n="rows">列數（含表頭）</span><input id="rows" type="number" min="1" max="30" value="3"></label><label><span data-i18n="columns">欄數</span><input id="columns" type="number" min="1" max="8" value="2"></label></div>
+      <div id="table-fields" hidden=""><label><span data-i18n="rows">列數（含表頭）</span><input id="rows" type="number" min="1" max="30" value="3"></label><label><span data-i18n="columns">欄數</span><input id="columns" type="number" min="1" max="8" value="2"></label><label class="dialog-check"><input id="table-borderless" type="checkbox"><span data-i18n="hideBorders">不顯示格線</span></label></div>
       <p id="error" role="alert"></p>
       <div class="dialog-actions"><button type="button" id="cancel" data-i18n="cancel">取消</button><button type="submit" class="primary" id="submit">插入</button></div>
     </form>
@@ -613,6 +620,8 @@ const locale = (() => {
     mergeRange:["合併範圍","Merge range","範囲を結合"],
     splitColumns:["直切（左右兩格）","Split into left and right cells","縦に分割（左右）"],
     splitRows:["橫切（上下兩格）","Split into top and bottom cells","横に分割（上下）"],
+    hideBorders:["不顯示格線","Hide borders","罫線を非表示"],
+    hideBordersHelp:["切換是否顯示此表格的格線（編輯時以淡虛線輔助對齊，閱讀與列印時隱藏）","Toggle table borders (faint dashed guides while editing, hidden in reading and print)","表の罫線の表示／非表示を切り替えます（編集時は薄い破線を表示し、閲覧・印刷時は非表示）"],
     resizeColumns:["拖曳欄線可調整欄寬","Drag a column border to adjust its width","列の境界線をドラッグして幅を調整"],
     columnGrip:["調整第 {n} 欄與第 {next} 欄的寬度。拖曳或使用左右方向鍵","Resize columns {n} and {next}. Drag or use the left and right arrow keys","列 {n} と列 {next} の幅を調整。ドラッグまたは左右の矢印キーを使用"],
     imageWidth:["圖片寬度","Image width","画像の幅"],
@@ -1179,9 +1188,10 @@ function blankCell(row,tag = "td",before = null) {
   row.insertBefore(cell,before);
   return cell;
 }
-function insertTable(rows,columns) {
+function insertTable(rows,columns,borderless = false) {
   const table = make("table");
   table.dataset.object = objectKey();
+  if (borderless) table.setAttribute("data-borderless","");
   const head = table.createTHead().insertRow();
   for (let index = 0; index < columns; index++) blankCell(head,"th").textContent = t("columnName",{n:index + 1});
   const body = table.createTBody();
@@ -1274,6 +1284,8 @@ const tableEditing = (() => {
     for (const action of ["split-columns","split-rows"]) {
       button(action).disabled = marked.length > 1;
     }
+    const currentTable = (marked[0]?.cell || activeCell())?.closest("table");
+    button("toggle-borders").setAttribute("aria-pressed",String(!!currentTable?.hasAttribute("data-borderless")));
   }
   function bounds(areas) {
     return areas.reduce((box,{top,bottom,left,right}) => ({
@@ -1481,6 +1493,7 @@ const tableEditing = (() => {
       if (action === "remove-column" && !removeColumn(grid,area.left)) return;
       if (action === "split-columns") splitColumns(grid,area);
       if (action === "split-rows") splitRows(grid,area);
+      if (action === "toggle-borders") table.toggleAttribute("data-borderless");
       if (paper.contains(cell)) { pointAt(cell); return; }
       const updated = tableGrid(table);
       const row = updated.slots[Math.min(area.top,updated.rows.length - 1)];
@@ -1962,6 +1975,7 @@ function openDialog(type) {
   $("submit").textContent = t(type === "new" ? "newFile" : "insert");
   $("error").textContent = "";
   if (type === "link") { $("link-text").value = selection?.toString() || ""; $("link-url").value = ""; }
+  if (type === "table") $("table-borderless").checked = false;
   dialog.showModal();
 }
 function blankDocument() {
@@ -2041,7 +2055,10 @@ const documentClipboard = (() => {
         output.draggable = false;
         for (const [name,value] of position) output.style.setProperty(name,value);
       }
-    } else if (tag === "table") output.dataset.object = objectKey();
+    } else if (tag === "table") {
+      output.dataset.object = objectKey();
+      if (source.hasAttribute("data-borderless")) output.setAttribute("data-borderless","");
+    }
     for (const child of source.childNodes) cleanNode(child,output);
     parent.append(output);
   }
@@ -3096,6 +3113,7 @@ const writerWebAI = (() => {
       if(node.nodeType!==Node.ELEMENT_NODE||node.namespaceURI!=="http://www.w3.org/1999/xhtml"||discard.has(node.tagName))return;
       if(!tags.has(node.tagName)){for(const child of [...node.childNodes])visit(child,parent);return;}
       const element=document.createElement(node.localName);
+      if(node.tagName==="TABLE"&&node.hasAttribute("data-borderless"))element.setAttribute("data-borderless","");
       if(node.tagName==="TD"||node.tagName==="TH")for(const attr of ["colspan","rowspan"]){const n=Number(node.getAttribute(attr));if(Number.isInteger(n)&&n>=1&&n<=30)element.setAttribute(attr,String(n));}
       if(node.tagName==="A") {const href=node.getAttribute("href")||"";if(/^https?:\/\//i.test(href)){element.href=href;element.target="_blank";element.rel="noopener noreferrer";}}
       if(node.tagName==="OL") {const n=Number(node.getAttribute("start"));if(Number.isInteger(n)&&n>=1&&n<10000)element.start=n;}
@@ -3497,7 +3515,7 @@ $("form").addEventListener("submit",event => {
       $("error").textContent = t("invalidTable");
       return;
     }
-    dialog.close(); insertTable(rows,columns); return;
+    dialog.close(); insertTable(rows,columns,$("table-borderless").checked); return;
   }
   let url;
   try { url = new URL($("link-url").value.trim()); } catch {}
