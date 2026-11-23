@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>word文件</title><style id="writer-style">
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>未命名文件</title><style id="writer-style">
 :root{
   color-scheme:light;
   --sans:Arial,"Helvetica Neue","Liberation Sans","Microsoft JhengHei","PingFang TC","Noto Sans CJK TC","Noto Sans TC","WenQuanYi Zen Hei",sans-serif;
@@ -237,12 +237,12 @@ dialog input{width:100%}
 .ai-edit-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;flex-shrink:0;padding:10px 12px;border-top:1px solid var(--edge);background:#fbfcf9;position:relative;z-index:1}
 #ai-edit-preview:has(#ai-edit-render:empty){height:180px}
 @media(max-height:650px){#ai-edit-preview{height:35dvh;min-height:110px}#ai-edit-panel{padding-block:6px}}
-</style></head><body><main id="app" data-mode="read" data-language="auto">
+</style></head><body><main id="app" data-mode="read" data-language="zh-Hant">
   <header class="chrome">
     <div class="top">
       <div class="identity">
         <span class="mark" aria-hidden="true">文</span>
-        <div><label for="file-name" data-i18n="fileName">文件名稱</label><input id="file-name" maxlength="100" value="word文件"></div>
+        <div><label for="file-name" data-i18n="fileName">文件名稱</label><input id="file-name" maxlength="100" value="未命名文件"></div>
       </div>
       <div class="actions">
         <select id="language" aria-label="介面語言" data-i18n-label="language">
@@ -333,20 +333,7 @@ dialog input{width:100%}
       <div class="paper-scroll">
       <div class="paper-space">
       <div class="paper-frame">
-      <article class="doc" id="paper" lang="zh-Hant" contenteditable="false" spellcheck="false" aria-label="文件內容" data-i18n-label="content">
-        <p class="meta">教育訓練　／　十一月線上課程</p>
-        <h1>一點點，就很不一樣</h1>
-        <p class="lead">有時候，只是一個小巧思，就能讓對方感受到不同。</p>
-        <hr>
-        <h2>本月課程</h2>
-        <p>這次從一段餐廳故事出發，看看哪些小細節能改善一次互動。觀看後，請選一個你覺得能用在院內的做法，寫下你會在哪個情境試試看。</p>
-        <h2>參與方式</h2>
-        <ol><li>登入院內訓練平台，開啟本月課程影片。</li><li>看完後，在課程頁面提交簡短心得。</li></ol>
-        <table data-object="sample-table">
-          <thead><tr><th>項目</th><th>說明</th></tr></thead>
-          <tbody><tr><td>適用對象</td><td>全院同仁</td></tr><tr><td>完成期限</td><td>11 月 30 日</td></tr></tbody>
-        </table>
-      </article>
+      <article class="doc" id="paper" lang="zh-Hant" contenteditable="false" spellcheck="false" aria-label="文件內容" data-i18n-label="content"><p><br></p></article>
       <div id="ai-insert-markers" hidden="" aria-label="AI 內容插入位置"></div>
       <div id="column-controls" hidden=""><span id="column-guide" hidden=""></span></div>
       <div id="image-controls" data-image-control="move" hidden="">
@@ -363,9 +350,9 @@ dialog input{width:100%}
   <section id="preview" aria-label="列印預覽" data-i18n-label="printPreview">
     <div class="preview-bar">
       <div class="actions"><button type="button" id="back" data-i18n="back">返回文件</button><strong data-i18n="a4Preview">A4 列印預覽</strong><span id="page-count" role="status"></span></div>
-      <div class="actions"><span id="preview-zoom"></span><button type="button" class="ai-toggle" data-ai-toggle="" aria-controls="writer-ai" aria-expanded="false" data-i18n="aiTitle">AI 問文件</button><button type="button" id="print" data-i18n="print">列印</button><button type="button" id="pdf" class="primary" data-i18n="pdf">儲存 PDF</button></div>
+      <div class="actions"><span id="preview-zoom"></span><button type="button" class="ai-toggle" data-ai-toggle="" aria-controls="writer-ai" aria-expanded="false" data-i18n="aiTitle">AI 問文件</button><button type="button" id="print" data-i18n="print">列印</button><button type="button" id="pdf" class="primary" data-i18n="pdf">文字型 PDF</button></div>
     </div>
-    <p id="preview-note" role="status" data-i18n="printSettings">列印視窗請選 A4、實際大小（100%），並關閉頁首及頁尾。</p>
+    <p id="preview-note" role="status" data-i18n="pdfPreviewGuide">點選「文字型 PDF」，以原生文字及表格輸出。請在瀏覽器列印視窗選「儲存為 PDF」，而不是列印為圖片。</p>
     <div id="sheets"></div>
   </section>
   <template id="zoom-template">
@@ -395,11 +382,11 @@ dialog input{width:100%}
       <label for="ai-task">功能</label>
       <select id="ai-task"><option value="ask">文件問答</option><option value="format">選取區塊重新排版</option><option value="generate">游標位置直接生成</option></select>
     </div>
-    <div id="ai-edit-panel" class="ai-edit-panel" hidden>
+    <div id="ai-edit-panel" class="ai-edit-panel" hidden="">
       <div class="ai-pick-actions"><button type="button" id="ai-pick-start">開始選取文件</button><button type="button" id="ai-pick-clear">清除選取</button></div><div id="ai-selection-summary">請先在文件中圈選段落，再開啟 AI。</div>
-      <div id="ai-picked-content" class="ai-picked-content" hidden></div><label id="ai-edit-style-label" for="ai-edit-style">修改方式</label>
+      <div id="ai-picked-content" class="ai-picked-content" hidden=""></div><label id="ai-edit-style-label" for="ai-edit-style">修改方式</label>
       <select id="ai-edit-style"><option value="layout">只排版（不改文字）</option><option value="polish">排版並潤飾</option><option value="free">自由改寫</option></select>
-      <div id="ai-edit-preview" hidden>
+      <div id="ai-edit-preview" hidden="">
         <strong>修改預覽（可在下方捲動內容，也可拖曳預覽框底部調整高度）</strong>
         <div id="ai-edit-render" class="doc"></div>
         <div class="ai-edit-actions"><button type="button" id="ai-edit-apply" class="primary">確認取代</button><button type="button" id="ai-edit-dismiss">取消</button></div>
@@ -447,6 +434,9 @@ HTML 文件維護契約
 - 自由圖片保留在原插入點。圖層與位置儲存在 img 上，位置以正文左上角為原點，水平按正文寬度比例、垂直用 CSS px。
 - 多語字串集中在 locale。介面使用 data-i18n 或 t()，正文與列印排版共用獨立的正文語言。
 - 分頁只讀正文副本。列印與 PDF 共用預覽建立的 #sheets 及同一套正文樣式。
+ - PDF 保留文字：專用隱藏 iframe 複製 HTML 的真實文字節點與表格，交給瀏覽器原生 PDF 引擎。嚴禁改成 canvas、html2canvas、截圖或將整頁轉為圖片。
+ - PDF 可選取文字、搜尋、保留表格框線與儲存格文字；PDF 並非可直接合併／拆分儲存格的表格編輯器，後續編輯仍使用 HTML 原始檔。
+ - 程式優先讓 LLM 容易定位、理解、局部修改與維護，不需迎合傳統人類可讀排版；新功能請維持清晰模組邊界。
 - AI 面板只讀 #paper，對話只存在目前頁面。預覽用來源索引對應正文，另存時不嵌入連線設定或對話。
 - 另存的 HTML 內嵌程式與圖片。字體用 WriterSans、WriterSerif、WriterMono 對應離線備援字體。
 */
@@ -543,7 +533,9 @@ const locale = (() => {
     back:["返回文件","Back to document","文書に戻る"],
     a4Preview:["A4 列印預覽","A4 print preview","A4 印刷プレビュー"],
     print:["列印","Print","印刷"],
-    pdf:["儲存 PDF","Save PDF","PDF を保存"],
+    pdf:["文字型 PDF","Text PDF","テキスト PDF"],
+    pdfPreviewGuide:["使用「文字型 PDF」與瀏覽器內建的「儲存為 PDF」，可保留可選取的文字、表格格線及儲存格內文字；需要繼續編輯請保留 HTML 原始檔。","Use Text PDF and the browser’s built-in Save as PDF to keep selectable text, table borders and cell text. Keep the HTML file for editing.","テキスト PDF とブラウザー標準の PDF 保存では、選択可能なテキストと表の罫線・セルの文字が残ります。編集には HTML ファイルを保管してください。"],
+    pdfChooseBrowser:["請在瀏覽器的列印目的地選「儲存為 PDF」（優先使用 Chrome／Edge 內建選項），不要選擇「列印成圖片」。文字可複製與搜尋，但 PDF 表格並非可直接操作的 HTML 儲存格。","Choose the browser’s built-in Save as PDF (prefer Chrome or Edge), not Print as Image. PDF text remains selectable, but tables are not editable HTML cells.","印刷先にブラウザー標準の PDF 保存（Chrome／Edge 推奨）を選び、画像として印刷しないでください。テキストは選択できますが、表は HTML のセルとして編集できません。"],
     printSettings:["列印視窗請選 A4、實際大小（100%），並關閉頁首及頁尾。","In the print dialog, choose A4 and actual size (100%), and turn off headers and footers.","印刷画面で A4 と実際のサイズ（100%）を選び、ヘッダーとフッターをオフにしてください。"],
     newWarning:["目前的文件有未另存的變更。要開一份空白文件嗎？","This document has unsaved changes. Start a blank document?","保存されていない変更があります。空白の文書を開きますか？"],
     linkText:["顯示文字","Display text","表示する文字列"],
@@ -2995,7 +2987,7 @@ const voiceInput = (() => {
 function buildPreview() {
   const result = paginator.render();
   $("page-count").textContent = t("pageCount",{count:result.count});
-  $("preview-note").textContent = t("printSettings") + (result.scaledCount ? " " + t("scaledItems") : "");
+  $("preview-note").textContent = t("pdfPreviewGuide") + " " + t("printSettings") + (result.scaledCount ? " " + t("scaledItems") : "");
   pageZoom.fitPreview();
   printReady = true;
 }
@@ -3028,9 +3020,65 @@ function leavePreview() {
   $("open-preview").focus();
   syncContext();
 }
+/*
+ * PDF TEXT EXPORT / 可搜尋 PDF
+ * Browser APIs cannot silently download a PDF from a standalone HTML file.
+ * Native browser PDF printing is the only zero-dependency, WYSIWYG path that
+ * embeds system fonts and preserves real text with our complex table layout.
+ * Never rasterize the pages with Canvas or a screenshot library.
+ * Printing takes place in a *separate document* so zoom, editor overlays,
+ * AI panels and any surrounding transforms cannot affect the PDF page.
+ */
+const pdfTextExport = (() => {
+  let currentFrame = null;
+  function exportPDF() {
+    if (!printReady) buildPreview();
+    $("preview-note").textContent = t("pdfChooseBrowser") + " " + t("printSettings");
+    if (currentFrame) currentFrame.remove();
+    const frame = document.createElement("iframe");
+    frame.title = t("pdf");
+    frame.setAttribute("aria-hidden","true");
+    frame.tabIndex = -1;
+    // Do not use display:none/visibility:hidden: some print engines omit it.
+    frame.style.cssText = "position:fixed;left:-200vw;top:0;width:794px;height:1123px;border:0;pointer-events:none";
+    document.body.append(frame);
+    currentFrame = frame;
+    try {
+      const doc = frame.contentDocument;
+      doc.open();
+      doc.write('<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"></head><body></body></html>');
+      doc.close();
+      doc.title = actualName();
+      doc.documentElement.lang = paper.lang || "zh-Hant";
+      const stylesheet = doc.createElement("style");
+      stylesheet.textContent = $("writer-style").textContent;
+      doc.head.append(stylesheet);
+      const pages = doc.importNode(sheets,true);
+      pages.classList.remove("measuring");
+      pages.style.removeProperty("--preview-zoom");
+      doc.body.append(pages);
+      // The print DOM must retain th/td and actual text nodes, not pixel images.
+      const cleanup = () => setTimeout(() => {
+        if (currentFrame === frame) currentFrame = null;
+        frame.remove();
+      },1000);
+      frame.contentWindow.addEventListener("afterprint",cleanup,{once:true});
+      frame.contentWindow.focus();
+      frame.contentWindow.print();
+    } catch (error) {
+      frame.remove();
+      if (currentFrame === frame) currentFrame = null;
+      $("preview-note").textContent = t("pdfChooseBrowser") + " " + t("printSettings");
+      // Fallback: the browser can still print the same live DOM as before.
+      window.print();
+    }
+  }
+  return {exportPDF};
+})();
 function output(kind) {
+  if (kind === "pdf") return pdfTextExport.exportPDF();
   if (!printReady) buildPreview();
-  $("preview-note").textContent = (kind === "pdf" ? t("choosePdf") + " " : "") + t("printSettings");
+  $("preview-note").textContent = t("printSettings");
   window.print();
 }
 window.addEventListener("beforeprint",() => {
