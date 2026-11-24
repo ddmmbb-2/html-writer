@@ -202,6 +202,19 @@ dialog label.dialog-check input{width:auto;min-height:0;margin:0}
 @media (prefers-reduced-motion:reduce){#writer-ai{transition:none}}
 @media screen and (max-width:780px){.workspace{display:block;padding:13px 10px}.outline{display:none}.paper-frame{--image-inset:clamp(22px,8vw,68px)}}
 @media screen and (max-width:550px){.tools,.group{gap:4px}.tools .group,#table-tools .group{max-width:100%;flex-wrap:wrap;padding-right:4px}.tools button,.tools select{font-size:12px;max-width:100%}}
+.attachment-bar{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:0 0 12px;padding:7px 11px;border:1px solid var(--edge);border-radius:8px;background:#f7faf7;font-size:13px}
+#preview-attachments{max-width:var(--page-width);margin:0 auto 12px}
+.attachment-label{color:var(--muted);font-weight:650;margin-right:2px}
+.attachment-hint{color:var(--muted);font-size:12px}
+.attachment-chip{display:inline-flex;align-items:center;border:1px solid #c9d6cb;border-radius:6px;background:white;overflow:hidden;max-width:100%}
+.attachment-chip button{min-height:28px;border:0;border-radius:0;background:transparent;padding:3px 8px;font-size:12.5px}
+.attachment-chip button:hover{background:var(--wash)}
+.attachment-open{display:inline-flex;align-items:center;gap:5px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--green);font-weight:550}
+.attachment-size{color:var(--muted);font-size:11.5px;font-weight:400}
+.attachment-dl{color:var(--muted);border-left:1px solid var(--edge)!important;padding-inline:6px!important}
+.attachment-remove{color:#8c3b35;border-left:1px solid var(--edge)!important;padding-inline:6px!important}
+[data-mode="read"] #doc-attachments .attachment-remove,#preview-attachments .attachment-remove{display:none}
+@media print{#doc-attachments,#preview-attachments,#attachment-store{display:none!important}}
 @page{size:A4 portrait;margin:0}
 @media print{
   html,body{margin:0!important;padding:0!important;background:white!important}
@@ -310,7 +323,7 @@ dialog label.dialog-check input{width:auto;min-height:0;margin:0}
   #page-break-guides{display:none!important}
 }
 
-</style></head><body><main id="app" data-mode="read" data-language="auto">
+</style></head><body><main id="app" data-mode="read" data-language="auto" data-margin="18,18,18,18">
   <header class="chrome">
     <div class="top">
       <div class="identity">
@@ -367,7 +380,9 @@ dialog label.dialog-check input{width:auto;min-height:0;margin:0}
         <button type="button" id="add-image" data-i18n="image">圖片</button>
         <select id="free-image-picker" aria-label="選取自由圖片" data-i18n-label="pickFreeImage" hidden=""></select>
         <button type="button" id="add-table" data-i18n="table">表格</button>
+        <button type="button" id="add-attachment" data-i18n="attachment">附件</button>
         <input type="file" id="image-file" accept="image/png,image/jpeg,image/gif,image/webp,image/bmp,image/avif" hidden="">
+        <input type="file" id="attachment-file" multiple="" hidden="">
       </div>
     </div>
     <div class="context" id="table-tools" hidden="">
@@ -408,6 +423,7 @@ dialog label.dialog-check input{width:auto;min-height:0;margin:0}
     <aside class="outline"><h2 data-i18n="outline">文件大綱</h2><nav id="outline" aria-label="文件大綱" data-i18n-label="outline"></nav></aside>
     <section class="document-area" aria-label="文件" data-i18n-label="document">
       <div id="mic-document-status" class="voice-status" role="status"></div>
+      <div id="doc-attachments" class="attachment-bar" hidden=""></div>
       <div class="paper-scroll">
       <div class="paper-space">
       <div class="paper-frame">
@@ -433,7 +449,9 @@ dialog label.dialog-check input{width:auto;min-height:0;margin:0}
          <button type="button" class="web-ai-toggle" data-web-ai-toggle="" aria-controls="writer-web-ai" aria-expanded="false" data-i18n="webAiTitle">網頁 AI 協作</button><button type="button" id="print" data-i18n="print">列印</button><button type="button" id="pdf" class="primary" data-i18n="pdf">文字型 PDF</button></div>
     </div>
     <p id="preview-note" role="status" data-i18n="pdfPreviewGuide">點選「文字型 PDF」，以原生文字及表格輸出。請在瀏覽器列印視窗選「儲存為 PDF」，而不是列印為圖片。</p>
+    <div id="preview-attachments" class="attachment-bar" hidden=""></div>
     <div id="sheets"></div>
+    <div id="attachment-store" hidden=""></div>
   </section>
   <template id="zoom-template">
     <span class="zoom-controls" role="group" aria-label="頁面縮放" data-i18n-label="pageZoom">
@@ -745,6 +763,13 @@ const locale = (() => {
     aiNoReply:["模型沒有傳回可用的回答。請確認已選用聊天模型。","The model returned no usable answer. Check that you selected a chat model.","モデルから使用できる回答がありません。チャットモデルを選択したか確認してください。"],
     aiSourceGone:["此段落已移除或預覽尚未排好。","This passage was removed or the preview is still being prepared.","この箇所は削除されたか、プレビューの準備中です。"],
     aiExcerpt:["文件片段","Document excerpt","文書の抜粋"],
+    attachment:["附件","Attach file","添付ファイル"],
+    attachmentsLabel:["夾帶附件 ({count})","Attachments ({count})","添付ファイル ({count})"],
+    attachmentPreviewHint:["（點選可開啟或下載，列印時不會印出）","(Click to open or download; excluded when printing)","（クリックで開く・ダウンロード／印刷時は除外）"],
+    downloadAttachment:["下載附件","Download attachment","添付をダウンロード"],
+    removeAttachment:["移除附件","Remove attachment","添付を削除"],
+    attachmentLargeWarn:["所選檔案較大（{size}），嵌入後會增加單一 HTML 檔案體積。確定要夾帶嗎？","The selected file is large ({size}) and will increase the HTML file size. Attach anyway?","選択したファイルは大きいため（{size}）、HTMLファイルサイズが増加します。添付しますか？"],
+    attachmentError:["附件讀取失敗","Could not read the attachment","添付ファイルを読み込めませんでした"],
   };
   const storageKey = "html-writer.language";
   const valid = value => value === "auto" || languages.includes(value);
@@ -851,7 +876,7 @@ function copyBody() {
   return copy;
 }
 function cleanBody() { return copyBody().innerHTML; }
-function snapshot() { return fileName.value + "\n" + (app.dataset.margin || "18,18,18,18") + "\n" + cleanBody(); }
+function snapshot() { return fileName.value + "\n" + (app.dataset.margin || "18,18,18,18") + "\n" + cleanBody() + "\n" + ($("attachment-store")?.innerHTML || ""); }
 function actualName() { return fileName.value.trim() || t("untitled"); }
 function status() {
   const label = notice || (snapshot() !== saved ? "dirty" : "");
@@ -2048,6 +2073,7 @@ function openDialog(type) {
 function blankDocument() {
   writerAI.reset();
   tableEditing.clear();
+  attachments.clear();
   chooseImage(null);
   fileName.value = t("untitled");
   paper.lang = locale.active;
@@ -2203,6 +2229,8 @@ function saveHTML() {
   output.dataset.margin = pageMargins.serialize();
   delete output.dataset.preview;
   output.querySelector("#file-name").setAttribute("value",actualName());
+  const attStore = output.querySelector("#attachment-store");
+  if (attStore) attStore.innerHTML = $("attachment-store").innerHTML;
   const content = output.querySelector("#paper");
   content.innerHTML = cleanBody();
   content.lang = paper.lang;
@@ -3912,6 +3940,7 @@ $("language").addEventListener("change",event => {
   locale.change(event.target.value);
   pageZoom.localize();
   writerAI.localize();
+  attachments.render();
   document.title = actualName();
   printReady = false;
   $("mode").textContent = t(editing ? "readMode" : "editMode");
@@ -4026,9 +4055,139 @@ const pageBreakGuides = (() => {
   return { render: schedule };
 })();
 
+/* Embedded file attachments: stored as Data URLs inside #attachment-store, clickable in editor and preview, excluded from print/PDF. */
+const attachments = (() => {
+  const store = $("attachment-store");
+  const bars = [$("doc-attachments"), $("preview-attachments")];
+  const fileInput = $("attachment-file");
+  const formatSize = bytes => {
+    const n = Number(bytes) || 0;
+    if (n < 1024) return n + " B";
+    if (n < 1048576) return (n / 1024).toFixed(1).replace(/\.0$/, "") + " KB";
+    return (n / 1048576).toFixed(1).replace(/\.0$/, "") + " MB";
+  };
+  const iconFor = (type, name) => {
+    const ext = (name.split(".").pop() || "").toLowerCase();
+    if (type === "application/pdf" || ext === "pdf") return "📕";
+    if (type.startsWith("image/") || /^(png|jpe?g|gif|webp|svg|bmp)$/.test(ext)) return "🖼️";
+    if (/^(xlsx?|csv|ods)$/.test(ext)) return "📊";
+    if (/^(docx?|rtf|odt)$/.test(ext)) return "📘";
+    if (/^(pptx?|odp)$/.test(ext)) return "📙";
+    if (/^(zip|rar|7z|tar|gz)$/.test(ext)) return "🗜️";
+    return "📄";
+  };
+  function toBlob(dataUrl, fallbackType) {
+    const comma = dataUrl.indexOf(",");
+    const header = dataUrl.slice(0, comma);
+    const mime = header.match(/data:([^;]+)/)?.[1] || fallbackType || "application/octet-stream";
+    const binary = atob(dataUrl.slice(comma + 1));
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new Blob([bytes], { type: mime });
+  }
+  function openNode(node, forceDownload = false) {
+    const blob = toBlob(node.textContent, node.dataset.type);
+    const url = URL.createObjectURL(blob);
+    const name = node.dataset.name || "attachment";
+    const canPreview = !forceDownload && /^(application\/pdf|image\/|text\/|audio\/|video\/)/i.test(blob.type);
+    if (canPreview) {
+      const win = window.open(url, "_blank", "noopener");
+      if (!win) forceDownload = true;
+    }
+    if (forceDownload) {
+      const a = make("a");
+      a.href = url;
+      a.download = name;
+      document.body.append(a);
+      a.click();
+      a.remove();
+    }
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  }
+  function render() {
+    const items = Array.from(store.children);
+    for (const bar of bars) {
+      bar.hidden = items.length === 0;
+      if (!items.length) { bar.replaceChildren(); continue; }
+      const label = make("span", "attachment-label");
+      label.textContent = "📎 " + t("attachmentsLabel", { count: items.length });
+      const nodes = [label];
+      items.forEach((item, index) => {
+        const chip = make("span", "attachment-chip");
+        const openBtn = make("button", "attachment-open");
+        openBtn.type = "button";
+        openBtn.title = item.dataset.name + " (" + formatSize(item.dataset.size) + ")";
+        const sizeSpan = make("span", "attachment-size");
+        sizeSpan.textContent = "(" + formatSize(item.dataset.size) + ")";
+        openBtn.append(iconFor(item.dataset.type, item.dataset.name) + " " + item.dataset.name + " ", sizeSpan);
+        openBtn.addEventListener("click", () => openNode(item, false));
+
+        const dlBtn = make("button", "attachment-dl");
+        dlBtn.type = "button";
+        dlBtn.textContent = "⬇";
+        dlBtn.title = t("downloadAttachment");
+        dlBtn.setAttribute("aria-label", t("downloadAttachment"));
+        dlBtn.addEventListener("click", () => openNode(item, true));
+
+        const rmBtn = make("button", "attachment-remove");
+        rmBtn.type = "button";
+        rmBtn.textContent = "✕";
+        rmBtn.title = t("removeAttachment");
+        rmBtn.setAttribute("aria-label", t("removeAttachment"));
+        rmBtn.addEventListener("click", () => {
+          items[index]?.remove();
+          render();
+          changed();
+        });
+
+        chip.append(openBtn, dlBtn, rmBtn);
+        nodes.push(chip);
+      });
+      if (bar.id === "preview-attachments") {
+        const hint = make("span", "attachment-hint");
+        hint.textContent = t("attachmentPreviewHint");
+        nodes.push(hint);
+      }
+      bar.replaceChildren(...nodes);
+    }
+  }
+  function addFiles(fileList) {
+    const files = Array.from(fileList || []);
+    if (!files.length) return;
+    const totalBytes = files.reduce((sum, f) => sum + f.size, 0);
+    if (totalBytes > 15 * 1024 * 1024 && !window.confirm(t("attachmentLargeWarn", { size: formatSize(totalBytes) }))) return;
+    for (const file of files) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const item = make("span");
+        item.dataset.name = file.name;
+        item.dataset.type = file.type || "application/octet-stream";
+        item.dataset.size = String(file.size);
+        item.textContent = reader.result;
+        store.append(item);
+        render();
+        changed();
+      };
+      reader.onerror = () => { notice = "attachmentError"; status(); };
+      reader.readAsDataURL(file);
+    }
+  }
+  function clear() {
+    store.replaceChildren();
+    render();
+  }
+  $("add-attachment").addEventListener("click", () => fileInput.click());
+  fileInput.addEventListener("change", event => {
+    addFiles(event.target.files);
+    event.target.value = "";
+  });
+  return { render, clear };
+})();
+
 locale.apply(locale.preference);
 pageMargins.init();
 pageZoom.localize();
+attachments.render();
 saved = snapshot();
 mode(app.dataset.mode !== "read");
 editHistory.reset();
