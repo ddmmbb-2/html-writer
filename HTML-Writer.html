@@ -1,15 +1,15 @@
 <!doctype html>
 <html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>未命名文件</title><style id="writer-style">
 :root{
-  color-scheme:light;
-  --sans:Arial,"Helvetica Neue","Liberation Sans","Microsoft JhengHei","PingFang TC","Noto Sans CJK TC","Noto Sans TC","WenQuanYi Zen Hei",sans-serif;
-  --serif:"Times New Roman","Liberation Serif","Songti TC",PMingLiU,"Noto Serif CJK TC","Noto Serif TC",serif;
-  --mono:"Courier New","Liberation Mono",Menlo,"DejaVu Sans Mono","Noto Sans Mono CJK TC","PingFang TC","Microsoft JhengHei",monospace;
-  --ink:#23312b;--muted:#56645b;--edge:#dce2da;--green:#235943;--wash:#e8efe8;
-  --page-width:210mm;--page-height:297mm;--page-margin:18mm;--page-margin-top:18mm;--page-margin-right:18mm;--page-margin-bottom:18mm;--page-margin-left:18mm;
-  --writer-ai-width:clamp(340px,32vw,470px);
-  font:14px "Inter","Microsoft JhengHei","PingFang TC",system-ui,sans-serif;
-  color:var(--ink);background:#eaede7
+color-scheme:light;
+--sans:Arial,"Helvetica Neue","Liberation Sans","Microsoft JhengHei","PingFang TC","Noto Sans CJK TC","Noto Sans TC","WenQuanYi Zen Hei",sans-serif;
+--serif:"Times New Roman","Liberation Serif","Songti TC",PMingLiU,"Noto Serif CJK TC","Noto Serif TC",serif;
+--mono:"Courier New","Liberation Mono",Menlo,"DejaVu Sans Mono","Noto Sans Mono CJK TC","PingFang TC","Microsoft JhengHei",monospace;
+--ink:#23312b;--muted:#56645b;--edge:#dce2da;--green:#235943;--wash:#e8efe8;
+--page-width:210mm;--page-height:297mm;--page-margin:18mm;--page-margin-top:18mm;--page-margin-right:18mm;--page-margin-bottom:18mm;--page-margin-left:18mm;
+--writer-ai-width:clamp(340px,32vw,470px);
+font:14px "Inter","Microsoft JhengHei","PingFang TC",system-ui,sans-serif;
+color:var(--ink);background:#eaede7
 }
 *{box-sizing:border-box}
 body{margin:0}
@@ -37,7 +37,7 @@ button:disabled{cursor:default;opacity:.45}
 #image-free-tools{display:contents}
 #image-free-tools input[type="number"]{width:5.2em}
 #free-image-picker{max-width:13em;text-overflow:ellipsis}
-#color{width:32px;min-height:33px;padding:3px}
+.color-control{position:relative;display:flex;align-items:center}.color-control button{min-width:30px;padding:4px 7px}.color-control #color-apply{font-weight:800;display:grid;justify-items:center;line-height:1.15;border-radius:7px 0 0 7px}.color-control #color-toggle{border-radius:0 7px 7px 0;border-left:0}#color-indicator{width:19px;height:4px;background:#26312b;border-radius:1px}#color-swatches{position:absolute;top:100%;left:0;z-index:12;width:max-content;max-width:calc(100vw - 24px);padding:8px;background:white;border:1px solid var(--edge);border-radius:8px;box-shadow:0 5px 18px #25392633;display:grid;grid-template-columns:repeat(10,24px);gap:3px}#color-swatches button{width:24px;height:24px;min-height:24px;min-width:0;padding:0;border:1px solid #8886;border-radius:3px}#color-swatches button:hover,#color-swatches button:focus-visible{outline:2px solid #235943;outline-offset:1px}#color-swatches [data-auto]{grid-column:1/-1;width:auto;height:30px;background:white}#tools [data-command][aria-pressed="true"]{background:var(--green);color:white;border-color:var(--green)}#tools [data-command][aria-pressed="mixed"]{background:#d5e9f9;border-color:#3b76a3}.doc b,.doc strong{font-weight:800}.doc{font-synthesis:weight style}
 .workspace{max-width:1160px;margin:auto;padding:24px 16px;display:grid;grid-template-columns:160px minmax(0,var(--page-width));gap:22px;justify-content:center}
 .outline{position:sticky;top:calc(var(--chrome-height,168px) + 12px);align-self:start}
 .outline h2{margin:6px 0 8px;font-size:13px}
@@ -51,15 +51,15 @@ button:disabled{cursor:default;opacity:.45}
 .workspace:has(.paper-scroll[data-magnified]){max-width:none;grid-template-columns:160px minmax(0,1fr)}
 .paper-space{position:relative;margin-inline:auto}
 .paper-space[data-scaled]{
-  width:calc(var(--document-width) * var(--document-zoom));
-  height:calc(var(--document-height) * var(--document-zoom))
+width:calc(var(--document-width) * var(--document-zoom));
+height:calc(var(--document-height) * var(--document-zoom))
 }
 .paper-space[data-reduced]{overflow:clip;overflow-clip-margin:12px}
 .paper-frame,.sheet-area{--image-inset:0px;--image-inset-top:0px;--image-inset-right:0px;--image-inset-bottom:0px;--image-inset-left:0px}
 .paper-frame{--image-inset:var(--page-margin);--image-inset-top:var(--page-margin-top);--image-inset-right:var(--page-margin-right);--image-inset-bottom:var(--page-margin-bottom);--image-inset-left:var(--page-margin-left);position:relative;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .paper-space[data-scaled]>.paper-frame{
-  position:absolute;top:0;left:0;width:var(--document-width);
-  transform:scale(var(--document-zoom));transform-origin:top left
+position:absolute;top:0;left:0;width:var(--document-width);
+transform:scale(var(--document-zoom));transform-origin:top left
 }
 .zoom-controls{display:inline-flex;align-items:center;gap:3px}
 .zoom-controls button{min-width:32px;padding-inline:6px}
@@ -102,31 +102,31 @@ button:disabled{cursor:default;opacity:.45}
 .doc img{max-width:100%;max-height:230mm;height:auto;object-fit:contain;vertical-align:middle}
 .doc img[data-selected]:not([data-image-layer]){outline:2px solid #47896b;outline-offset:3px}
 .doc img[data-image-layer],#image-controls{
-  position:absolute;
-  left:calc(var(--image-inset-left) + (100% - var(--image-inset-left) - var(--image-inset-right)) * var(--image-x));
-  top:calc(var(--image-inset-top) + var(--image-y));
-  width:calc((100% - var(--image-inset-left) - var(--image-inset-right)) * var(--image-width));
-  transform:rotate(var(--image-angle))
+position:absolute;
+left:calc(var(--image-inset-left) + (100% - var(--image-inset-left) - var(--image-inset-right)) * var(--image-x));
+top:calc(var(--image-inset-top) + var(--image-y));
+width:calc((100% - var(--image-inset-left) - var(--image-inset-right)) * var(--image-width));
+transform:rotate(var(--image-angle))
 }
 .doc img[data-image-layer]{
-  z-index:1;
-  max-height:none;
-  opacity:var(--image-opacity);
-  user-select:none
+z-index:1;
+max-height:none;
+opacity:var(--image-opacity);
+user-select:none
 }
 .doc img[data-image-layer="behind"]{z-index:-1;pointer-events:none}
 [data-mode="edit"] #paper img[data-image-layer="front"]{cursor:move;touch-action:none}
 #paper img[data-image-layer][data-selected],#image-controls{
-  width:calc((100% - var(--image-inset-left) - var(--image-inset-right)) * var(--image-drag-width,var(--image-width)));
-  transform:rotate(var(--image-drag-angle,var(--image-angle)));
-  translate:var(--image-drag-x,0px) var(--image-drag-y,0px)
+width:calc((100% - var(--image-inset-left) - var(--image-inset-right)) * var(--image-drag-width,var(--image-width)));
+transform:rotate(var(--image-drag-angle,var(--image-angle)));
+translate:var(--image-drag-x,0px) var(--image-drag-y,0px)
 }
 #image-controls{z-index:2;pointer-events:none;outline:1px solid #47896b;box-shadow:0 0 0 1px #ffffffb3}
 #image-controls[data-overflows-start]{pointer-events:auto;cursor:move;touch-action:none}
 #image-controls button{
-  position:absolute;transform:translate(-50%,-50%);width:32px;min-height:32px;padding:0;
-  border-color:var(--green);background:white;color:var(--green);font-size:18px;line-height:1;
-  touch-action:none;pointer-events:auto
+position:absolute;transform:translate(-50%,-50%);width:32px;min-height:32px;padding:0;
+border-color:var(--green);background:white;color:var(--green);font-size:18px;line-height:1;
+touch-action:none;pointer-events:auto
 }
 #move-image{left:0;top:0;cursor:move}
 #resize-image{left:100%;top:100%;cursor:nwse-resize}
@@ -143,11 +143,11 @@ button:disabled{cursor:default;opacity:.45}
 .table-hint{color:var(--muted);font-size:12px}
 #column-controls{position:absolute;inset:0;z-index:1;pointer-events:none}
 #column-controls .column-grip{
-  position:absolute;width:12px;min-height:0;transform:translateX(-50%);padding:0;border:0;border-radius:0;
-  background:transparent;pointer-events:auto;cursor:col-resize;touch-action:none
+position:absolute;width:12px;min-height:0;transform:translateX(-50%);padding:0;border:0;border-radius:0;
+background:transparent;pointer-events:auto;cursor:col-resize;touch-action:none
 }
 #column-controls .column-grip:not(:disabled):is(:hover,:focus-visible)::after,#column-guide{
-  position:absolute;width:2px;background:#3b76a3;pointer-events:none
+position:absolute;width:2px;background:#3b76a3;pointer-events:none
 }
 #column-controls .column-grip::after{content:"";inset:0 auto 0 5px}
 #column-guide{transform:translateX(-50%)}
@@ -181,8 +181,9 @@ dialog label.dialog-check input{width:auto;min-height:0;margin:0}
 .margin-grid label{margin:0}
 .margin-hint{margin:8px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
 #error{color:#97332d;font-size:13px;min-height:1em}
-.ai-toggle[aria-expanded="true"]{background:var(--wash);border-color:#9fbaac;color:var(--green)}
-#writer-ai{position:fixed;inset:0 0 0 auto;z-index:9;width:min(100%,var(--writer-ai-width));height:100dvh;display:flex;flex-direction:column;min-width:0;background:#fbfcf9;border-left:1px solid var(--edge);box-shadow:-10px 0 30px #25392626;transform:translateX(100%);visibility:hidden;transition:transform .2s ease,visibility .2s}
+.ai-toggle[aria-expanded="true"],.web-ai-toggle[aria-expanded="true"]{background:var(--wash);border-color:#9fbaac;color:var(--green)}
+#writer-ai,#writer-web-ai{position:fixed;inset:0 0 0 auto;z-index:9;width:min(100%,var(--writer-ai-width));height:100dvh;display:flex;flex-direction:column;min-width:0;background:#fbfcf9;border-left:1px solid var(--edge);box-shadow:-10px 0 30px #25392626;transform:translateX(100%);visibility:hidden;transition:transform .2s ease,visibility .2s}
+#writer-web-ai{z-index:10}
 #app[data-ask-open="true"] #writer-ai{transform:translateX(0);visibility:visible}
 .ai-head,.ai-controls,.ai-compose-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 .ai-head{padding:14px 16px;border-bottom:1px solid var(--edge);justify-content:space-between}
@@ -231,16 +232,16 @@ dialog label.dialog-check input{width:auto;min-height:0;margin:0}
 @media print{#doc-attachments,#preview-attachments,#attachment-store{display:none!important}}
 @page{size:A4 portrait;margin:0}
 @media print{
-  html,body{margin:0!important;padding:0!important;background:white!important}
-  body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .chrome,.workspace,.preview-bar,#preview-note,#writer-ai,dialog{display:none!important}
-  #preview{display:block!important}
-  #sheets{margin:0;padding:0;overflow:visible}
-  /* Only the outer sheet allows rounding tolerance. Inner width, height and typography match preview. */
-  #sheets .sheet{margin:0;box-shadow:none;zoom:1;height:296.7mm;break-inside:avoid;break-after:page}
-  #sheets .sheet:last-child{break-after:auto}
-  #sheets .sheet-area{bottom:calc(var(--page-margin-bottom) - 0.3mm)}
-  #sheets .page-number{bottom:max(2.2mm,calc(var(--page-margin-bottom) - 7.3mm))}
+html,body{margin:0!important;padding:0!important;background:white!important}
+body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.chrome,.workspace,.preview-bar,#preview-note,#writer-ai,dialog{display:none!important}
+#preview{display:block!important}
+#sheets{margin:0;padding:0;overflow:visible}
+/* Only the outer sheet allows rounding tolerance. Inner width, height and typography match preview. */
+#sheets .sheet{margin:0;box-shadow:none;zoom:1;height:296.7mm;break-inside:avoid;break-after:page}
+#sheets .sheet:last-child{break-after:auto}
+#sheets .sheet-area{bottom:calc(var(--page-margin-bottom) - 0.3mm)}
+#sheets .page-number{bottom:max(2.2mm,calc(var(--page-margin-bottom) - 7.3mm))}
 }
 /* AI 區塊選取：支援表格內段落、儲存格與多層級選取，完成選取後仍保留深色反白。 */
 #paper.ai-picking .ai-pick-hover:not(.ai-picked){outline:2px dashed #2765a0;outline-offset:2px;cursor:pointer;background:#e8f2ff!important}
@@ -279,8 +280,8 @@ dialog label.dialog-check input{width:auto;min-height:0;margin:0}
 @media(max-height:650px){#ai-edit-preview{height:35dvh;min-height:110px}#ai-edit-panel{padding-block:6px}}
 
 /* WEB-AI/OFFLINE-EXCHANGE: browser chat copy/paste; no API, SDK or remote request. */
-.web-ai-toggle[aria-expanded="true"]{background:var(--wash);border-color:#9fbaac;color:var(--green)}
-#writer-web-ai{position:fixed;inset:0 0 0 auto;z-index:10;width:min(100%,var(--writer-ai-width));height:100dvh;display:flex;flex-direction:column;min-width:0;background:#fbfcf9;border-left:1px solid var(--edge);box-shadow:-10px 0 30px #25392626;transform:translateX(100%);visibility:hidden;transition:transform .2s ease,visibility .2s}
+
+
 #app[data-web-ai-open="true"] #writer-web-ai{transform:translateX(0);visibility:visible}
 .web-ai-content{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:12px 16px 30px}
 .web-ai-content h3{font-size:14px;margin:15px 0 7px;color:var(--green)}
@@ -308,273 +309,268 @@ dialog label.dialog-check input{width:auto;min-height:0;margin:0}
 
 /* 編輯模式分頁參考虛線（不影響正文與列印） */
 #page-break-guides{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  z-index:1;
-  overflow:hidden;
+position:absolute;
+inset:0;
+pointer-events:none;
+z-index:1;
+overflow:hidden;
 }
 .page-break-line{
-  position:absolute;
-  left:0;
-  right:0;
-  border-top:1.5px dashed #8aa495;
-  display:flex;
-  justify-content:flex-end;
-  align-items:center;
+position:absolute;
+left:0;
+right:0;
+border-top:1.5px dashed #8aa495;
+display:flex;
+justify-content:flex-end;
+align-items:center;
 }
 .page-break-line span{
-  transform:translateY(-50%);
-  margin-right:10px;
-  padding:1px 7px;
-  border-radius:999px;
-  background:#f4f7f4;
-  border:1px solid #cdd9d1;
-  color:#4c6356;
-  font:11px/1.4 var(--sans);
+transform:translateY(-50%);
+margin-right:10px;
+padding:1px 7px;
+border-radius:999px;
+background:#f4f7f4;
+border:1px solid #cdd9d1;
+color:#4c6356;
+font:11px/1.4 var(--sans);
 }
 @media print{
-  #page-break-guides{display:none!important}
+#page-break-guides{display:none!important}
 }
 
-</style></head><body><main id="app" data-mode="read" data-language="zh-Hant" data-margin="18,18,18,18">
-  <header class="chrome">
-    <div class="top">
-      <div class="identity">
-        <span class="mark" aria-hidden="true">文</span>
-        <div><label for="file-name" data-i18n="fileName">文件名稱</label><input id="file-name" maxlength="100" value="未命名文件"></div>
-      </div>
-      <div class="actions">
-        <select id="language" aria-label="介面語言" data-i18n-label="language">
-          <option value="auto" data-i18n="auto">自動</option>
-          <option value="zh-Hant" lang="zh-Hant">繁體中文</option>
-          <option value="en" lang="en">English</option>
-          <option value="ja" lang="ja">日本語</option>
-        </select>
-        <button type="button" id="new-file" data-i18n="newFile">新文件</button>
-        <button type="button" id="copy-document" data-i18n="copyDocument">複製全文</button>
-        <button type="button" id="mode">閱讀模式</button>
-        <span id="document-zoom"></span>
-        <button type="button" data-margin-open="" title="調整頁面邊界（上下左右 mm）">邊界 18mm</button>
-        <button type="button" id="open-preview" data-i18n="printPreview">列印預覽</button>
-        <button type="button" class="ai-toggle" data-ai-toggle="" aria-controls="writer-ai" aria-expanded="false" data-i18n="aiTitle">AI 問文件</button>
-         <button type="button" class="web-ai-toggle" data-web-ai-toggle="" aria-controls="writer-web-ai" aria-expanded="false" data-i18n="webAiTitle">網頁 AI 協作</button>
-        <button type="button" class="primary" id="save-html" data-i18n="saveHtml">另存 HTML</button>
-      </div>
-    </div>
-    <div class="tools" id="tools" role="toolbar" aria-label="文件編輯" data-i18n-label="editTools">
-      <div class="group">
-        <button type="button" data-command="undo" title="復原" aria-label="復原" data-i18n-title="undo" data-i18n-label="undo">↶</button>
-        <button type="button" data-command="redo" title="重做" aria-label="重做" data-i18n-title="redo" data-i18n-label="redo">↷</button>
-      </div>
-      <div class="group">
-        <select id="format" aria-label="段落樣式" data-i18n-label="paragraphStyle">
-          <option value="" data-i18n="paragraphStyle">段落樣式</option><option value="p" data-i18n="bodyText">內文</option><option value="p-small" data-i18n="bodyTextSmall">內文（小）</option><option value="p-xsmall" data-i18n="bodyTextXSmall">內文（更小）</option><option value="h1" data-i18n="heading1">標題 1</option><option value="h2" data-i18n="heading2">標題 2</option><option value="h3" data-i18n="heading3">標題 3</option>
-        </select>
-        <select id="font" aria-label="選取文字的字型" title="套用於選取的文字或接著輸入的文字" data-i18n-label="font" data-i18n-title="fontHelp">
-          <option value="" data-i18n="font">字型</option><option value="WriterSans" data-i18n="fontSans">無襯線／黑體</option><option value="WriterSerif" data-i18n="fontSerif">襯線／明體</option><option value="WriterMono" data-i18n="fontMono">等寬</option>
-        </select>
-        <button type="button" data-command="bold" aria-label="粗體" title="粗體" data-i18n-label="bold" data-i18n-title="bold"><b>B</b></button>
-        <button type="button" data-command="italic" aria-label="斜體" title="斜體" data-i18n-label="italic" data-i18n-title="italic"><i>I</i></button>
-        <button type="button" data-command="underline" aria-label="底線" title="底線" data-i18n-label="underline" data-i18n-title="underline"><u>U</u></button>
-        <input id="color" type="color" value="#235943" aria-label="文字顏色" title="文字顏色" data-i18n-label="color" data-i18n-title="color">
-      </div>
-      <div class="group">
-        <select id="alignment" aria-label="段落對齊" data-i18n-label="alignment"><option value="" data-i18n="alignment">對齊</option><option value="justifyLeft" data-i18n="left">靠左</option><option value="justifyCenter" data-i18n="center">置中</option><option value="justifyRight" data-i18n="right">靠右</option></select>
-        <button type="button" data-command="insertUnorderedList" data-i18n="bullets">清單</button>
-      </div>
-      <div class="group" role="group" aria-label="編號" data-i18n-label="numbering">
-        <button type="button" data-command="insertOrderedList" data-i18n="numbering">編號</button>
-        <button type="button" id="list-up" data-list-level="up" title="將選取的編號項目移到上一層" data-i18n="listUp" data-i18n-title="listUpHelp">上一層</button>
-        <button type="button" id="list-down" data-list-level="down" title="將選取的編號項目移到前一項底下" data-i18n="listDown" data-i18n-title="listDownHelp">下一層</button>
-      </div>
-      <div class="group">
-        <button type="button" id="mic-document" class="voice-button" aria-pressed="false" title="在文件游標位置語音輸入文字">🎙 文件語音輸入</button>
-        <button type="button" id="add-link" data-i18n="link">連結</button>
-        <button type="button" id="add-image" data-i18n="image">圖片</button>
-        <select id="free-image-picker" aria-label="選取自由圖片" data-i18n-label="pickFreeImage" hidden=""></select>
-        <button type="button" id="add-table" data-i18n="table">表格</button>
-        <button type="button" id="add-attachment" data-i18n="attachment">附件</button>
-        <input type="file" id="image-file" accept="image/png,image/jpeg,image/gif,image/webp,image/bmp,image/avif" hidden="">
-        <input type="file" id="attachment-file" multiple="" hidden="">
-      </div>
-    </div>
-    <div class="context" id="table-tools" hidden="">
-      <div class="group">
-        <button type="button" data-table="add-row" data-i18n="addRow" data-i18n-title="addRowHelp">新增列（橫向）</button>
-        <button type="button" data-table="remove-row" data-i18n="removeRow">刪除此列</button>
-        <button type="button" data-table="add-column" data-i18n="addColumn" data-i18n-title="addColumnHelp">新增欄（直向）</button>
-        <button type="button" data-table="remove-column" data-i18n="removeColumn">刪除此欄</button>
-      </div>
-      <div class="group">
-        <button type="button" data-table="select" aria-pressed="false" data-i18n="selectCells" data-i18n-title="selectCellsHelp">選取儲存格</button>
-        <button type="button" data-table="merge-horizontal" data-i18n="mergeHorizontal" disabled="">橫向合併</button>
-        <button type="button" data-table="merge-vertical" data-i18n="mergeVertical" disabled="">垂直合併</button>
-        <button type="button" data-table="merge-range" data-i18n="mergeRange" disabled="">合併範圍</button>
-      </div>
-      <div class="group">
-        <button type="button" data-table="split-columns" data-i18n="splitColumns">直切（左右兩格）</button>
-        <button type="button" data-table="split-rows" data-i18n="splitRows">橫切（上下兩格）</button>
-      </div>
-      <div class="group">
-        <button type="button" data-table="toggle-borders" aria-pressed="false" data-i18n="hideBorders" data-i18n-title="hideBordersHelp">不顯示格線</button>
-      </div>
-      <span id="column-hint" class="table-hint" data-i18n="resizeColumns" hidden="">拖曳欄線可調整欄寬</span>
-    </div>
-    <div class="context" id="image-tools" hidden="">
-      <label><span data-i18n="imageMode">圖片模式</span> <select id="image-mode"><option value="inline" data-i18n="inlineImage">隨文字排列</option><option value="free" data-i18n="freeImage">自由模式</option></select></label>
-      <label id="inline-width"><span data-i18n="imageWidth">圖片寬度</span> <select id="image-width"><option value="25">25%</option><option value="50">50%</option><option value="75">75%</option><option value="100">100%</option></select></label>
-      <div id="image-free-tools" hidden="">
-        <label><span data-i18n="imageLayer">圖層</span> <select id="image-layer"><option value="front" data-i18n="imageFront">文字上層</option><option value="behind" data-i18n="imageBehind">文字下層</option></select></label>
-        <label><span data-i18n="imageWidthPercent">寬度 %</span> <input id="free-image-width" type="number" min="1" max="100" step="any"></label>
-        <label><span data-i18n="imageAngle">旋轉 °</span> <input id="image-angle" type="number" min="-360" max="360" step="1"></label>
-        <label><span data-i18n="imageOpacity">不透明度 %</span> <input id="image-opacity" type="number" min="0" max="100" step="1"></label>
-      </div>
-      <button type="button" id="remove-image" data-i18n="removeImage">移除圖片</button>
-    </div>
-  </header>
-  <div class="workspace">
-    <aside class="outline"><h2 data-i18n="outline">文件大綱</h2><nav id="outline" aria-label="文件大綱" data-i18n-label="outline"></nav></aside>
-    <section class="document-area" aria-label="文件" data-i18n-label="document">
-      <div id="mic-document-status" class="voice-status" role="status"></div>
-      <div id="doc-attachments" class="attachment-bar" hidden=""></div>
-      <div class="paper-scroll">
-      <div class="paper-space">
-      <div class="paper-frame">
-      <article class="doc" id="paper" lang="zh-Hant" contenteditable="false" spellcheck="false" aria-label="文件內容" data-i18n-label="content"><p><br></p></article>
-      <div id="page-break-guides" aria-hidden="true"></div>
-      <div id="ai-insert-markers" hidden="" aria-label="AI 內容插入位置"></div>
-      <div id="column-controls" hidden=""><span id="column-guide" hidden=""></span></div>
-      <div id="image-controls" data-image-control="move" hidden="">
-        <button type="button" id="move-image" data-image-control="move" aria-label="拖曳圖片，或用方向鍵移動" title="拖曳圖片，或用方向鍵移動" data-i18n-label="moveImage" data-i18n-title="moveImage">↔</button>
-        <button type="button" id="resize-image" data-image-control="resize" aria-label="拖曳等比例縮放圖片" title="拖曳等比例縮放圖片" data-i18n-label="resizeImage" data-i18n-title="resizeImage">↘</button>
-        <button type="button" id="rotate-image" data-image-control="rotate" aria-label="拖曳旋轉圖片" title="拖曳旋轉圖片" data-i18n-label="rotateImage" data-i18n-title="rotateImage">⟳</button>
-      </div>
-      </div>
-      </div>
-      </div>
-      <footer class="status"><span data-i18n="continuousLayout">A4 寬度 · 連續編輯</span><span id="status" role="status"></span></footer>
-    </section>
-  </div>
-  <section id="preview" aria-label="列印預覽" data-i18n-label="printPreview">
-    <div class="preview-bar">
-      <div class="actions"><button type="button" id="back" data-i18n="back">返回文件</button><strong data-i18n="a4Preview">A4 列印預覽</strong><span id="page-count" role="status"></span></div>
-      <div class="actions"><span id="preview-zoom"></span><button type="button" data-margin-open="" title="調整頁面邊界（上下左右 mm）">邊界 18mm</button><button type="button" class="ai-toggle" data-ai-toggle="" aria-controls="writer-ai" aria-expanded="false" data-i18n="aiTitle">AI 問文件</button>
-         <button type="button" class="web-ai-toggle" data-web-ai-toggle="" aria-controls="writer-web-ai" aria-expanded="false" data-i18n="webAiTitle">網頁 AI 協作</button><button type="button" id="print" data-i18n="print">列印</button><button type="button" id="pdf" class="primary" data-i18n="pdf">文字型 PDF</button></div>
-    </div>
-    <p id="preview-note" role="status" data-i18n="pdfPreviewGuide">點選「文字型 PDF」，以原生文字及表格輸出。請在瀏覽器列印視窗選「儲存為 PDF」，而不是列印為圖片。</p>
-    <div id="preview-attachments" class="attachment-bar" hidden=""></div>
-    <div id="sheets"></div>
-    <div id="attachment-store" hidden=""></div>
-  </section>
-  <template id="zoom-template">
-    <span class="zoom-controls" role="group" aria-label="頁面縮放" data-i18n-label="pageZoom">
-      <button type="button" data-zoom="out" aria-label="縮小" title="縮小" data-i18n-label="zoomOut" data-i18n-title="zoomOut">−</button>
-      <button type="button" data-zoom="reset">100%</button>
-      <button type="button" data-zoom="in" aria-label="放大" title="放大" data-i18n-label="zoomIn" data-i18n-title="zoomIn">+</button>
-    </span>
-  </template>
-  <aside id="writer-ai" aria-labelledby="ai-title" inert="">
-    <header class="ai-head">
-      <h2 id="ai-title" data-i18n="aiTitle">AI 問文件</h2>
-      <div class="actions">
-        <button type="button" id="ai-reset" data-i18n="aiReset" disabled="">新對話</button>
-        <button type="button" id="ai-close" data-i18n-label="aiClose" aria-label="關閉 AI 問答">✕</button>
-      </div>
-    </header>
-    <details id="ai-settings" class="ai-settings">
-      <summary data-i18n="aiSettings">API 連線設定</summary>
-      <label for="ai-url" data-i18n="aiUrl">OpenAI 相容 API 網址</label>
-      <input id="ai-url" type="text" inputmode="url" spellcheck="false" autocomplete="off" placeholder="http://127.0.0.1:11434/v1" maxlength="1024">
-      <label for="ai-key" data-i18n="aiKey">API Key（選填）</label>
-      <input id="ai-key" type="password" autocomplete="off" maxlength="2048">
-      <button type="button" id="ai-connect" data-i18n="aiConnect">取得模型清單</button>
-    </details>
-    <div class="ai-controls">
-      <label for="ai-task">功能</label>
-      <select id="ai-task"><option value="ask">文件問答</option><option value="format">選取區塊重新排版</option><option value="generate">游標位置直接生成</option></select>
-    </div>
-    <div id="ai-edit-panel" class="ai-edit-panel" hidden="">
-      <div class="ai-pick-actions"><button type="button" id="ai-pick-start">開始選取文件</button><button type="button" id="ai-pick-expand" disabled="" title="將已選取的單一小區塊往上一層擴大（段落→儲存格→整列→整個表格）">擴大範圍</button><button type="button" id="ai-pick-clear">清除選取</button></div><div id="ai-selection-summary">請先在文件中圈選段落，再開啟 AI。</div>
-      <div id="ai-picked-content" class="ai-picked-content" hidden=""></div><label id="ai-edit-style-label" for="ai-edit-style">修改方式</label>
-      <select id="ai-edit-style"><option value="layout">只排版（不改文字）</option><option value="polish">排版並潤飾</option><option value="free">自由改寫</option></select>
-      <div id="ai-edit-preview" hidden="">
-        <strong>修改預覽（可在下方捲動內容，也可拖曳預覽框底部調整高度）</strong>
-        <div id="ai-edit-render" class="doc"></div>
-        <div class="ai-edit-actions"><button type="button" id="ai-edit-apply" class="primary">確認取代</button><button type="button" id="ai-edit-dismiss">取消</button></div>
-      </div>
-    </div>
-    <div class="ai-controls">
-      <label for="ai-model" data-i18n="aiModel">模型</label>
-      <select id="ai-model" disabled=""><option value="" data-i18n="aiPick">選擇聊天模型</option></select>
-    </div>
-    <p id="ai-destination" class="ai-destination" hidden=""></p>
-    <div id="ai-chat" class="ai-chat" role="log" data-i18n-label="aiChat" aria-label="問答紀錄">
-      <p id="ai-empty" class="ai-empty" data-i18n="aiEmpty">可以查操作步驟，也可以一起討論怎麼修改這份文件。</p>
-    </div>
-    <p id="ai-status" class="ai-status" role="status" hidden=""></p>
-    <form id="ai-form" class="ai-compose">
-      <label for="ai-question" data-i18n="aiQuestion">問題</label>
-      <textarea id="ai-question" maxlength="2000" required=""></textarea>
-      <div class="voice-row"><button type="button" id="mic-ai" class="voice-button" aria-pressed="false" title="語音輸入 AI 提示詞">🎙 AI 語音輸入</button><span id="mic-ai-status" class="voice-status" role="status"></span></div>
-      <div class="ai-compose-actions">
-        <button type="button" id="ai-stop" data-i18n="aiStop" hidden="">停止</button>
-        <button type="submit" id="ai-send" class="primary" data-i18n="aiSend" disabled="">送出</button>
-      </div>
-    </form>
-  </aside>
+</style></head><body><main id="app" data-mode="read" data-margin="18,18,18,18">
+<header class="chrome">
+<div class="top">
+<div class="identity">
+<span class="mark" aria-hidden="true">文</span>
+<div><label for="file-name">文件名稱</label><input id="file-name" translate="no" class="notranslate" maxlength="100" value="未命名文件"></div>
+</div>
+<div class="actions">
+<button type="button" id="new-file">新文件</button>
+<button type="button" id="copy-document">複製全文</button>
+<button type="button" id="mode">閱讀模式</button>
+<span id="document-zoom"></span>
+<button type="button" data-margin-open="" title="調整頁面邊界（上下左右 mm）">邊界 18mm</button>
+<button type="button" id="open-preview">列印預覽</button>
+<button type="button" class="ai-toggle" data-ai-toggle="" aria-controls="writer-ai" aria-expanded="false">AI 問文件</button>
+<button type="button" class="web-ai-toggle" data-web-ai-toggle="" aria-controls="writer-web-ai" aria-expanded="false">網頁 AI 協作</button>
+<button type="button" id="file-size">容量分析</button><button type="button" class="primary" id="save-html">另存 HTML</button>
+</div>
+</div>
+<div class="tools" id="tools" role="toolbar" aria-label="文件編輯">
+<div class="group">
+<button type="button" data-command="undo" title="復原" aria-label="復原">↶</button>
+<button type="button" data-command="redo" title="重做" aria-label="重做">↷</button>
+</div>
+<div class="group">
+<select id="format" aria-label="段落樣式">
+<option value="">段落樣式</option><option value="p">內文</option><option value="p-small">內文（小）</option><option value="p-xsmall">內文（更小）</option><option value="h1">標題 1</option><option value="h2">標題 2</option><option value="h3">標題 3</option>
+</select>
+<select id="font" aria-label="選取文字的字型" title="套用於選取的文字或接著輸入的文字">
+<option value="">字型</option><option value="WriterSans">無襯線／黑體</option><option value="WriterSerif">襯線／明體</option><option value="WriterMono">等寬</option>
+</select>
+<button type="button" data-command="bold" aria-label="粗體" title="粗體"><b>B</b></button>
+<button type="button" data-command="italic" aria-label="斜體" title="斜體"><i>I</i></button>
+<button type="button" data-command="underline" aria-label="底線" title="底線"><u>U</u></button>
+<div class="color-control" id="color-control"><button type="button" id="color-apply" title="套用上次使用的文字顏色" aria-label="套用文字顏色">A<span id="color-indicator"></span></button><button type="button" id="color-toggle" aria-expanded="false" aria-controls="color-swatches" title="選擇文字顏色">▾</button><div id="color-swatches" hidden></div></div>
+</div>
+<div class="group">
+<select id="alignment" aria-label="段落對齊"><option value="">對齊</option><option value="justifyLeft">靠左</option><option value="justifyCenter">置中</option><option value="justifyRight">靠右</option></select>
+<button type="button" data-command="insertUnorderedList">清單</button>
+</div>
+<div class="group" role="group" aria-label="編號">
+<button type="button" data-command="insertOrderedList">編號</button>
+<button type="button" id="list-up" data-list-level="up" title="將選取的編號項目移到上一層">上一層</button>
+<button type="button" id="list-down" data-list-level="down" title="將選取的編號項目移到前一項底下">下一層</button>
+</div>
+<div class="group">
+<button type="button" id="mic-document" class="voice-button" aria-pressed="false" title="在文件游標位置語音輸入文字">🎙 文件語音輸入</button>
+<button type="button" id="add-link">連結</button>
+<button type="button" id="add-image">圖片</button>
+<select id="free-image-picker" translate="no" class="notranslate" aria-label="選取自由圖片" hidden=""></select>
+<button type="button" id="add-table">表格</button>
+<button type="button" id="add-attachment">附件</button>
+<input type="file" id="image-file" accept="image/png,image/jpeg,image/gif,image/webp,image/bmp,image/avif" hidden="">
+<input type="file" id="attachment-file" multiple="" hidden="">
+</div>
+</div>
+<div class="context" id="table-tools" hidden="">
+<div class="group">
+<button type="button" data-table="add-row">新增列（橫向）</button>
+<button type="button" data-table="remove-row">刪除此列</button>
+<button type="button" data-table="add-column">新增欄（直向）</button>
+<button type="button" data-table="remove-column">刪除此欄</button>
+</div>
+<div class="group">
+<button type="button" data-table="select" aria-pressed="false">選取儲存格</button>
+<button type="button" data-table="merge-horizontal" disabled="">橫向合併</button>
+<button type="button" data-table="merge-vertical" disabled="">垂直合併</button>
+<button type="button" data-table="merge-range" disabled="">合併範圍</button>
+</div>
+<div class="group">
+<button type="button" data-table="split-columns">直切（左右兩格）</button>
+<button type="button" data-table="split-rows">橫切（上下兩格）</button>
+</div>
+<div class="group">
+<button type="button" data-table="toggle-borders" aria-pressed="false">不顯示格線</button>
+</div>
+<span id="column-hint" class="table-hint" hidden="">拖曳欄線可調整欄寬</span>
+</div>
+<div class="context" id="image-tools" hidden="">
+<label><span>圖片模式</span> <select id="image-mode"><option value="inline">隨文字排列</option><option value="free">自由模式</option></select></label>
+<label id="inline-width"><span>圖片寬度</span> <select id="image-width"><option value="25">25%</option><option value="50">50%</option><option value="75">75%</option><option value="100">100%</option></select></label>
+<div id="image-free-tools" hidden="">
+<label><span>圖層</span> <select id="image-layer"><option value="front">文字上層</option><option value="behind">文字下層</option></select></label>
+<label><span>寬度 %</span> <input id="free-image-width" type="number" min="1" max="100" step="any"></label>
+<label><span>旋轉 °</span> <input id="image-angle" type="number" min="-360" max="360" step="1"></label>
+<label><span>不透明度 %</span> <input id="image-opacity" type="number" min="0" max="100" step="1"></label>
+</div>
+<button type="button" id="remove-image">移除圖片</button>
+</div>
+</header>
+<div class="workspace">
+<aside class="outline"><h2>文件大綱</h2><nav id="outline" translate="no" class="notranslate" aria-label="文件大綱"></nav></aside>
+<section class="document-area" aria-label="文件">
+<div id="mic-document-status" class="voice-status" role="status"></div>
+<div id="doc-attachments" class="attachment-bar" hidden=""></div>
+<div class="paper-scroll">
+<div class="paper-space">
+<div class="paper-frame">
+<article class="doc notranslate" id="paper" translate="no" lang="zh-Hant" contenteditable="false" spellcheck="false" aria-label="文件內容"><p><br></p></article>
+<div id="page-break-guides" aria-hidden="true"></div>
+<div id="ai-insert-markers" hidden="" aria-label="AI 內容插入位置"></div>
+<div id="column-controls" hidden=""><span id="column-guide" hidden=""></span></div>
+<div id="image-controls" data-image-control="move" hidden="">
+<button type="button" id="move-image" data-image-control="move" aria-label="拖曳圖片，或用方向鍵移動" title="拖曳圖片，或用方向鍵移動">↔</button>
+<button type="button" id="resize-image" data-image-control="resize" aria-label="拖曳等比例縮放圖片" title="拖曳等比例縮放圖片">↘</button>
+<button type="button" id="rotate-image" data-image-control="rotate" aria-label="拖曳旋轉圖片" title="拖曳旋轉圖片">⟳</button>
+</div>
+</div>
+</div>
+</div>
+<footer class="status"><span>A4 寬度 · 連續編輯</span><span id="status" role="status"></span></footer>
+</section>
+</div>
+<section id="preview" aria-label="列印預覽">
+<div class="preview-bar">
+<div class="actions"><button type="button" id="back">返回文件</button><strong>A4 列印預覽</strong><span id="page-count" role="status"></span></div>
+<div class="actions"><span id="preview-zoom"></span><button type="button" data-margin-open="" title="調整頁面邊界（上下左右 mm）">邊界 18mm</button><button type="button" class="ai-toggle" data-ai-toggle="" aria-controls="writer-ai" aria-expanded="false">AI 問文件</button>
+<button type="button" class="web-ai-toggle" data-web-ai-toggle="" aria-controls="writer-web-ai" aria-expanded="false">網頁 AI 協作</button><button type="button" id="print">列印</button><button type="button" id="pdf" class="primary">文字型 PDF</button></div>
+</div>
+<p id="preview-note" role="status">點選「文字型 PDF」，以原生文字及表格輸出。請在瀏覽器列印視窗選「儲存為 PDF」，而不是列印為圖片。</p>
+<div id="preview-attachments" class="attachment-bar" hidden=""></div>
+<div id="sheets" translate="no" class="notranslate"></div>
+<div id="attachment-store" translate="no" class="notranslate" hidden=""></div>
+</section>
+<template id="zoom-template">
+<span class="zoom-controls" role="group" aria-label="頁面縮放">
+<button type="button" data-zoom="out" aria-label="縮小" title="縮小">−</button>
+<button type="button" data-zoom="reset">100%</button>
+<button type="button" data-zoom="in" aria-label="放大" title="放大">+</button>
+</span>
+</template>
+<aside id="writer-ai" aria-labelledby="ai-title" inert="">
+<header class="ai-head">
+<h2 id="ai-title">AI 問文件</h2>
+<div class="actions">
+<button type="button" id="ai-reset" disabled="">新對話</button>
+<button type="button" id="ai-close" aria-label="關閉 AI 問答">✕</button>
+</div>
+</header>
+<details id="ai-settings" class="ai-settings">
+<summary>API 連線設定</summary>
+<label for="ai-url">OpenAI 相容 API 網址</label>
+<input id="ai-url" translate="no" class="notranslate" type="text" inputmode="url" spellcheck="false" autocomplete="off" placeholder="http://127.0.0.1:11434/v1" maxlength="1024">
+<label for="ai-key">API Key（選填）</label>
+<input id="ai-key" translate="no" class="notranslate" type="password" autocomplete="off" maxlength="2048">
+<button type="button" id="ai-connect">取得模型清單</button>
+</details>
+<div class="ai-controls">
+<label for="ai-task">功能</label>
+<select id="ai-task"><option value="ask">文件問答</option><option value="format">選取區塊重新排版</option><option value="generate">游標位置直接生成</option></select>
+</div>
+<div id="ai-edit-panel" class="ai-edit-panel" hidden="">
+<div class="ai-pick-actions"><button type="button" id="ai-pick-start">開始選取文件</button><button type="button" id="ai-pick-expand" disabled="" title="將已選取的單一小區塊往上一層擴大（段落→儲存格→整列→整個表格）">擴大範圍</button><button type="button" id="ai-pick-clear">清除選取</button></div><div id="ai-selection-summary">請先在文件中圈選段落，再開啟 AI。</div>
+<div id="ai-picked-content" translate="no" class="ai-picked-content notranslate" hidden=""></div><label id="ai-edit-style-label" for="ai-edit-style">修改方式</label>
+<select id="ai-edit-style"><option value="layout">只排版（不改文字）</option><option value="polish">排版並潤飾</option><option value="free">自由改寫</option></select>
+<div id="ai-edit-preview" hidden="">
+<strong>修改預覽（可在下方捲動內容，也可拖曳預覽框底部調整高度）</strong>
+<div id="ai-edit-render" translate="no" class="doc notranslate"></div>
+<div class="ai-edit-actions"><button type="button" id="ai-edit-apply" class="primary">確認取代</button><button type="button" id="ai-edit-dismiss">取消</button></div>
+</div>
+</div>
+<div class="ai-controls">
+<label for="ai-model">模型</label>
+<select id="ai-model" translate="no" class="notranslate" disabled=""><option value="">選擇聊天模型</option></select>
+</div>
+<p id="ai-destination" class="ai-destination" hidden=""></p>
+<div id="ai-chat" translate="no" class="ai-chat notranslate" role="log" aria-label="問答紀錄">
+<p id="ai-empty" class="ai-empty">可以查操作步驟，也可以一起討論怎麼修改這份文件。</p>
+</div>
+<p id="ai-status" class="ai-status" role="status" hidden=""></p>
+<form id="ai-form" class="ai-compose">
+<label for="ai-question">問題</label>
+<textarea id="ai-question" translate="no" class="notranslate" maxlength="2000" required=""></textarea>
+<div class="voice-row"><button type="button" id="mic-ai" class="voice-button" aria-pressed="false" title="語音輸入 AI 提示詞">🎙 AI 語音輸入</button><span id="mic-ai-status" class="voice-status" role="status"></span></div>
+<div class="ai-compose-actions">
+<button type="button" id="ai-stop" hidden="">停止</button>
+<button type="submit" id="ai-send" class="primary" disabled="">送出</button>
+</div>
+</form>
+</aside>
 
-  <!-- WEB-AI/OFFLINE-EXCHANGE: this entire UI is not part of #paper and is not sent anywhere. -->
-  <aside id="writer-web-ai" aria-labelledby="web-ai-title" inert="">
-    <header class="ai-head">
-      <h2 id="web-ai-title" data-i18n="webAiTitle">網頁 AI 協作</h2>
-      <button type="button" id="web-ai-close" aria-label="關閉網頁 AI 協作" data-i18n-label="webAiClose">✕</button>
-    </header>
-    <div class="web-ai-content">
-      <p data-i18n="webAiIntro">不必設定 API。在此複製提示詞，交給一般網頁版 AI 產生文件，再將結果貼回本編輯器。整個過程由你自行複製貼上。</p>
-      <h3 data-i18n="webAiStep1">① 準備提示詞</h3>
-      <label for="web-ai-destination" data-i18n="webAiDestination">貼回文件的位置</label>
-      <select id="web-ai-destination">
-        <option value="replace" data-i18n="webAiReplace">取代整份文件</option>
-        <option value="cursor" data-i18n="webAiCursor">插入到原游標所在段落後</option>
-        <option value="append" data-i18n="webAiAppend">加到文件最後</option>
-      </select>
-      <label for="web-ai-request" data-i18n="webAiRequest">希望 AI 製作的內容（可自行編輯）</label>
-      <textarea id="web-ai-request" rows="4" data-i18n-placeholder="webAiRequestPlaceholder" placeholder="例如：請產生一份教育訓練公告，包括標題、時程、注意事項與表格。"></textarea>
-      <label class="web-ai-check"><input type="checkbox" id="web-ai-include-doc"><span data-i18n="webAiIncludeDoc">在提示詞內附上目前文件 HTML（僅在勾選後才附上，請留意隱私）</span></label>
-      <label for="web-ai-prompt" data-i18n="webAiGeneratedPrompt">可複製的提示詞（自動整理）</label>
-      <textarea id="web-ai-prompt" readonly="" spellcheck="false" rows="9"></textarea>
-      <div class="web-ai-buttons"><button type="button" class="primary" id="web-ai-copy" data-i18n="webAiCopy">複製提示詞</button></div>
-      <p data-i18n="webAiInstructions">開啟 ChatGPT、Claude、Gemini 或其他網頁 AI，貼上提示詞並送出。將 AI 回覆的 HTML 程式碼或 Markdown 內容複製回來；不需貼整個網頁。</p>
-      <h3 data-i18n="webAiStep2">② 貼回生成結果</h3>
-      <label for="web-ai-result" data-i18n="webAiPaste">貼上 AI 產生的 HTML 或 Markdown</label>
-      <textarea id="web-ai-result" spellcheck="false" rows="7" data-i18n-placeholder="webAiPastePlaceholder" placeholder="可貼上 &lt;h1&gt;標題&lt;/h1&gt;、Markdown，或一般文字。"></textarea>
-      <div class="web-ai-buttons">
-        <button type="button" id="web-ai-check" data-i18n="webAiCheck">預覽內容</button>
-      </div>
-      <div id="web-ai-preview-wrap" hidden="">
-        <strong data-i18n="webAiPreviewTitle">匯入預覽（表格與文字保留為可編輯內容）</strong>
-        <div id="web-ai-preview" class="doc"></div>
-        <div class="web-ai-buttons" style="padding:0 10px 10px">
-          <button type="button" id="web-ai-apply" class="primary" data-i18n="webAiApply">確認匯入文件</button>
-          <button type="button" id="web-ai-cancel" data-i18n="cancel">取消</button>
-        </div>
-      </div>
-      <p id="web-ai-feedback" role="status" aria-live="polite"></p>
-      <p data-i18n="webAiPrivacy">提醒：本功能不會自動上傳文件；但你主動複製的提示詞及其中的文件內容，會依所使用的網頁 AI 服務處理。</p>
-    </div>
-  </aside>
-  <dialog id="dialog">
-    <form id="form" novalidate="">
-      <h2 id="dialog-title"></h2>
-      <p id="new-message" data-i18n="newWarning" hidden="">目前的文件有未另存的變更。要開一份空白文件嗎？</p>
-      <div id="link-fields" hidden=""><label><span data-i18n="linkText">顯示文字</span><input id="link-text"></label><label><span data-i18n="url">網址</span><input id="link-url" type="url" placeholder="https://example.com"></label></div>
-      <div id="table-fields" hidden=""><label><span data-i18n="rows">列數（含表頭）</span><input id="rows" type="number" min="1" max="30" value="3"></label><label><span data-i18n="columns">欄數</span><input id="columns" type="number" min="1" max="8" value="2"></label><label class="dialog-check"><input id="table-borderless" type="checkbox"><span data-i18n="hideBorders">不顯示格線</span></label></div>
-      <div id="margin-fields" hidden=""><div class="margin-presets"><button type="button" data-margin-preset="18,18,18,18">標準 18mm</button><button type="button" data-margin-preset="12,12,12,12">適中 12mm</button><button type="button" data-margin-preset="8,8,8,8">窄 8mm</button><button type="button" data-margin-preset="5,5,5,5">極窄 5mm</button><button type="button" data-margin-preset="8,14,8,14">上下緊湊</button></div><div class="margin-grid"><label><span>上邊界 (mm)</span><input id="margin-top" type="number" min="3" max="40" step="1" value="18"></label><label><span>下邊界 (mm)</span><input id="margin-bottom" type="number" min="3" max="40" step="1" value="18"></label><label><span>左邊界 (mm)</span><input id="margin-left" type="number" min="3" max="40" step="1" value="18"></label><label><span>右邊界 (mm)</span><input id="margin-right" type="number" min="3" max="40" step="1" value="18"></label></div><p class="margin-hint">縮小上下或左右邊界可增加每頁可容納的內容，讓原本跨 2 頁的文件縮成 1 頁。</p></div>
-      <p id="error" role="alert"></p>
-      <div class="dialog-actions"><button type="button" id="cancel" data-i18n="cancel">取消</button><button type="submit" class="primary" id="submit">插入</button></div>
-    </form>
-  </dialog>
+<!-- WEB-AI/OFFLINE-EXCHANGE: this entire UI is not part of #paper and is not sent anywhere. -->
+<aside id="writer-web-ai" aria-labelledby="web-ai-title" inert="">
+<header class="ai-head">
+<h2 id="web-ai-title">網頁 AI 協作</h2>
+<button type="button" id="web-ai-close" aria-label="關閉網頁 AI 協作">✕</button>
+</header>
+<div class="web-ai-content">
+<p>不必設定 API。在此複製提示詞，交給一般網頁版 AI 產生文件，再將結果貼回本編輯器。整個過程由你自行複製貼上。</p>
+<h3>① 準備提示詞</h3>
+<label for="web-ai-destination">貼回文件的位置</label>
+<select id="web-ai-destination">
+<option value="replace">取代整份文件</option>
+<option value="cursor">插入到原游標所在段落後</option>
+<option value="append">加到文件最後</option>
+</select>
+<label for="web-ai-request">希望 AI 製作的內容（可自行編輯）</label>
+<textarea id="web-ai-request" translate="no" class="notranslate" rows="4" placeholder="例如：請產生一份教育訓練公告，包括標題、時程、注意事項與表格。"></textarea>
+<label class="web-ai-check"><input type="checkbox" id="web-ai-include-doc"><span>在提示詞內附上目前文件 HTML（僅在勾選後才附上，請留意隱私）</span></label>
+<label for="web-ai-prompt">可複製的提示詞（自動整理）</label>
+<textarea id="web-ai-prompt" translate="no" class="notranslate" readonly="" spellcheck="false" rows="9"></textarea>
+<div class="web-ai-buttons"><button type="button" class="primary" id="web-ai-copy">複製提示詞</button></div>
+<p>開啟 ChatGPT、Claude、Gemini 或其他網頁 AI，貼上提示詞並送出。將 AI 回覆的 HTML 程式碼或 Markdown 內容複製回來；不需貼整個網頁。</p>
+<h3>② 貼回生成結果</h3>
+<label for="web-ai-result">貼上 AI 產生的 HTML 或 Markdown</label>
+<textarea id="web-ai-result" translate="no" class="notranslate" spellcheck="false" rows="7" placeholder="可貼上 &lt;h1&gt;標題&lt;/h1&gt;、Markdown，或一般文字。"></textarea>
+<div class="web-ai-buttons">
+<button type="button" id="web-ai-check">預覽內容</button>
+</div>
+<div id="web-ai-preview-wrap" hidden="">
+<strong>匯入預覽（表格與文字保留為可編輯內容）</strong>
+<div id="web-ai-preview" translate="no" class="doc notranslate"></div>
+<div class="web-ai-buttons" style="padding:0 10px 10px">
+<button type="button" id="web-ai-apply" class="primary">確認匯入文件</button>
+<button type="button" id="web-ai-cancel">取消</button>
+</div>
+</div>
+<p id="web-ai-feedback" role="status" aria-live="polite"></p>
+<p>提醒：本功能不會自動上傳文件；但你主動複製的提示詞及其中的文件內容，會依所使用的網頁 AI 服務處理。</p>
+</div>
+</aside>
+<dialog id="size-dialog"><h2>文件容量分析</h2><p id="size-total"></p><div id="size-parts"></div><p class="margin-hint">以另存 HTML 的實際 UTF-8 位元組計算。圖片與附件為內嵌資料，包含 Base64 開銷。</p><form method="dialog" class="dialog-actions"><button>關閉</button></form></dialog>
+<dialog id="dialog">
+<form id="form" novalidate="">
+<h2 id="dialog-title"></h2>
+<p id="new-message" hidden="">目前的文件有未另存的變更。要開一份空白文件嗎？</p>
+<div id="link-fields" hidden=""><label><span>顯示文字</span><input id="link-text"></label><label><span>網址</span><input id="link-url" type="url" placeholder="https://example.com"></label></div>
+<div id="table-fields" hidden=""><label><span>列數（含表頭）</span><input id="rows" type="number" min="1" max="30" value="3"></label><label><span>欄數</span><input id="columns" type="number" min="1" max="8" value="2"></label><label class="dialog-check"><input id="table-borderless" type="checkbox"><span>不顯示格線</span></label></div>
+<div id="margin-fields" hidden=""><div class="margin-presets"><button type="button" data-margin-preset="18,18,18,18">標準 18mm</button><button type="button" data-margin-preset="12,12,12,12">適中 12mm</button><button type="button" data-margin-preset="8,8,8,8">窄 8mm</button><button type="button" data-margin-preset="5,5,5,5">極窄 5mm</button><button type="button" data-margin-preset="8,14,8,14">上下緊湊</button></div><div class="margin-grid"><label><span>上邊界 (mm)</span><input id="margin-top" type="number" min="3" max="40" step="1" value="18"></label><label><span>下邊界 (mm)</span><input id="margin-bottom" type="number" min="3" max="40" step="1" value="18"></label><label><span>左邊界 (mm)</span><input id="margin-left" type="number" min="3" max="40" step="1" value="18"></label><label><span>右邊界 (mm)</span><input id="margin-right" type="number" min="3" max="40" step="1" value="18"></label></div><p class="margin-hint">縮小上下或左右邊界可增加每頁可容納的內容，讓原本跨 2 頁的文件縮成 1 頁。</p></div>
+<p id="error" role="alert"></p>
+<div class="dialog-actions"><button type="button" id="cancel">取消</button><button type="submit" class="primary" id="submit">插入</button></div>
+</form>
+</dialog>
 </main><script id="writer-script">
 (() => {
 "use strict";
@@ -586,7 +582,7 @@ HTML 文件維護契約
 - 正文復原由 editHistory 統一處理原生輸入、格式工具及清單層級。歷程內的內嵌圖片按識別碼共用。
 - 表格沿用原生 rowspan、colspan。欄寬百分比儲存於直屬 colgroup，拖曳控制項位於正文之外。
 - 自由圖片保留在原插入點。圖層與位置儲存在 img 上，位置以正文左上角為原點，水平按正文寬度比例、垂直用 CSS px。
-- 多語字串集中在 locale。介面使用 data-i18n 或 t()，正文與列印排版共用獨立的正文語言。
+- UI 只維護繁體中文；靜態介面直接寫 HTML，動態提示集中 messages。瀏覽器翻譯不應翻譯正文（translate=no）；另存使用初始 shell。
 - 分頁只讀正文副本。列印與 PDF 共用預覽建立的 #sheets 及同一套正文樣式。
  - PDF 保留文字：專用隱藏 iframe 複製 HTML 的真實文字節點與表格，交給瀏覽器原生 PDF 引擎。嚴禁改成 canvas、html2canvas、截圖或將整頁轉為圖片。
  - PDF 可選取文字、搜尋、保留表格框線與儲存格文字；PDF 並非可直接合併／拆分儲存格的表格編輯器，後續編輯仍使用 HTML 原始檔。
@@ -600,232 +596,9 @@ const chrome = app.querySelector(".chrome");
 const shell = app.cloneNode(true);
 const styleSource = $("writer-style").outerHTML, scriptSource = $("writer-script").outerHTML;
 const headings = "h1,h2,h3", imageMime = /^image\/(png|jpeg|gif|webp|bmp|avif)$/i;
-const locale = (() => {
-  // Every message row uses this order. Placeholders are named and replaced as plain text.
-  const languages = ["zh-Hant","en","ja"];
-  const messages = {
-    language:["介面語言","Interface language","表示言語"],
-    auto:["自動","Auto","自動"],
-    fileName:["文件名稱","Document name","文書名"],
-    newFile:["新文件","New document","新規文書"],
-    copyDocument:["複製全文","Copy document","全文をコピー"],
-    copyDone:["已複製全文","Document copied","全文をコピーしました"],
-    copyFailed:["無法複製全文，請選取正文後再複製。","Could not copy the document. Select the document text and copy it.","全文をコピーできませんでした。本文を選択してコピーしてください。"],
-    readMode:["閱讀模式","Reading mode","閲覧モード"],
-    editMode:["編輯","Edit","編集"],
-    pageZoom:["頁面縮放","Page zoom","ページの拡大縮小"],
-    zoomOut:["縮小","Zoom out","縮小"],
-    zoomIn:["放大","Zoom in","拡大"],
-    zoomActual:["還原 100%","Reset to 100%","100% に戻す"],
-    zoomFit:["符合頁面寬度","Fit page width","ページ幅に合わせる"],
-    printPreview:["列印預覽","Print preview","印刷プレビュー"],
-    saveHtml:["另存 HTML","Save HTML","HTML を保存"],
-    editTools:["文件編輯","Document editing","文書編集"],
-    undo:["復原","Undo","元に戻す"],
-    redo:["重做","Redo","やり直す"],
-    paragraphStyle:["段落樣式","Paragraph style","段落スタイル"],
-    bodyText:["內文","Body text","本文"],
-    bodyTextSmall:["內文（小）","Body text (Small)","本文（小）"],
-    bodyTextXSmall:["內文（更小）","Body text (Extra small)","本文（極小）"],
-    heading1:["標題 1","Heading 1","見出し 1"],
-    heading2:["標題 2","Heading 2","見出し 2"],
-    heading3:["標題 3","Heading 3","見出し 3"],
-    font:["字型","Font","フォント"],
-    fontHelp:["套用於選取的文字或接著輸入的文字","Applies to the selection or the text you type next","選択した文字、または次に入力する文字に適用します"],
-    fontSans:["無襯線／黑體","Sans serif","サンセリフ／ゴシック体"],
-    fontSerif:["襯線／明體","Serif","セリフ／明朝体"],
-    fontMono:["等寬","Monospace","等幅"],
-    bold:["粗體","Bold","太字"],
-    italic:["斜體","Italic","斜体"],
-    underline:["底線","Underline","下線"],
-    color:["文字顏色","Text color","文字色"],
-    alignment:["對齊","Alignment","文字揃え"],
-    left:["靠左","Align left","左揃え"],
-    center:["置中","Center","中央揃え"],
-    right:["靠右","Align right","右揃え"],
-    bullets:["清單","Bullets","箇条書き"],
-    numbering:["編號","Numbering","番号付きリスト"],
-    listUp:["上一層","Promote","上の階層へ"],
-    listDown:["下一層","Demote","下の階層へ"],
-    listUpHelp:["將選取的編號項目移到上一層","Move the selected items up one list level","選択した項目を上の階層に移動します"],
-    listDownHelp:["將選取的編號項目移到前一項底下","Nest the selected items under the preceding item","選択した項目を直前の項目の下に移動します"],
-    link:["連結","Link","リンク"],
-    image:["圖片","Image","画像"],
-    table:["表格","Table","表"],
-    addRow:["新增列（橫向）","Add row (horizontal)","行を追加（横方向）"],
-    addRowHelp:["在目前儲存格下方插入一橫列","Insert a row below the current cell","現在のセルの下に行を挿入"],
-    removeRow:["刪除此列","Delete row","行を削除"],
-    addColumn:["新增欄（直向）","Add column (vertical)","列を追加（縦方向）"],
-    addColumnHelp:["在目前儲存格右側插入一直欄","Insert a column to the right of the current cell","現在のセルの右に列を挿入"],
-    removeColumn:["刪除此欄","Delete column","列を削除"],
-    selectCells:["選取儲存格","Select cells","セルを選択"],
-    selectCellsHelp:["拖曳選取，或按此按鈕後點選範圍另一端","Drag across cells, or press this button and then select the opposite corner","セル間をドラッグするか、このボタンを押して範囲の反対側を選択"],
-    mergeHorizontal:["橫向合併","Merge horizontally","横方向に結合"],
-    mergeVertical:["垂直合併","Merge vertically","縦方向に結合"],
-    mergeRange:["合併範圍","Merge range","範囲を結合"],
-    splitColumns:["直切（左右兩格）","Split into left and right cells","縦に分割（左右）"],
-    splitRows:["橫切（上下兩格）","Split into top and bottom cells","横に分割（上下）"],
-    hideBorders:["不顯示格線","Hide borders","罫線を非表示"],
-    hideBordersHelp:["切換是否顯示此表格的格線（編輯時以淡虛線輔助對齊，閱讀與列印時隱藏）","Toggle table borders (faint dashed guides while editing, hidden in reading and print)","表の罫線の表示／非表示を切り替えます（編集時は薄い破線を表示し、閲覧・印刷時は非表示）"],
-    resizeColumns:["拖曳欄線可調整欄寬","Drag a column border to adjust its width","列の境界線をドラッグして幅を調整"],
-    columnGrip:["調整第 {n} 欄與第 {next} 欄的寬度。拖曳或使用左右方向鍵","Resize columns {n} and {next}. Drag or use the left and right arrow keys","列 {n} と列 {next} の幅を調整。ドラッグまたは左右の矢印キーを使用"],
-    imageWidth:["圖片寬度","Image width","画像の幅"],
-    imageMode:["圖片模式","Image layout","画像の配置"],
-    inlineImage:["隨文字排列","In line with text","行内"],
-    freeImage:["自由模式","Free placement","自由配置"],
-    pickFreeImage:["選取自由圖片","Select a freely placed image","自由配置の画像を選択"],
-    imageLayer:["圖層","Layer","重なり順"],
-    imageFront:["文字上層","In front of text","文字の前面"],
-    imageBehind:["文字下層","Behind text","文字の背面"],
-    imageWidthPercent:["寬度 %","Width %","幅 %"],
-    imageAngle:["旋轉 °","Rotation °","回転 °"],
-    imageOpacity:["不透明度 %","Opacity %","不透明度 %"],
-    moveImage:["拖曳圖片，或用方向鍵移動","Drag the image, or move it with the arrow keys","ドラッグまたは矢印キーで画像を移動"],
-    resizeImage:["拖曳等比例縮放圖片","Drag to resize the image proportionally","ドラッグして画像を縦横比を保ったまま拡大・縮小"],
-    rotateImage:["拖曳旋轉圖片","Drag to rotate the image","ドラッグして画像を回転"],
-    removeImage:["移除圖片","Remove image","画像を削除"],
-    outline:["文件大綱","Document outline","文書のアウトライン"],
-    document:["文件","Document","文書"],
-    content:["文件內容","Document content","文書の内容"],
-    continuousLayout:["A4 寬度 · 連續編輯","A4 width · Continuous editing","A4 幅 · 連続編集"],
-    back:["返回文件","Back to document","文書に戻る"],
-    a4Preview:["A4 列印預覽","A4 print preview","A4 印刷プレビュー"],
-    print:["列印","Print","印刷"],
-    pdf:["文字型 PDF","Text PDF","テキスト PDF"],
-    pdfPreviewGuide:["使用「文字型 PDF」與瀏覽器內建的「儲存為 PDF」，可保留可選取的文字、表格格線及儲存格內文字；需要繼續編輯請保留 HTML 原始檔。","Use Text PDF and the browser’s built-in Save as PDF to keep selectable text, table borders and cell text. Keep the HTML file for editing.","テキスト PDF とブラウザー標準の PDF 保存では、選択可能なテキストと表の罫線・セルの文字が残ります。編集には HTML ファイルを保管してください。"],
-    pdfChooseBrowser:["請在瀏覽器的列印目的地選「儲存為 PDF」（優先使用 Chrome／Edge 內建選項），不要選擇「列印成圖片」。文字可複製與搜尋，但 PDF 表格並非可直接操作的 HTML 儲存格。","Choose the browser’s built-in Save as PDF (prefer Chrome or Edge), not Print as Image. PDF text remains selectable, but tables are not editable HTML cells.","印刷先にブラウザー標準の PDF 保存（Chrome／Edge 推奨）を選び、画像として印刷しないでください。テキストは選択できますが、表は HTML のセルとして編集できません。"],
-    printSettings:["列印視窗請選 A4、實際大小（100%），並關閉頁首及頁尾。","In the print dialog, choose A4 and actual size (100%), and turn off headers and footers.","印刷画面で A4 と実際のサイズ（100%）を選び、ヘッダーとフッターをオフにしてください。"],
-    newWarning:["目前的文件有未另存的變更。要開一份空白文件嗎？","This document has unsaved changes. Start a blank document?","保存されていない変更があります。空白の文書を開きますか？"],
-    linkText:["顯示文字","Display text","表示する文字列"],
-    url:["網址","URL","URL"],
-    rows:["列數（含表頭）","Rows (including header)","行数（見出し行を含む）"],
-    columns:["欄數","Columns","列数"],
-    cancel:["取消","Cancel","キャンセル"],
-    insert:["插入","Insert","挿入"],
-    untitled:["未命名文件","Untitled document","無題の文書"],
-    dirty:["有未另存的變更","Unsaved changes","保存されていない変更"],
-    characters:["{count} 字元","Characters: {count}","{count} 文字"],
-    unnamedHeading:["未命名標題","Untitled heading","無題の見出し"],
-    columnName:["欄位 {n}","Column {n}","列 {n}"],
-    supportedImage:["請選擇支援的圖片格式","Choose a supported image format","対応する画像形式を選んでください"],
-    insertedImage:["插入的圖片","Inserted image","挿入した画像"],
-    imageError:["圖片讀取失敗","Could not read the image","画像を読み込めませんでした"],
-    openBlank:["開啟空白文件","Open a blank document","空白の文書を開く"],
-    insertLink:["插入連結","Insert link","リンクを挿入"],
-    insertTable:["插入表格","Insert table","表を挿入"],
-    downloadStarted:["已開始下載","Download started","ダウンロードを開始しました"],
-    pageNumber:["第 {n} / {total} 頁","Page {n} of {total}","{n} / {total} ページ"],
-    pageCount:["{count} 頁","Pages: {count}","{count} ページ"],
-    scaledItems:["部分超高項目已等比例縮小。","Very tall items have been scaled to fit.","高さが大きい項目はページに収まるように縮小しました。"],
-    paginating:["正在排版…","Laying out pages…","ページをレイアウトしています…"],
-    choosePdf:["請在列印視窗的目的地選「儲存為 PDF」。","Choose “Save as PDF” as the destination in the print dialog.","印刷画面の送信先で「PDF に保存」を選んでください。"],
-    invalidTable:["列數請輸入 1 到 30，欄數請輸入 1 到 8。","Enter 1–30 rows and 1–8 columns.","行数は 1～30、列数は 1～8 の範囲で入力してください。"],
-    invalidUrl:["請輸入以 http:// 或 https:// 開頭的網址。","Enter a URL starting with http:// or https://.","http:// または https:// で始まる URL を入力してください。"],
-    webAiTitle:["網頁 AI 協作","Web AI collaboration","Web AI と共同作業"],
-    webAiClose:["關閉網頁 AI 協作","Close Web AI panel","Web AI パネルを閉じる"],
-    webAiIntro:["不必設定 API。在此複製提示詞，交給一般網頁版 AI 產生文件，再將結果貼回本編輯器。整個過程由你自行複製貼上。","No API setup needed. Copy a prompt to any browser-based AI, then paste the generated document back here.","API 設定は不要です。プロンプトを Web 上の AI に貼り、生成した文書をこのエディターに戻します。"],
-    webAiStep1:["① 準備提示詞","① Prepare the prompt","① プロンプトを準備"],
-    webAiDestination:["貼回文件的位置","Where to insert the result","挿入先"],
-    webAiReplace:["取代整份文件","Replace entire document","文書全体を置換"],
-    webAiCursor:["插入到原游標所在段落後","Insert after original cursor paragraph","元のカーソル段落の後に挿入"],
-    webAiAppend:["加到文件最後","Append to document","文書の末尾に追加"],
-    webAiRequest:["希望 AI 製作的內容（可自行編輯）","What the AI should create","AI に作成してほしい内容"],
-    webAiRequestPlaceholder:["例如：產生一份教育訓練公告，包含標題、時程、注意事項與表格。","Example: Create a training notice with a title, schedule, notes and a table.","例：タイトル、日程、注意事項と表を含む研修案内を作成。"],
-    webAiIncludeDoc:["在提示詞內附上目前文件 HTML（僅在勾選後才附上，請留意隱私）","Include current document HTML in the prompt (opt-in; check privacy first)","現在の文書 HTML を含める（選択時のみ・個人情報に注意）"],
-    webAiGeneratedPrompt:["可複製的提示詞（自動整理）","Copy-ready prompt (automatically prepared)","コピー用プロンプト（自動生成）"],
-    webAiCopy:["複製提示詞","Copy prompt","プロンプトをコピー"],
-    webAiInstructions:["開啟 ChatGPT、Claude、Gemini 或其他網頁 AI，貼上提示詞並送出。將 AI 回覆的 HTML 程式碼或 Markdown 內容複製回來；不需貼整個網頁。","Use ChatGPT, Claude, Gemini or another web AI. Paste the prompt there, then copy back the HTML source or Markdown response, not the whole webpage.","ChatGPT、Claude、Gemini などにプロンプトを貼り、返信の HTML または Markdown をコピーしてください。"],
-    webAiStep2:["② 貼回生成結果","② Paste the result","② 結果を貼り付け"],
-    webAiPaste:["貼上 AI 產生的 HTML 或 Markdown","Paste generated HTML or Markdown","生成された HTML または Markdown を貼り付け"],
-    webAiPastePlaceholder:["可貼上 <h1>標題</h1>、Markdown，或一般文字。","Paste <h1>Title</h1>, Markdown or plain text.","<h1>見出し</h1>、Markdown、または普通の文章を貼り付け。"],
-    webAiCheck:["預覽內容","Preview content","内容をプレビュー"],
-    webAiPreviewTitle:["匯入預覽（表格與文字保留為可編輯內容）","Import preview (text and tables stay editable)","取り込みプレビュー（文字と表を編集可能に保持）"],
-    webAiApply:["確認匯入文件","Import into document","文書に取り込む"],
-    webAiPrivacy:["提醒：本功能不會自動上傳文件；但你主動複製的提示詞及其中的文件內容，會依所使用的網頁 AI 服務處理。","Nothing is uploaded automatically. If you include document content in the copied prompt, the web AI service will process it.","自動送信はしません。コピーした文書内容は利用先の Web AI サービスで処理されます。"],
-    webAiCopied:["已複製提示詞，請到網頁 AI 貼上。","Prompt copied. Paste it into your web AI.","コピーしました。Web AI に貼り付けてください。"],
-    webAiCopyError:["無法自動複製。請在提示詞欄內全選後複製。","Copy failed. Select all text in the prompt box and copy manually.","コピーできません。欄内を全選択して手動でコピーしてください。"],
-    webAiMissing:["請先貼上 AI 產生的內容。","Paste the AI-generated content first.","まず AI が生成した内容を貼り付けてください。"],
-    webAiInvalid:["未找到可匯入的文字、標題或表格，請檢查貼上的內容。","No importable text, headings or tables found. Please check the pasted result.","取り込み可能な文章や表が見つかりません。"],
-    webAiReady:["預覽已產生。確認內容與表格後，再按「確認匯入文件」。","Preview ready. Check the contents and table before importing.","プレビューが完成しました。確認してから取り込んでください。"],
-    webAiConfirmReplace:["這會取代目前整份文件。確定繼續？","This will replace the entire current document. Continue?","現在の文書全体を置き換えます。続行しますか？"],
-    webAiImported:["已匯入文件，可繼續編輯、另存 HTML 或輸出文字型 PDF。","Imported. You can now edit, save HTML or export a text PDF.","取り込みました。編集、HTML 保存、テキスト PDF 出力ができます。"],
-    aiTitle:["AI 問文件","Ask AI","AI に質問"],
-    aiReset:["新對話","New chat","新しいチャット"],
-    aiClose:["關閉 AI 問答","Close AI panel","AI パネルを閉じる"],
-    aiSettings:["API 連線設定","API settings","API 接続設定"],
-    aiUrl:["OpenAI 相容 API 網址","OpenAI-compatible API URL","OpenAI 互換 API の URL"],
-    aiKey:["API Key（選填）","API key (optional)","API キー（任意）"],
-    aiConnect:["取得模型清單","Load models","モデルを取得"],
-    aiModel:["模型","Model","モデル"],
-    aiPick:["選擇聊天模型","Choose a chat model","チャットモデルを選択"],
-    aiChat:["問答紀錄","Chat history","チャット履歴"],
-    aiEmpty:["可以查操作步驟，也可以一起討論怎麼修改這份文件。","Ask about a procedure or discuss how to improve the document.","手順を確認したり、文書の修正について相談したりできます。"],
-    aiQuestion:["問題","Question","質問"],
-    aiStop:["停止","Stop","停止"],
-    aiSend:["送出","Send","送信"],
-    aiYou:["你","You","あなた"],
-    aiDestination:["問題與文件片段會送至 {host}","Questions and document excerpts are sent to {host}","質問と文書の抜粋は {host} に送信されます"],
-    aiLoading:["正在取得模型清單…","Loading models…","モデルを取得中…"],
-    aiNoModels:["模型清單是空的。請先在 API 服務安裝或載入本機模型。","No models found. Install or load a model in the API service.","モデルが見つかりません。API サービスでモデルをインストールまたは読み込んでください。"],
-    aiBadUrl:["請填寫 HTTP 或 HTTPS 的 API 基底網址，例如 http://127.0.0.1:11434/v1。","Enter an HTTP or HTTPS API base URL, such as http://127.0.0.1:11434/v1.","http://127.0.0.1:11434/v1 など、HTTP または HTTPS の API ベース URL を入力してください。"],
-    aiUnavailable:["連不到 API。請確認服務已啟動、網址正確，且允許此頁面跨來源連線。","Could not reach the API. Check the service, URL, and allowed origins.","API に接続できません。サービス、URL、許可オリジンを確認してください。"],
-    aiFileHint:["若瀏覽器擋下本機檔案的請求，可以用本機 HTTP 開啟這份 HTML。","If the browser blocks requests from local files, open this HTML using a local HTTP server.","ローカルファイルからのリクエストがブロックされる場合は、ローカル HTTP サーバーからこの HTML を開いてください。"],
-    aiTimeout:["API 回應逾時，請確認服務和模型狀態後重試。","The API timed out. Check the service and model, then try again.","API がタイムアウトしました。サービスとモデルを確認して再試行してください。"],
-    aiHttp:["API 回應 HTTP {status}。","API returned HTTP {status}.","API が HTTP {status} を返しました。"],
-    aiBadJson:["API 回傳格式不符。請確認填的是 OpenAI 相容 API 的基底網址。","Unexpected API response. Check the OpenAI-compatible API base URL.","API の応答形式が一致しません。OpenAI 互換 API のベース URL を確認してください。"],
-    aiStopped:["已停止，可重新送出。","Stopped. You can send the question again.","停止しました。質問を再送信できます。"],
-    aiThinking:["正在依據文件回答…","Answering from the document…","文書を参照して回答中…"],
-    aiNoText:["這份文件目前沒有可供問答的文字。","This document has no text to use for answers yet.","この文書には回答に使えるテキストがまだありません。"],
-    aiNoReply:["模型沒有傳回可用的回答。請確認已選用聊天模型。","The model returned no usable answer. Check that you selected a chat model.","モデルから使用できる回答がありません。チャットモデルを選択したか確認してください。"],
-    aiSourceGone:["此段落已移除或預覽尚未排好。","This passage was removed or the preview is still being prepared.","この箇所は削除されたか、プレビューの準備中です。"],
-    aiExcerpt:["文件片段","Document excerpt","文書の抜粋"],
-    attachment:["附件","Attach file","添付ファイル"],
-    attachmentsLabel:["夾帶附件 ({count})","Attachments ({count})","添付ファイル ({count})"],
-    attachmentPreviewHint:["（點選可開啟或下載，列印時不會印出）","(Click to open or download; excluded when printing)","（クリックで開く・ダウンロード／印刷時は除外）"],
-    downloadAttachment:["下載附件","Download attachment","添付をダウンロード"],
-    removeAttachment:["移除附件","Remove attachment","添付を削除"],
-    attachmentLargeWarn:["所選檔案較大（{size}），嵌入後會增加單一 HTML 檔案體積。確定要夾帶嗎？","The selected file is large ({size}) and will increase the HTML file size. Attach anyway?","選択したファイルは大きいため（{size}）、HTMLファイルサイズが増加します。添付しますか？"],
-    attachmentError:["附件讀取失敗","Could not read the attachment","添付ファイルを読み込めませんでした"],
-  };
-  const storageKey = "html-writer.language";
-  const valid = value => value === "auto" || languages.includes(value);
-  let preference = app.dataset.language || "auto", active = "zh-Hant";
-  try { preference = localStorage.getItem(storageKey) || preference; } catch {}
-  function detect() {
-    for (const code of navigator.languages?.length ? navigator.languages : [navigator.language || ""]) {
-      const base = code.toLowerCase().split("-")[0];
-      if (base === "zh") return "zh-Hant";
-      if (base === "ja" || base === "en") return base;
-    }
-    return "en";
-  }
-  function t(key,values = {}) {
-    const row = messages[key];
-    return (row?.[languages.indexOf(active)] ?? row?.[0] ?? key).replace(/\{(\w+)\}/g,(match,name) => Object.hasOwn(values,name) ? String(values[name]) : match);
-  }
-  function apply(value) {
-    preference = valid(value) ? value : "auto";
-    active = preference === "auto" ? detect() : preference;
-    document.documentElement.lang = active;
-    $("language").value = preference;
-    for (const element of app.querySelectorAll("[data-i18n],[data-i18n-title],[data-i18n-label],[data-i18n-placeholder]")) {
-      if (element !== paper && paper.contains(element)) continue;
-      const {i18n,i18nTitle,i18nLabel} = element.dataset;
-      if (i18n) element.textContent = t(i18n);
-      if (i18nTitle) element.title = t(i18nTitle);
-      if (i18nLabel) element.setAttribute("aria-label",t(i18nLabel));
-      if (element.dataset.i18nPlaceholder) element.setAttribute("placeholder",t(element.dataset.i18nPlaceholder));
-    }
-  }
-  return {
-    t, apply, get preference() { return preference; }, get active() { return active; },
-    change(value) {
-      apply(value);
-      try { localStorage.setItem(storageKey,preference); } catch {}
-    },
-  };
-})();
-const {t} = locale;
+/* UI: Traditional Chinese only. Browser translation may translate UI, never document data. */
+const messages = {"characters":"{count} 字元","dirty":"有未另存的變更","copyDone":"已複製全文","copyFailed":"無法複製全文，請選取正文後再複製。","readMode":"閱讀模式","editMode":"編輯","columnName":"欄位 {n}","columnGrip":"調整第 {n} 欄與第 {next} 欄的寬度。拖曳或使用左右方向鍵","supportedImage":"請選擇支援的圖片格式","imageError":"圖片讀取失敗","openBlank":"開啟空白文件","insertLink":"插入連結","insertTable":"插入表格","newFile":"新文件","insert":"插入","downloadStarted":"已開始下載","pageNumber":"第 {n} / {total} 頁","zoomActual":"還原 100%","zoomFit":"符合頁面寬度","aiDestination":"問題與文件片段會送至 {host}","aiLoading":"正在取得模型清單…","aiNoModels":"模型清單是空的。請先在 API 服務安裝或載入本機模型。","aiBadUrl":"請填寫 HTTP 或 HTTPS 的 API 基底網址，例如 http://127.0.0.1:11434/v1。","aiUnavailable":"連不到 API。請確認服務已啟動、網址正確，且允許此頁面跨來源連線。","aiTimeout":"API 回應逾時，請確認服務和模型狀態後重試。","aiHttp":"API 回應 HTTP {status}。","aiBadJson":"API 回傳格式不符。請確認填的是 OpenAI 相容 API 的基底網址。","aiStopped":"已停止，可重新送出。","aiThinking":"正在依據文件回答…","aiNoText":"這份文件目前沒有可供問答的文字。","aiNoReply":"模型沒有傳回可用的回答。請確認已選用聊天模型。","aiSourceGone":"此段落已移除或預覽尚未排好。","webAiCopied":"已複製提示詞，請到網頁 AI 貼上。","webAiCopyError":"無法自動複製。請在提示詞欄內全選後複製。","pageCount":"{count} 頁","attachmentsLabel":"夾帶附件 ({count})","attachmentLargeWarn":"所選檔案較大（{size}），嵌入後會增加單一 HTML 檔案體積。確定要夾帶嗎？","attachmentError":"附件讀取失敗"};
+const messageText = (key,values={}) => (messages[key] ?? key).replace(/\{(\w+)\}/g,(match,name)=>Object.hasOwn(values,name)?String(values[name]):match);
 const make = (tag,className) => {
   const element = document.createElement(tag);
   if (className) element.className = className;
@@ -893,15 +666,15 @@ function copyBody() {
 }
 function cleanBody() { return copyBody().innerHTML; }
 function snapshot() { return fileName.value + "\n" + (app.dataset.margin || "18,18,18,18") + "\n" + cleanBody() + "\n" + ($("attachment-store")?.innerHTML || ""); }
-function actualName() { return fileName.value.trim() || t("untitled"); }
+function actualName() { return fileName.value.trim() || "未命名文件"; }
 function status() {
   const label = notice || (snapshot() !== saved ? "dirty" : "");
   const count = [...paper.textContent.replace(/\s/g,"")].length;
-  $("status").textContent = t("characters",{count}) + (label ? " · " + t(label) : "");
+  $("status").textContent = messageText("characters",{count}) + (label ? " · " + messageText(label) : "");
 }
 function updateOutline() {
   const items = Array.from(paper.querySelectorAll(headings));
-  const key = locale.active + JSON.stringify(items.map(item => [item.tagName,item.textContent]));
+  const key = JSON.stringify(items.map(item => [item.tagName,item.textContent]));
   if (key !== outlineKey) {
     outlineKey = key;
     $("outline").replaceChildren(...items.map((item,index) => {
@@ -909,7 +682,7 @@ function updateOutline() {
       button.type = "button";
       button.dataset.index = index;
       button.dataset.level = item.tagName.slice(1);
-      button.textContent = item.textContent.trim() || t("unnamedHeading");
+      button.textContent = item.textContent.trim() || "未命名標題";
       return button;
     }));
   }
@@ -1210,6 +983,7 @@ function syncContext() {
   const levels = editing && !selectedImage ? listLevels.actions(selection) : {};
   $("list-up").disabled = !levels.up;
   $("list-down").disabled = !levels.down;
+  syncFormatButtons();
 }
 function chooseImage(image) {
   if (image) tableEditing.clear();
@@ -1231,6 +1005,47 @@ function chooseImage(image) {
   freeImages.syncTools();
   syncContext();
 }
+/* FORMAT: one dispatch for native text ranges and rectangular cell selection. */
+const formatBlocks = "p,div,h1,h2,h3,h4,h5,h6";
+const paragraphSizes = {p:null,"p-small":"small","p-xsmall":"xsmall"};
+function bodySizeOn(el,size){if(size)el.dataset.bodySize=size;else delete el.dataset.bodySize;}
+function changeBlockTag(block,tag){if(block.localName===tag)return block;const next=make(tag);for(const {name,value} of block.attributes)next.setAttribute(name,value);next.append(...block.childNodes);block.replaceWith(next);return next;}
+function formatCell(cell,tag){
+  const body=Object.hasOwn(paragraphSizes,tag), size=paragraphSizes[tag], target=body?"p":tag;
+  bodySizeOn(cell,size);
+  // Preserve table/list structure; convert only paragraph-like blocks, wrap contiguous inline runs.
+  function walk(container){
+    let run=[];const flush=()=>{if(!run.length)return;const block=make(target);run[0].before(block);block.append(...run);bodySizeOn(block,size);run=[];};
+    for(const node of [...container.childNodes]){
+      if(node.nodeType===1&&node.matches(formatBlocks)){
+        flush();if(node.querySelector("table,ul,ol,blockquote,"+formatBlocks)){walk(node);continue;}
+        const block=changeBlockTag(node,target);bodySizeOn(block,size);
+      }else if(node.nodeType===1&&node.matches("ul,ol,blockquote,pre,hr,table,figure,section")){
+        flush();if(node.matches("ul,ol"))for(const li of node.querySelectorAll("li")){bodySizeOn(li,size);if(!body)for(const child of [...li.children].filter(e=>e.matches(formatBlocks)))bodySizeOn(changeBlockTag(child,target),null);}
+        else if(node.matches("blockquote,section"))walk(node);
+      }else run.push(node);
+    }flush();
+  }
+  walk(cell);if(!cell.firstChild){const b=make(target);b.append(make("br"));bodySizeOn(b,size);cell.append(b);}
+}
+const toggleCommands=["bold","italic","underline"];
+const cellCommands=new Set(["formatBlock","fontName","foreColor","justifyLeft","justifyCenter","justifyRight",...toggleCommands]);
+function cellTextNodes(cell){const walker=document.createTreeWalker(cell,NodeFilter.SHOW_TEXT);const nodes=[];while(walker.nextNode())if(walker.currentNode.data.trim())nodes.push(walker.currentNode);return nodes;}
+function textHasFormat(node,command){const el=elementAt(node),css=getComputedStyle(el);if(command==="bold")return Number(css.fontWeight)>=600||css.fontWeight==="bold";if(command==="italic")return css.fontStyle!=="normal";for(let e=el;e&&paper.contains(e);e=e.parentElement)if(getComputedStyle(e).textDecorationLine.includes("underline"))return true;return false;}
+function cellFormatState(cells,command){const nodes=cells.flatMap(cellTextNodes);if(!nodes.length)return cells.every(c=>textHasFormat(c,command));const values=nodes.map(n=>textHasFormat(n,command));return values.every(Boolean)?true:values.some(Boolean)?"mixed":false;}
+function syncFormatButtons(){
+  const cells=tableEditing.cells();for(const command of toggleCommands){let state=false;if(editing){if(cells.length)state=cellFormatState(cells,command);else if(selection&&paper.contains(selection.commonAncestorContainer)){try{const current=window.getSelection();if(current.rangeCount&&paper.contains(current.getRangeAt(0).commonAncestorContainer))state=document.queryCommandState(command);else state=textHasFormat(selection.startContainer,command);}catch{}}}$("tools").querySelector(`[data-command="${command}"]`).setAttribute("aria-pressed",String(state));}
+}
+function formatSelectedCells(cells,command,value){
+  if(command==="formatBlock"){for(const cell of cells)formatCell(cell,value);pointAt(cells[0]);return;}
+  const toggle=toggleCommands.includes(command), enable=toggle&&cellFormatState(cells,command)!==true;
+  for(const cell of cells){
+    const range=document.createRange();range.selectNodeContents(cell);focusRange(range);
+    if(toggle){const state=cellFormatState([cell],command);if(state===enable)continue;if(state==="mixed"&&document.queryCommandState(command)===enable)document.execCommand(command,false,null);}
+    document.execCommand(command,false,value);
+  }
+  pointAt(cells[0]);
+}
 function formatParagraph(tag) {
   const bodySizes = {"p":null,"p-small":"small","p-xsmall":"xsmall"};
   const isBodyVariant = Object.hasOwn(bodySizes,tag);
@@ -1241,14 +1056,6 @@ function formatParagraph(tag) {
     if (bodySize) el.dataset.bodySize = bodySize;
     else delete el.dataset.bodySize;
   };
-  const selectedCells = Array.from(paper.querySelectorAll("td[data-cell-selected],th[data-cell-selected]"));
-  if (selectedCells.length && isBodyVariant) {
-    for (const cell of selectedCells) {
-      applyBodySize(cell);
-      for (const inner of cell.querySelectorAll("p,li")) applyBodySize(inner);
-    }
-    return;
-  }
   const blocks = Array.from(paper.querySelectorAll("p,li,h1,h2,h3,h4,h5,h6")).filter(el => {
     if (!selection.intersectsNode(el)) return false;
     const nested = el.querySelector("p,li,h1,h2,h3,h4,h5,h6");
@@ -1265,11 +1072,8 @@ function formatParagraph(tag) {
         applyBodySize(block);
         continue;
       }
-      const replacement = make(targetTag);
-      for (const {name,value} of block.attributes) replacement.setAttribute(name,value);
+      const replacement = changeBlockTag(block,targetTag);
       applyBodySize(replacement);
-      replacement.append(...block.childNodes);
-      block.replaceWith(replacement);
       if (startMark.node === block) startMark.node = replacement;
       if (endMark.node === block) endMark.node = replacement;
     }
@@ -1288,15 +1092,7 @@ function formatParagraph(tag) {
     }
     return;
   }
-  if (block.localName === "td" || block.localName === "th") {
-    if (isBodyVariant) {
-      applyBodySize(block);
-      for (const inner of block.querySelectorAll("p,li")) applyBodySize(inner);
-    } else {
-      document.execCommand("formatBlock",false,"<" + targetTag + ">");
-    }
-    return;
-  }
+  if (block.matches("td,th")) { formatCell(block,tag);pointAt(block);return; }
   if (block.localName === "li") {
     if (isBodyVariant) applyBodySize(block);
     return;
@@ -1310,11 +1106,8 @@ function formatParagraph(tag) {
     return;
   }
   // Preserve formatted text and the exact selection when changing a paragraph's heading level.
-  const replacement = make(targetTag);
-  for (const {name,value} of block.attributes) replacement.setAttribute(name,value);
+  const replacement = changeBlockTag(block,targetTag);
   applyBodySize(replacement);
-  replacement.append(...block.childNodes);
-  block.replaceWith(replacement);
   const range = document.createRange();
   range.setStart(startContainer === block ? replacement : startContainer,startOffset);
   range.setEnd(endContainer === block ? replacement : endContainer,endOffset);
@@ -1327,13 +1120,13 @@ function issue(command,value = null) {
     return;
   }
   columnSizing.cancel();
-  const keepCellSelection = command === "formatBlock" && ["p","p-small","p-xsmall"].includes(value);
-  if (!keepCellSelection) tableEditing.clear();
-  restore();
-  editHistory.perform(() => {
-    if (command === "formatBlock") formatParagraph(value);
-    else document.execCommand(command,false,value);
-  });
+  const cells=tableEditing.cells();
+  if(cells.length&&cellCommands.has(command)){
+    editHistory.perform(()=>formatSelectedCells(cells,command,value));
+  }else{
+    tableEditing.clear();restore();
+    editHistory.perform(()=>{if(command==="formatBlock")formatParagraph(value);else document.execCommand(command,false,value);});
+  }
   if (selectedImage && !paper.contains(selectedImage)) chooseImage(null);
   changed();
   syncContext();
@@ -1344,7 +1137,7 @@ function mode(next) {
   paper.contentEditable = String(next);
   fileName.readOnly = !next;
   $("tools").hidden = !next;
-  $("mode").textContent = t(next ? "readMode" : "editMode");
+  $("mode").textContent = messageText(next ? "readMode" : "editMode");
   if (next) restore();
   else { tableEditing.clear(); chooseImage(null); }
   syncContext();
@@ -1362,7 +1155,7 @@ function insertTable(rows,columns,borderless = false) {
   table.dataset.object = objectKey();
   if (borderless) table.setAttribute("data-borderless","");
   const head = table.createTHead().insertRow();
-  for (let index = 0; index < columns; index++) blankCell(head,"th").textContent = t("columnName",{n:index + 1});
+  for (let index = 0; index < columns; index++) blankCell(head,"th").textContent = messageText("columnName",{n:index + 1});
   const body = table.createTBody();
   for (let index = 1; index < rows; index++) {
     const row = body.insertRow();
@@ -1712,7 +1505,7 @@ const tableEditing = (() => {
       syncContext();
     });
   }
-  return {clear,syncTools,change,hasSelection:() => marked.length > 0};
+  return {clear,syncTools,change,cells:()=>marked.map(x=>x.cell).filter(c=>paper.contains(c)),hasSelection:() => marked.length > 0};
 })();
 
 function resizeColumnPair(widths,boundary,delta,tableWidth) {
@@ -1779,7 +1572,7 @@ const columnSizing = (() => {
           handles.set(key,handle);
           controls.append(handle);
         }
-        const label = t("columnGrip",{n:boundary,next:boundary + 1});
+        const label = messageText("columnGrip",{n:boundary,next:boundary + 1});
         handle.setAttribute("aria-label",label);
         handle.title = label;
         position(handle,x,top,bottom - top);
@@ -1873,7 +1666,7 @@ function insertImage(file) {
     if (pending && paper.contains(pending.commonAncestorContainer)) selection = pending;
     const image = make("img");
     image.src = reader.result;
-    image.alt = file.name || t("insertedImage");
+    image.alt = file.name || "插入的圖片";
     image.dataset.object = objectKey();
     image.style.width = "75%";
     issue("insertHTML",image.outerHTML);
@@ -1951,8 +1744,8 @@ const freeImages = (() => {
     return {x:clamp(x,minX,Math.max(0,1 - 12 / width)),y:clamp(y,minY,Math.max(0,height - 12))};
   }
   function refreshPicker() {
-    const images = list(), label = t("pickFreeImage");
-    const labels = images.map((image,index) => (index + 1) + ". " + (image.alt || t("insertedImage")));
+    const images = list(), label = "選取自由圖片";
+    const labels = images.map((image,index) => (index + 1) + ". " + (image.alt || "插入的圖片"));
     const key = JSON.stringify([label,labels]);
     if (key !== pickerKey) {
       pickerKey = key;
@@ -2141,12 +1934,12 @@ const freeImages = (() => {
 function openDialog(type) {
   remember();
   dialogType = type;
-  $("dialog-title").textContent = type === "margin" ? "頁面邊界設定" : t({new:"openBlank",link:"insertLink",table:"insertTable"}[type]);
+  $("dialog-title").textContent = type === "margin" ? "頁面邊界設定" : messageText({new:"openBlank",link:"insertLink",table:"insertTable"}[type]);
   $("new-message").hidden = type !== "new";
   $("link-fields").hidden = type !== "link";
   $("table-fields").hidden = type !== "table";
   $("margin-fields").hidden = type !== "margin";
-  $("submit").textContent = type === "margin" ? "套用" : t(type === "new" ? "newFile" : "insert");
+  $("submit").textContent = type === "margin" ? "套用" : messageText(type === "new" ? "newFile" : "insert");
   $("error").textContent = "";
   if (type === "link") { $("link-text").value = selection?.toString() || ""; $("link-url").value = ""; }
   if (type === "table") $("table-borderless").checked = false;
@@ -2164,8 +1957,8 @@ function blankDocument() {
   tableEditing.clear();
   attachments.clear();
   chooseImage(null);
-  fileName.value = t("untitled");
-  paper.lang = locale.active;
+  fileName.value = "未命名文件";
+  paper.lang = "zh-Hant";
   paper.innerHTML = "<p><br></p>";
   pageMargins.apply([18,18,18,18],true);
   selection = null;
@@ -2176,6 +1969,32 @@ function blankDocument() {
   changed();
 }
 
+/* IMPORT: shared safe AI HTML engine; clipboard has broader rules for embedded images and formatting. */
+const htmlNamespace="http://www.w3.org/1999/xhtml";
+const importHTML=(()=>{
+  const common=new Set("P H1 H2 H3 STRONG B EM I U SPAN BR HR UL OL LI TABLE THEAD TBODY TR TH TD".split(" "));
+  const extra=new Set("DIV S CODE BLOCKQUOTE TFOOT A".split(" "));
+  const discard=new Set("SCRIPT STYLE SVG MATH IFRAME OBJECT EMBED IMG VIDEO AUDIO FORM INPUT BUTTON SELECT TEXTAREA TEMPLATE LINK META HEAD".split(" "));
+  function ai(raw,{local=false,keepSlots=false}={}){
+    const holder=make("template");holder.innerHTML=raw;const output=make("div");
+    function visit(node,parent){
+      if(node.nodeType===Node.TEXT_NODE){parent.append(node.data);return;}
+      if(node.nodeType!==Node.ELEMENT_NODE||node.namespaceURI!==htmlNamespace||discard.has(node.tagName))return;
+      const tag=node.tagName,slot=keepSlots&&tag==="DIV"&&/^\d+$/.test((node.getAttribute("data-ai-slot")||"").trim());
+      if(!slot&&!common.has(tag)&&(local||!extra.has(tag))){for(const child of node.childNodes)visit(child,parent);return;}
+      const el=make(node.localName);
+      if(slot){el.dataset.aiSlot=node.getAttribute("data-ai-slot").trim();el.dataset.aiSlotLabel=String(Number(el.dataset.aiSlot)+1);}
+      if(tag==="TABLE"){el.dataset.object=objectKey();if(node.hasAttribute("data-borderless"))el.setAttribute("data-borderless","");}
+      if(tag==="TD"||tag==="TH")for(const attr of ["rowspan","colspan"]){const n=Number(node.getAttribute(attr));if(Number.isInteger(n)&&n>=1&&n<=30)el.setAttribute(attr,String(n));}
+      if(tag==="A"){const href=node.getAttribute("href")||"";if(/^https?:\/\//i.test(href)){el.href=href;el.target="_blank";el.rel="noopener noreferrer";}}
+      if(tag==="OL"&&!local){const n=Number(node.getAttribute("start"));if(Number.isInteger(n)&&n>=1&&n<10000)el.start=n;}
+      for(const part of (node.getAttribute("style")||"").split(";")){const match=part.match(/^\s*([\w-]+)\s*:\s*(.*?)\s*$/);if(!match)continue;const key=match[1].toLowerCase(),v=match[2].toLowerCase();if(key==="text-align"&&["left","center","right","justify"].includes(v)||key==="color"&&/^#[0-9a-f]{6}$/.test(v))el.style.setProperty(key,v);}
+      for(const child of node.childNodes)visit(child,el);if(local&&/^(TD|TH)$/.test(tag)&&!el.textContent.trim()&&!el.querySelector("br,table,hr"))el.textContent=" ";parent.append(el);
+    }
+    for(const child of holder.content.childNodes)visit(child,output);return output.innerHTML;
+  }
+  return {ai};
+})();
 const documentClipboard = (() => {
   const supported = new Set(("p div span h1 h2 h3 h4 h5 h6 br hr b strong i em u s strike mark sub sup small font " +
     "a img ul ol li dl dt dd table caption colgroup col thead tbody tfoot tr th td blockquote pre code figure figcaption").split(" "));
@@ -2193,7 +2012,7 @@ const documentClipboard = (() => {
   function cleanNode(source,parent) {
     if (source.nodeType === Node.TEXT_NODE) { parent.append(source.data); return; }
     if (source.nodeType !== Node.ELEMENT_NODE || source.matches(skip) || source.hasAttribute("hidden")) return;
-    if (source.namespaceURI !== "http://www.w3.org/1999/xhtml") return;
+    if (source.namespaceURI !== htmlNamespace) return;
     let tag = source.localName;
     if (!supported.has(tag) || (tag === "b" && source.id.startsWith("docs-internal-guid-"))) {
       for (const child of source.childNodes) cleanNode(child,parent);
@@ -2312,27 +2131,30 @@ const documentClipboard = (() => {
   return {copy,paste};
 })();
 
-function saveHTML() {
+function serializeHTML({withoutImages=false,withoutAttachments=false,empty=false}={}) {
   const output = shell.cloneNode(true);
   output.dataset.mode = "read";
-  output.dataset.language = locale.preference;
   output.dataset.margin = pageMargins.serialize();
   delete output.dataset.preview;
   output.querySelector("#file-name").setAttribute("value",actualName());
   const attStore = output.querySelector("#attachment-store");
-  if (attStore) attStore.innerHTML = $("attachment-store").innerHTML;
+  if (attStore) attStore.innerHTML = withoutAttachments||empty?"":$("attachment-store").innerHTML;
   const content = output.querySelector("#paper");
-  content.innerHTML = cleanBody();
+  content.innerHTML = empty?"<p><br></p>":cleanBody();
+  if(withoutImages)for(const img of content.querySelectorAll("img[src^=\"data:\"]"))img.removeAttribute("src");
   content.lang = paper.lang;
   content.contentEditable = "false";
   const title = make("title");
   title.textContent = actualName();
-  const html = '<!doctype html>\n<html lang="' + locale.active + '"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+  const html = '<!doctype html>\n<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
     + title.outerHTML + styleSource + "</head><body>" + output.outerHTML + scriptSource + "</body></html>";
-  const url = URL.createObjectURL(new Blob([html],{type:"text/html;charset=utf-8"}));
+  return html;
+}
+function saveHTML(){
+  const url=URL.createObjectURL(new Blob([serializeHTML()],{type:"text/html;charset=utf-8"}));
   const link = make("a");
   link.href = url;
-  link.download = (actualName().replace(/[\\/:*?"<>|]/g,"_").replace(/\.html?$/i,"") || t("untitled")) + ".html";
+  link.download = (actualName().replace(/[\\/:*?"<>|]/g,"_").replace(/\.html?$/i,"") || "未命名文件") + ".html";
   document.body.append(link);
   link.click();
   link.remove();
@@ -2343,6 +2165,9 @@ function saveHTML() {
 }
 
 /* The shared A4 layout consumes structural copies of the same HTML as the editor. */
+/* LAYOUT: share row-span grouping and heading reserve across actual preview and estimated guides. */
+const headingReserve=76;
+function tablePageGroups(table){const {rows,cells}=tableGrid(table),groups=[];for(const body of table.tBodies){let start=body.rows[0]?.rowIndex;if(start===undefined)continue;const limit=start+body.rows.length;while(start<limit){let end=start+1;for(let y=start;y<end;y++)for(const cell of rows[y].cells)end=Math.max(end,cells.get(cell).bottom);groups.push({body,start,end});start=end;}}return {rows,groups};}
 const paginator = (() => {
   const graphemes = typeof Intl.Segmenter === "function" ? new Intl.Segmenter("zh-Hant",{granularity:"grapheme"}) : null;
   function largestFit(max,fits) {
@@ -2482,20 +2307,7 @@ const paginator = (() => {
       }
     }
     function placeTable(table) {
-      const {rows,cells} = tableGrid(table), groups = [];
-      for (const body of table.tBodies) {
-        let start = body.rows[0]?.rowIndex;
-        if (start === undefined) continue;
-        const limit = start + body.rows.length;
-        while (start < limit) {
-          let end = start + 1;
-          for (let y = start; y < end; y++) {
-            for (const cell of rows[y].cells) end = Math.max(end,cells.get(cell).bottom);
-          }
-          groups.push({body,start,end});
-          start = end;
-        }
-      }
+      const {rows,groups}=tablePageGroups(table);
       if (!groups.length) { placeAtomic(table); return; }
       placeSeries(groups.length,(start,end) => {
         const part = table.cloneNode(false);
@@ -2553,12 +2365,12 @@ const paginator = (() => {
         if (block.matches("table")) placeTable(block);
         else if (block.matches("ol,ul")) placeList(block);
         else if (block.matches("h1,h2,h3,h4,h5,h6,hr")) {
-          if (flow.childElementCount && limit() - used() < 76) newPage();
+          if (flow.childElementCount && limit() - used() < headingReserve) newPage();
           placeAtomic(block);
         } else placeText(block);
       }
       placeFreeImages();
-      pages.forEach(({footer},index) => { footer.textContent = t("pageNumber",{n:index + 1,total:pages.length}); });
+      pages.forEach(({footer},index) => { footer.textContent = messageText("pageNumber",{n:index + 1,total:pages.length}); });
       return {count:pages.length,scaledCount};
     } finally {
       sheets.classList.remove("measuring");
@@ -2587,7 +2399,7 @@ const pageZoom = (() => {
     function refresh() {
       const value = percent();
       reset.textContent = value + "%";
-      reset.title = t(resetLabel);
+      reset.title = messageText(resetLabel);
       reset.setAttribute("aria-label",reset.textContent + " · " + reset.title);
       out.disabled = value <= min;
       zoomIn.disabled = value >= max;
@@ -2631,11 +2443,11 @@ const pageZoom = (() => {
     if (entry.contentRect.height > 0) space.style.setProperty("--document-height",entry.contentRect.height + "px");
   }).observe(frame);
   new ResizeObserver(fitPreview).observe(sheets);
-  function localize() {
+  function refreshControls() {
     documentControls();
     previewControls();
   }
-  return {fitPreview,localize};
+  return {fitPreview,refreshControls};
 })();
 
 const writerKnowledge = (() => {
@@ -3020,48 +2832,7 @@ const writerAI = (() => {
     updatePicked();
   });
   $("ai-pick-clear").addEventListener("click",()=>{editBlocks=[];pickAnchor=null;proposed=null;editPreview.hidden=true;updatePicked();});
-  const allowedTags = new Set(["P","H1","H2","H3","STRONG","B","EM","I","U","SPAN","BR","HR","UL","OL","LI","TABLE","THEAD","TBODY","TR","TH","TD"]);
-  function sanitizeFragment(raw, keepSlots = false) {
-    const doc = new DOMParser().parseFromString("<div id='safe-root'>" + raw + "</div>","text/html");
-    const root = doc.getElementById("safe-root");
-    for (const node of [...root.querySelectorAll("*")].reverse()) {
-      const isSlotDiv = keepSlots && node.tagName === "DIV" && /^\d+$/.test((node.getAttribute("data-ai-slot") || "").trim());
-      if (!allowedTags.has(node.tagName) && !isSlotDiv) {
-        if (["SCRIPT","STYLE","IFRAME","SVG","OBJECT","IMG","FORM","VIDEO","AUDIO"].includes(node.tagName)) node.remove();
-        else node.replaceWith(...node.childNodes);
-        continue;
-      }
-      const slotVal = isSlotDiv ? node.getAttribute("data-ai-slot").trim() : null;
-      const style = node.getAttribute("style") || "";
-      const safe = [];
-      for (const item of style.split(";")) {
-        const parts = item.split(":");
-        if (parts.length !== 2) continue;
-        const key = parts[0].trim().toLowerCase(), val = parts[1].trim().toLowerCase();
-        if (key === "text-align" && ["left","center","right","justify"].includes(val)) safe.push(key+":"+val);
-        if (key === "color" && /^#[0-9a-f]{6}$/.test(val)) safe.push(key+":"+val);
-      }
-      const keepBorderless = node.tagName === "TABLE" && node.hasAttribute("data-borderless");
-      const keepSpans = {};
-      if (node.tagName === "TD" || node.tagName === "TH") {
-        for (const attr of ["colspan","rowspan"]) {
-          const n = Number(node.getAttribute(attr));
-          if (Number.isInteger(n) && n >= 1 && n <= 30) keepSpans[attr] = String(n);
-        }
-      }
-      for (const attr of [...node.attributes]) node.removeAttribute(attr.name);
-      if (isSlotDiv) {
-        node.setAttribute("data-ai-slot", slotVal);
-        node.setAttribute("data-ai-slot-label", String(Number(slotVal) + 1));
-      }
-      if (safe.length) node.setAttribute("style",safe.join(";"));
-      if (keepBorderless) node.setAttribute("data-borderless","");
-      if (node.tagName === "TABLE") node.dataset.object = objectKey();
-      for (const [k,v] of Object.entries(keepSpans)) node.setAttribute(k,v);
-      if ((node.tagName === "TD" || node.tagName === "TH") && !node.textContent.trim() && !node.querySelector("br,img,table,hr")) node.textContent = " ";
-    }
-    return root.innerHTML;
-  }
+  function sanitizeFragment(raw,keepSlots=false){return importHTML.ai(raw,{local:true,keepSlots});}
   function replaceSingleBlock(target, contentHolder) {
     if (isCell(target)) {
       const singleCell = contentHolder.children.length === 1 && isCell(contentHolder.firstElementChild)
@@ -3100,7 +2871,7 @@ const writerAI = (() => {
       selectionSummary.textContent=insertAfter!==undefined ? (insertAfter ? "已指定插入位置：所選章節之後。" : "已指定插入位置：文件最前方。") : "請直接點選文章中的「＋ 插入」指定位置；也可使用游標，未指定則加入末尾。";
     } else if(format) updatePicked();
     $("ai-question").placeholder=generate ? "例如：產生一份教育訓練公告，包含課程目的、流程與資訊表格" : format ? "例如：將選取內容排成正式公告" : "詢問文件內容";
-    $("ai-send").textContent=(format||generate) ? "產生內容預覽" : t("aiSend");
+    $("ai-send").textContent=(format||generate) ? "產生內容預覽" : "送出";
     refreshInsertMarkers();
   }
   task.addEventListener("change",()=>{if(task.value!=="format")setPicking(false);refreshTask();});
@@ -3199,17 +2970,17 @@ const writerAI = (() => {
     if (!["http:","https:"].includes(url.protocol) || url.username || url.password || url.search || url.hash) throw new Error();
     return url.origin + (url.pathname.replace(/\/+$/,"") || "/v1");
   }
-  function localize() {
-    feedback.textContent = status ? t(status.code,status.values) + (status.detail ? " " + status.detail : "") : "";
+  function renderFeedback() {
+    feedback.textContent = status ? messageText(status.code,status.values) + (status.detail ? " " + status.detail : "") : "";
     feedback.hidden = !status;
     feedback.dataset.error = String(Boolean(status?.error));
     const destination = $("ai-destination");
     destination.hidden = !connection;
-    destination.textContent = connection ? t("aiDestination",{host:new URL(connection.url).host}) : "";
+    destination.textContent = connection ? messageText("aiDestination",{host:new URL(connection.url).host}) : "";
   }
   function show(code,values,detail = "",error = false) {
     status = code ? {code,values,detail,error} : null;
-    localize();
+    renderFeedback();
   }
   function sync() {
     const busy = Boolean(request);
@@ -3220,7 +2991,7 @@ const writerAI = (() => {
     resetButton.disabled = !turns.length && request?.type !== "reply" && !question.value;
   }
   function placeholderOption() {
-    const option = new Option(t("aiPick"),"");
+    const option = new Option("選擇聊天模型","");
     option.dataset.i18n = "aiPick";
     return option;
   }
@@ -3251,7 +3022,7 @@ const writerAI = (() => {
     } catch {
       signal.throwIfAborted();
       if (timeout.aborted) throw new ApiIssue("aiTimeout");
-      throw new ApiIssue("aiUnavailable",{},location.protocol === "file:" ? t("aiFileHint") : "");
+      throw new ApiIssue("aiUnavailable",{},location.protocol === "file:" ? "若瀏覽器擋下本機檔案的請求，可以用本機 HTTP 開啟這份 HTML。" : "");
     }
     signal.throwIfAborted();
     let data;
@@ -3291,7 +3062,7 @@ const writerAI = (() => {
     row.dataset.role = role;
     if (role === "user") {
       heading.dataset.i18n = "aiYou";
-      heading.textContent = t("aiYou");
+      heading.textContent = "你";
     } else heading.textContent = "AI";
     content.textContent = text;
     row.append(heading,content);
@@ -3355,7 +3126,7 @@ const writerAI = (() => {
     for (const {chunk,number} of displayed) {
       const button = make("button");
       button.type = "button";
-      button.textContent = "[" + number + "] " + (chunk.label || t("aiExcerpt"));
+      button.textContent = "[" + number + "] " + (chunk.label || "文件片段");
       button.addEventListener("click",() => {
         const target = writerKnowledge.target(chunk);
         if (!target) { show("aiSourceGone"); return; }
@@ -3473,7 +3244,7 @@ const writerAI = (() => {
   $("ai-form").addEventListener("submit",ask);
   sync();
   return {
-    reset,localize,
+    reset,renderFeedback,
     close() { toggle(false,false); },
     invalidate() { chunks = null; },
     hasFocus() { return drawer.contains(document.activeElement); },
@@ -3565,46 +3336,15 @@ const writerWebAI = (() => {
     flush();endList();
     return out.join("\n");
   }
-  // Strict allowlist for imported AI code. Preserve only safe structure and table spans.
-  const tags=new Set(["P","DIV","H1","H2","H3","STRONG","B","EM","I","U","S","CODE","SPAN","BR","HR","UL","OL","LI","BLOCKQUOTE","TABLE","THEAD","TBODY","TFOOT","TR","TH","TD","A"]);
-  const discard=new Set(["SCRIPT","STYLE","SVG","MATH","IFRAME","OBJECT","EMBED","IMG","VIDEO","AUDIO","FORM","INPUT","BUTTON","SELECT","TEXTAREA","TEMPLATE","LINK","META"]);
-  function sanitize(html){
-    const holder=document.createElement("template");holder.innerHTML=html;
-    const output=document.createElement("div");
-    function visit(node,parent){
-      if(node.nodeType===Node.TEXT_NODE){parent.append(document.createTextNode(node.data));return;}
-      if(node.nodeType!==Node.ELEMENT_NODE||node.namespaceURI!=="[http://www.w3.org/1999/xhtml](http://www.w3.org/1999/xhtml)"||discard.has(node.tagName))return;
-      if(!tags.has(node.tagName)){for(const child of [...node.childNodes])visit(child,parent);return;}
-      const element=document.createElement(node.localName);
-      if(node.tagName==="TABLE"&&node.hasAttribute("data-borderless"))element.setAttribute("data-borderless","");
-      if(node.tagName==="TD"||node.tagName==="TH")for(const attr of ["colspan","rowspan"]){const n=Number(node.getAttribute(attr));if(Number.isInteger(n)&&n>=1&&n<=30)element.setAttribute(attr,String(n));}
-      if(node.tagName==="A") {const href=node.getAttribute("href")||"";if(/^https?:\/\//i.test(href)){element.href=href;element.target="_blank";element.rel="noopener noreferrer";}}
-      if(node.tagName==="OL") {const n=Number(node.getAttribute("start"));if(Number.isInteger(n)&&n>=1&&n<10000)element.start=n;}
-      const safeStyles=[];
-      for(const part of (node.getAttribute("style")||"").split(";")) {
-        const match=part.match(/^\s*([\w-]+)\s*:\s*(.*?)\s*$/);
-        if(!match)continue;
-        const key=match[1].toLowerCase(),v=match[2].toLowerCase();
-        if(key==="text-align"&&["left","center","right","justify"].includes(v))safeStyles.push(key+":"+v);
-        if(key==="color"&&/^#[0-9a-f]{6}$/.test(v))safeStyles.push(key+":"+v);
-      }
-      if(safeStyles.length)element.setAttribute("style",safeStyles.join(";"));
-      for(const child of [...node.childNodes])visit(child,element);
-      parent.append(element);
-    }
-    for(const child of [...holder.content.childNodes])visit(child,output);
-    // A root table needs stable identity to keep native cell editing and column resizing working.
-    for(const table of output.querySelectorAll("table"))table.dataset.object=objectKey();
-    return output.innerHTML;
-  }
+  function sanitize(html){return importHTML.ai(html);}
   function prepare() {
     const raw=stripFence(source.value);
-    if(!raw){message(t("webAiMissing"),true);return;}
+    if(!raw){message("請先貼上 AI 產生的內容。",true);return;}
     const html=/<\/?(?:h[1-6]|p|div|table|ul|ol|li|tr|td|th|blockquote|strong|span|br)\b/i.test(raw)?raw:markdownToHTML(raw);
     const safe=sanitize(html);
     const check=document.createElement("div");check.innerHTML=safe;
-    if(!check.textContent.trim() && !check.querySelector("table,hr")){message(t("webAiInvalid"),true);return;}
-    prepared=safe;preview.innerHTML=safe;previewWrap.hidden=false;message(t("webAiReady"));
+    if(!check.textContent.trim() && !check.querySelector("table,hr")){message("未找到可匯入的文字、標題或表格，請檢查貼上的內容。",true);return;}
+    prepared=safe;preview.innerHTML=safe;previewWrap.hidden=false;message("預覽已產生。確認內容與表格後，再按「確認匯入文件」。");
     previewWrap.scrollIntoView({block:"nearest"});
   }
   async function copyPrompt() {
@@ -3615,12 +3355,12 @@ const writerWebAI = (() => {
       try{copied=document.execCommand("copy");}catch{}
       if(original instanceof HTMLElement)original.focus({preventScroll:true});
     }
-    message(t(copied?"webAiCopied":"webAiCopyError"),!copied);
+    message(messageText(copied?"webAiCopied":"webAiCopyError"),!copied);
   }
   function apply() {
     if(!prepared)return;
     if(app.dataset.preview==="true")leavePreview();
-    if(destination.value==="replace" && paper.textContent.trim() && !window.confirm(t("webAiConfirmReplace")))return;
+    if(destination.value==="replace" && paper.textContent.trim() && !window.confirm("這會取代目前整份文件。確定繼續？"))return;
     if(!editing)mode(true);
     // Rebuild nodes at apply-time so repeat previews cannot share child DOM objects.
     const fragment=document.createRange().createContextualFragment(prepared);
@@ -3636,7 +3376,7 @@ const writerWebAI = (() => {
       const range=document.createRange();range.selectNodeContents(paper);range.collapse(false);focusRange(range);
     });
     tableEditing.clear();chooseImage(null);prepared=null;anchor=null;previewWrap.hidden=true;
-    changed();syncContext();message(t("webAiImported"));
+    changed();syncContext();message("已匯入文件，可繼續編輯、另存 HTML 或輸出文字型 PDF。");
   }
   function toggle(open) {
     if(open && app.dataset.askOpen==="true")writerAI.close();
@@ -3773,8 +3513,8 @@ const voiceInput = (() => {
 
 function buildPreview() {
   const result = paginator.render();
-  $("page-count").textContent = t("pageCount",{count:result.count});
-  $("preview-note").textContent = t("pdfPreviewGuide") + " " + t("printSettings") + (result.scaledCount ? " " + t("scaledItems") : "");
+  $("page-count").textContent = messageText("pageCount",{count:result.count});
+  $("preview-note").textContent = "使用「文字型 PDF」與瀏覽器內建的「儲存為 PDF」，可保留可選取的文字、表格格線及儲存格內文字；需要繼續編輯請保留 HTML 原始檔。" + " " + "列印視窗請選 A4、實際大小（100%），並關閉頁首及頁尾。" + (result.scaledCount ? " " + "部分超高項目已等比例縮小。" : "");
   pageZoom.fitPreview();
   printReady = true;
 }
@@ -3784,7 +3524,7 @@ async function preview() {
   columnSizing.activate(null);
   const ticket = ++previewTicket;
   app.dataset.preview = "true";
-  $("preview-note").textContent = t("paginating");
+  $("preview-note").textContent = "正在排版…";
   $("page-count").textContent = "";
   $("print").disabled = $("pdf").disabled = true;
   let timer;
@@ -3820,10 +3560,10 @@ const pdfTextExport = (() => {
   let currentFrame = null;
   function exportPDF() {
     if (!printReady) buildPreview();
-    $("preview-note").textContent = t("pdfChooseBrowser") + " " + t("printSettings");
+    $("preview-note").textContent = "請在瀏覽器的列印目的地選「儲存為 PDF」（優先使用 Chrome／Edge 內建選項），不要選擇「列印成圖片」。文字可複製與搜尋，但 PDF 表格並非可直接操作的 HTML 儲存格。" + " " + "列印視窗請選 A4、實際大小（100%），並關閉頁首及頁尾。";
     if (currentFrame) currentFrame.remove();
     const frame = document.createElement("iframe");
-    frame.title = t("pdf");
+    frame.title = "文字型 PDF";
     frame.setAttribute("aria-hidden","true");
     frame.tabIndex = -1;
     // Do not use display:none/visibility:hidden: some print engines omit it.
@@ -3856,7 +3596,7 @@ const pdfTextExport = (() => {
     } catch (error) {
       frame.remove();
       if (currentFrame === frame) currentFrame = null;
-      $("preview-note").textContent = t("pdfChooseBrowser") + " " + t("printSettings");
+      $("preview-note").textContent = "請在瀏覽器的列印目的地選「儲存為 PDF」（優先使用 Chrome／Edge 內建選項），不要選擇「列印成圖片」。文字可複製與搜尋，但 PDF 表格並非可直接操作的 HTML 儲存格。" + " " + "列印視窗請選 A4、實際大小（100%），並關閉頁首及頁尾。";
       // Fallback: the browser can still print the same live DOM as before.
       window.print();
     }
@@ -3866,7 +3606,7 @@ const pdfTextExport = (() => {
 function output(kind) {
   if (kind === "pdf") return pdfTextExport.exportPDF();
   if (!printReady) buildPreview();
-  $("preview-note").textContent = t("printSettings");
+  $("preview-note").textContent = "列印視窗請選 A4、實際大小（100%），並關閉頁首及頁尾。";
   window.print();
 }
 window.addEventListener("beforeprint",() => {
@@ -3935,7 +3675,17 @@ for (const [name,command] of [["format","formatBlock"],["font","fontName"],["ali
     event.target.selectedIndex = 0;
   });
 }
-$("color").addEventListener("change",event => issue("foreColor",event.target.value));
+/* COLOR: fixed palette, last color is session-local; no native color picker. */
+const colorPalette=(()=>{
+  const colors="000000 333333 595959 808080 A6A6A6 BFBFBF D9D9D9 E7E6E6 F2F2F2 FFFFFF C00000 FF0000 FFC000 FFFF00 92D050 00B050 00B0F0 0070C0 002060 7030A0 F4CCCC FCE5CD FFF2CC D9EAD3 D0E0E3 CFE2F3 D9D2E9 EAD1DC F4DADA E4D5C3 E06666 F6B26B FFD966 93C47D 76A5AF 6FA8DC 8E7CC3 C27BA0 D5A6BD B7A28B CC0000 E69138 F1C232 6AA84F 45818E 3D85C6 674EA7 A64D79 A52A2A 8B4513 660000 783F04 7F6000 274E13 0C343D 073763 20124D 4C1130 602020 4E342E".split(" ");
+  const host=$("color-swatches"),toggle=$("color-toggle");let last="#26312b";
+  function close(){host.hidden=true;toggle.setAttribute("aria-expanded","false");}
+  function apply(color){last=color;$("color-indicator").style.backgroundColor=color;issue("foreColor",color);close();}
+  for(const hex of colors){const button=make("button");button.type="button";button.style.backgroundColor="#"+hex;button.title="#"+hex;button.setAttribute("aria-label","文字顏色 #"+hex);button.addEventListener("click",()=>apply("#"+hex));host.append(button);}
+  const auto=make("button");auto.type="button";auto.dataset.auto="";auto.textContent="預設文字顏色";auto.addEventListener("click",()=>apply("#26312b"));host.append(auto);
+  toggle.addEventListener("click",()=>{if(!host.hidden){close();return;}host.hidden=false;toggle.setAttribute("aria-expanded","true");host.style.left="0";const overflow=host.getBoundingClientRect().right-innerWidth+12;if(overflow>0)host.style.left=-overflow+"px";});
+  $("color-apply").addEventListener("click",()=>apply(last));document.addEventListener("pointerdown",e=>{if(!$("color-control").contains(e.target))close();});document.addEventListener("keydown",e=>{if(e.key==="Escape")close();});return {close};
+})();
 $("table-tools").addEventListener("click",event => {
   const action = event.target.closest("[data-table]")?.dataset.table;
   if (action) tableEditing.change(action);
@@ -3987,7 +3737,7 @@ $("form").addEventListener("submit",event => {
   if (dialogType === "table") {
     const rows = Number($("rows").value), columns = Number($("columns").value);
     if (!Number.isInteger(rows) || !Number.isInteger(columns) || rows < 1 || rows > 30 || columns < 1 || columns > 8) {
-      $("error").textContent = t("invalidTable");
+      $("error").textContent = "列數請輸入 1 到 30，欄數請輸入 1 到 8。";
       return;
     }
     dialog.close(); insertTable(rows,columns,$("table-borderless").checked); return;
@@ -3995,7 +3745,7 @@ $("form").addEventListener("submit",event => {
   let url;
   try { url = new URL($("link-url").value.trim()); } catch {}
   if (!url || !["http:","https:"].includes(url.protocol)) {
-    $("error").textContent = t("invalidUrl");
+    $("error").textContent = "請輸入以 http:// 或 https:// 開頭的網址。";
     return;
   }
   const link = make("a");
@@ -4026,23 +3776,16 @@ $("image-file").addEventListener("change",event => {
   if (file) insertImage(file);
 });
 fileName.addEventListener("input",changed);
-$("language").addEventListener("change",event => {
-  locale.change(event.target.value);
-  pageZoom.localize();
-  writerAI.localize();
-  attachments.render();
-  document.title = actualName();
-  printReady = false;
-  $("mode").textContent = t(editing ? "readMode" : "editMode");
-  updateOutline();
-  freeImages.refreshPicker();
-  columnSizing.refresh();
-  status();
-});
 $("mode").addEventListener("click",() => mode(!editing));
 $("new-file").addEventListener("click",() => snapshot() === saved ? blankDocument() : openDialog("new"));
 $("copy-document").addEventListener("click",documentClipboard.copy);
 $("save-html").addEventListener("click",saveHTML);
+$("file-size").addEventListener("click",()=>{
+  const bytes=options=>new Blob([serializeHTML(options)]).size,total=bytes(),noAttach=bytes({withoutAttachments:true}),noMedia=bytes({withoutAttachments:true,withoutImages:true}),base=bytes({empty:true});
+  const fmt=n=>n>=1048576?(n/1048576).toFixed(2)+" MB":(n/1024).toFixed(1)+" KB";
+  $("size-total").textContent="預計另存大小："+fmt(total);
+  $("size-parts").replaceChildren(...[["編輯器本體",base],["文字、表格及其他",noMedia-base],["內嵌圖片",noAttach-noMedia],["內嵌附件",total-noAttach]].map(([name,n])=>{const p=make("p");p.textContent=name+"："+fmt(Math.max(0,n));return p;}));$("size-dialog").showModal();
+});
 $("open-preview").addEventListener("click",preview);
 $("back").addEventListener("click",leavePreview);
 $("print").addEventListener("click",() => output("print"));
@@ -4086,7 +3829,7 @@ const pageBreakGuides = (() => {
 
       // 1. 標題防孤行（對應列印預覽：剩餘高度小於 76px 就換頁）
       if (el.matches("h1,h2,h3,h4,h5,h6,hr")) {
-        if (top > pageStart && (pageStart + pageContentHeight) - top < 76) {
+        if (top > pageStart && (pageStart + pageContentHeight) - top < headingReserve) {
           addBreak(top);
         } else if (bottom > pageStart + pageContentHeight && top > pageStart) {
           addBreak(top);
@@ -4097,16 +3840,8 @@ const pageBreakGuides = (() => {
       // 2. 表格：逐列檢查，整列放不下就從該列上方換頁
       if (el.matches("table")) {
         const theadHeight = el.tHead ? el.tHead.offsetHeight : 0;
-        const rows = Array.from(el.tBodies).flatMap(tb => Array.from(tb.rows));
-        for (const row of rows) {
-          const rTop = el.offsetTop + row.offsetTop;
-          const rBottom = rTop + row.offsetHeight;
-          if (rBottom > pageStart + pageContentHeight && rTop > pageStart) {
-            addBreak(rTop);
-            // 換頁後表頭會重複出現，扣除表頭高度讓後續計算更準
-            pageStart -= theadHeight;
-          }
-        }
+        const {rows,groups}=tablePageGroups(el);
+        for(const {start,end} of groups){const rTop=el.offsetTop+rows[start].offsetTop,last=rows[end-1],rBottom=el.offsetTop+last.offsetTop+last.offsetHeight;if(rBottom>pageStart+pageContentHeight&&rTop>pageStart){addBreak(rTop);pageStart-=theadHeight;}}
         continue;
       }
 
@@ -4166,33 +3901,19 @@ const attachments = (() => {
     if (/^(zip|rar|7z|tar|gz)$/.test(ext)) return "🗜️";
     return "📄";
   };
-  function toBlob(dataUrl, fallbackType) {
-    const comma = dataUrl.indexOf(",");
-    const header = dataUrl.slice(0, comma);
-    const mime = header.match(/data:([^;]+)/)?.[1] || fallbackType || "application/octet-stream";
-    const binary = atob(dataUrl.slice(comma + 1));
-    const bytes = new Uint8Array(binary.length);
-    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-    return new Blob([bytes], { type: mime });
-  }
-  function openNode(node, forceDownload = false) {
-    const blob = toBlob(node.textContent, node.dataset.type);
-    const url = URL.createObjectURL(blob);
-    const name = node.dataset.name || "attachment";
-    const canPreview = !forceDownload && /^(application\/pdf|image\/|text\/|audio\/|video\/)/i.test(blob.type);
-    if (canPreview) {
-      const win = window.open(url, "_blank", "noopener");
-      if (!win) forceDownload = true;
-    }
-    if (forceDownload) {
-      const a = make("a");
-      a.href = url;
-      a.download = name;
-      document.body.append(a);
-      a.click();
-      a.remove();
-    }
-    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  const previewTypes={pdf:"application/pdf",png:"image/png",jpg:"image/jpeg",jpeg:"image/jpeg",gif:"image/gif",webp:"image/webp",bmp:"image/bmp",avif:"image/avif",ico:"image/x-icon",txt:"text/plain",csv:"text/plain",log:"text/plain",md:"text/plain",json:"text/plain",mp3:"audio/mpeg",wav:"audio/wav",ogg:"audio/ogg",m4a:"audio/mp4",mp4:"video/mp4",webm:"video/webm",ogv:"video/ogg"};
+  function toBlob(dataUrl,type){const binary=atob(dataUrl.slice(dataUrl.indexOf(",")+1));return new Blob([Uint8Array.from(binary,c=>c.charCodeAt(0))],{type});}
+  function openNode(node,forceDownload=false){
+    const name=node.dataset.name||"attachment",ext=name.split(".").pop().toLowerCase();
+    const stored=(node.dataset.type||"application/octet-stream").toLowerCase().split(";")[0];
+    let type=Object.hasOwn(previewTypes,ext)?previewTypes[ext]:null;
+    if(!type||(/^(text\/html|application\/xhtml\+xml|image\/svg\+xml)$/.test(stored)))type=null;
+    if(type?.startsWith("audio/")||type?.startsWith("video/")){if(!make(type.split("/")[0]).canPlayType(type))type=null;}
+    if(type==="application/pdf"&&navigator.pdfViewerEnabled===false)type=null;
+    let blob;try{blob=toBlob(node.textContent,!forceDownload&&type?type:"application/octet-stream");}catch{alert("附件內容無法讀取");return;}
+    const url=URL.createObjectURL(blob),a=make("a");a.href=url;
+    if(!forceDownload&&type){a.target="_blank";a.rel="noopener noreferrer";}else a.download=name;
+    document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),300000);
   }
   function render() {
     const items = Array.from(store.children);
@@ -4200,12 +3921,12 @@ const attachments = (() => {
       bar.hidden = items.length === 0;
       if (!items.length) { bar.replaceChildren(); continue; }
       const label = make("span", "attachment-label");
-      label.textContent = "📎 " + t("attachmentsLabel", { count: items.length });
+      label.textContent = "📎 " + messageText("attachmentsLabel", { count: items.length });
       const nodes = [label];
       items.forEach((item, index) => {
         const chip = make("span", "attachment-chip");
         const openBtn = make("button", "attachment-open");
-        openBtn.type = "button";
+        openBtn.type = "button";openBtn.translate=false;openBtn.classList.add("notranslate");
         openBtn.title = item.dataset.name + " (" + formatSize(item.dataset.size) + ")";
         const sizeSpan = make("span", "attachment-size");
         sizeSpan.textContent = "(" + formatSize(item.dataset.size) + ")";
@@ -4215,15 +3936,15 @@ const attachments = (() => {
         const dlBtn = make("button", "attachment-dl");
         dlBtn.type = "button";
         dlBtn.textContent = "⬇";
-        dlBtn.title = t("downloadAttachment");
-        dlBtn.setAttribute("aria-label", t("downloadAttachment"));
+        dlBtn.title = "下載附件";
+        dlBtn.setAttribute("aria-label", "下載附件");
         dlBtn.addEventListener("click", () => openNode(item, true));
 
         const rmBtn = make("button", "attachment-remove");
         rmBtn.type = "button";
         rmBtn.textContent = "✕";
-        rmBtn.title = t("removeAttachment");
-        rmBtn.setAttribute("aria-label", t("removeAttachment"));
+        rmBtn.title = "移除附件";
+        rmBtn.setAttribute("aria-label", "移除附件");
         rmBtn.addEventListener("click", () => {
           items[index]?.remove();
           render();
@@ -4235,7 +3956,7 @@ const attachments = (() => {
       });
       if (bar.id === "preview-attachments") {
         const hint = make("span", "attachment-hint");
-        hint.textContent = t("attachmentPreviewHint");
+        hint.textContent = "（點選可開啟或下載，列印時不會印出）";
         nodes.push(hint);
       }
       bar.replaceChildren(...nodes);
@@ -4245,7 +3966,7 @@ const attachments = (() => {
     const files = Array.from(fileList || []);
     if (!files.length) return;
     const totalBytes = files.reduce((sum, f) => sum + f.size, 0);
-    if (totalBytes > 15 * 1024 * 1024 && !window.confirm(t("attachmentLargeWarn", { size: formatSize(totalBytes) }))) return;
+    if (totalBytes > 15 * 1024 * 1024 && !window.confirm(messageText("attachmentLargeWarn", { size: formatSize(totalBytes) }))) return;
     for (const file of files) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -4274,9 +3995,8 @@ const attachments = (() => {
   return { render, clear };
 })();
 
-locale.apply(locale.preference);
 pageMargins.init();
-pageZoom.localize();
+pageZoom.refreshControls();
 attachments.render();
 saved = snapshot();
 mode(app.dataset.mode !== "read");
